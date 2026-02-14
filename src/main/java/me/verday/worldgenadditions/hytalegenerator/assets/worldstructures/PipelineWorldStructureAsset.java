@@ -5,6 +5,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.biomes.BiomeAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.WorldStructureAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.mapcontentfield.BaseHeightContentFieldAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.mapcontentfield.ContentFieldAsset;
+import com.hypixel.hytale.builtin.hytalegenerator.biome.BiomeType;
 import com.hypixel.hytale.builtin.hytalegenerator.biomemap.BiomeMap;
 import com.hypixel.hytale.builtin.hytalegenerator.biomemap.SimpleBiomeMap;
 import com.hypixel.hytale.builtin.hytalegenerator.material.SolidMaterial;
@@ -17,6 +18,7 @@ import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaStageAsset;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
+import me.verday.worldgenadditions.hytalegenerator.cartas.FunctionCarta;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.*;
@@ -61,15 +63,16 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             }
         }
 
-        ArrayList<PipelineCartaStage> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage(new ConstantPipelineCartaTransform(defaultBiomeId), false));
+        ArrayList<PipelineCartaStage<String>> finalStages = new ArrayList<>();
+        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(defaultBiomeId), false));
 
         PipelineCartaTransformAsset.Argument arg = new PipelineCartaTransformAsset.Argument(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
         for (PipelineCartaStageAsset stage: stages) {
             finalStages.add(stage.build(arg));
         }
 
-        PipelineCarta carta = new PipelineCarta(finalStages.toArray(new PipelineCartaStage[0]), biomeId -> {
+        PipelineCarta<String> biomeIdCarta = new PipelineCarta<>(finalStages);
+        FunctionCarta<String, BiomeType> carta = new FunctionCarta<>(biomeIdCarta, biomeId -> {
             BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
             if (biomeAsset == null) return null;
             return biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);

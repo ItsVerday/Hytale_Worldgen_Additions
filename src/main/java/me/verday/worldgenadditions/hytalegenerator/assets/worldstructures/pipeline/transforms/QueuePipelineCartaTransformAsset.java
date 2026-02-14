@@ -3,6 +3,7 @@ package me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipel
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.QueuePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -12,9 +13,8 @@ public class QueuePipelineCartaTransformAsset extends PipelineCartaTransformAsse
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        QueuePipelineCartaTransform transform = new QueuePipelineCartaTransform();
-        transform.setInputs(buildInputs(arg, false).toArray(new PipelineCartaTransform[0]));
-        return transform;
+    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform<>();
+        return new QueuePipelineCartaTransform<>(buildInputs(arg, false));
     }
 }

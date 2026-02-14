@@ -10,36 +10,32 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform {
+public class FieldFunctionPipelineCartaTransform<R> extends PipelineCartaTransform<R> {
     @Nonnull
     private final Density density;
     @Nonnull
-    private final FieldDelimiter[] delimiters;
+    private final List<FieldDelimiter<R>> delimiters;
 
-    public FieldFunctionPipelineCartaTransform(@Nonnull Density density, @Nonnull List<FieldDelimiter> delimiters) {
+    public FieldFunctionPipelineCartaTransform(@Nonnull Density density, @Nonnull List<FieldDelimiter<R>> delimiters) {
         this.density = density;
-        this.delimiters = new FieldDelimiter[delimiters.size()];
+        this.delimiters = delimiters;
 
-        for (FieldDelimiter field: delimiters) {
+        for (FieldDelimiter<R> field: delimiters) {
             if (field == null) {
                 throw new IllegalArgumentException("delimiters contain null value");
             }
-        }
-
-        for (int i = 0; i < delimiters.size(); i++) {
-            this.delimiters[i] = delimiters.get(i);
         }
     }
 
     @NullableDecl
     @Override
-    public String process(@NonNullDecl Context ctx) {
+    public R process(@NonNullDecl Context<R> ctx) {
         Density.Context childContext = new Density.Context();
         childContext.position = new Vector3d(ctx.position.x, 0, ctx.position.y);
         childContext.workerId = ctx.workerId;
 
         double densityValue = this.density.process(childContext);
-        for (FieldDelimiter delimiter: delimiters) {
+        for (FieldDelimiter<R> delimiter: delimiters) {
             if (delimiter.isInside(densityValue)) {
                 return delimiter.value.process(ctx);
             }
@@ -49,11 +45,11 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
     }
 
     @Override
-    public List<String> allPossibleValues() {
-        ArrayList<String> values = new ArrayList<>();
+    public List<R> allPossibleValues() {
+        ArrayList<R> values = new ArrayList<>();
 
-        for (FieldDelimiter delimiter: delimiters) {
-            for (String possibility: delimiter.value.allPossibleValues()) {
+        for (FieldDelimiter<R> delimiter: delimiters) {
+            for (R possibility: delimiter.value.allPossibleValues()) {
                 if (!values.contains(possibility)) {
                     values.add(possibility);
                 }
@@ -64,22 +60,22 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
     }
 
     @Override
-    public int getMaxPipelineBiomeDistance() {
+    public int getMaxPipelineValueDistance() {
         int distance = 0;
-        for (FieldDelimiter delimiter: delimiters) {
-            int newDistance = delimiter.value.getMaxPipelineBiomeDistance();
+        for (FieldDelimiter<R> delimiter: delimiters) {
+            int newDistance = delimiter.value.getMaxPipelineValueDistance();
             if (newDistance > distance) distance = newDistance;
         }
 
         return distance;
     }
 
-    public static class FieldDelimiter {
+    public static class FieldDelimiter<R> {
         double top;
         double bottom;
-        PipelineCartaTransform value;
+        PipelineCartaTransform<R> value;
 
-        public FieldDelimiter(@Nonnull PipelineCartaTransform value, double bottom, double top) {
+        public FieldDelimiter(@Nonnull PipelineCartaTransform<R> value, double bottom, double top) {
             this.bottom = bottom;
             this.top = top;
             this.value = value;

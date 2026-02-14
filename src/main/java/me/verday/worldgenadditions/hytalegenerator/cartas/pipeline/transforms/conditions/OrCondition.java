@@ -3,16 +3,18 @@ package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.c
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 
-public class OrCondition extends ConditionalPipelineCartaTransform.Condition {
-    private final ConditionalPipelineCartaTransform.Condition[] conditions;
+import java.util.List;
 
-    public OrCondition(ConditionalPipelineCartaTransform.Condition[] conditions) {
+public class OrCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
+    private final List<ConditionalPipelineCartaTransform.Condition<R>> conditions;
+
+    public OrCondition(List<ConditionalPipelineCartaTransform.Condition<R>> conditions) {
         this.conditions = conditions;
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.Context context) {
-        for (ConditionalPipelineCartaTransform.Condition condition: conditions) {
+    public boolean process(PipelineCartaTransform.Context<R> context) {
+        for (ConditionalPipelineCartaTransform.Condition<R> condition: conditions) {
             if (condition.process(context)) return true;
         }
 
@@ -22,7 +24,7 @@ public class OrCondition extends ConditionalPipelineCartaTransform.Condition {
     @Override
     public int getMaxPipelineBiomeDistance() {
         int distance = 0;
-        for (ConditionalPipelineCartaTransform.Condition condition: conditions) {
+        for (ConditionalPipelineCartaTransform.Condition<R> condition: conditions) {
             int newDistance = condition.getMaxPipelineBiomeDistance();
             if (newDistance > distance) distance = newDistance;
         }

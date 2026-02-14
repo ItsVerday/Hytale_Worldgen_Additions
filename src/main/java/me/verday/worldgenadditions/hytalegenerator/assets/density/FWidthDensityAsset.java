@@ -26,7 +26,10 @@ public class FWidthDensityAsset extends DensityAsset {
     public Density build(@NonNullDecl Argument argument) {
         if (this.isSkipped()) return new ConstantValueDensity(0.0);
 
-        return new FWidthDensity(this.buildFirstInput(argument), sampleDistance);
+        Density child = this.buildFirstInput(argument);
+        if (child == null) return new ConstantValueDensity(0.0);
+
+        return new FWidthDensity(child, sampleDistance);
     }
 
     @Override

@@ -19,7 +19,6 @@ import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeli
 import javax.annotation.Nonnull;
 
 public class WorldgenAdditionsPlugin extends JavaPlugin {
-
     public WorldgenAdditionsPlugin(@Nonnull JavaPluginInit init) {
         super(init);
     }

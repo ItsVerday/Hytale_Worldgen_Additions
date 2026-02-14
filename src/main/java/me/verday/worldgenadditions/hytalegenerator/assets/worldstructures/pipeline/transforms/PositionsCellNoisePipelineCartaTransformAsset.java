@@ -7,7 +7,6 @@ import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.positions.distancefunctions.DistanceFunctionAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.positionproviders.PositionProviderAsset;
-import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.positions.distancefunctions.DistanceFunction;
 import com.hypixel.hytale.builtin.hytalegenerator.seed.SeedBox;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -15,6 +14,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.PositionsCellNoisePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -42,14 +42,16 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform<>();
+
         SeedBox childSeed = arg.parentSeed.child(seed);
-        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue> finalCellValues = new ArrayList<>();
+        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<String>> finalCellValues = new ArrayList<>();
         for (CellValueAsset cellValue: cellValues) {
-            finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue(cellValue.weight, cellValue.transform.build(arg)));
+            finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform.build(arg)));
         }
 
-        return new PositionsCellNoisePipelineCartaTransform(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues.toArray(new PositionsCellNoisePipelineCartaTransform.CellValue[0]), maxDistance);
+        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms;
 
 import com.hypixel.hytale.assetstore.AssetExtraInfo;
-import com.hypixel.hytale.assetstore.codec.AssetBuilderCodec;
 import com.hypixel.hytale.assetstore.codec.AssetCodecMapCodec;
 import com.hypixel.hytale.assetstore.codec.ContainedAssetCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
@@ -38,9 +37,9 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
-        return new ConditionalPipelineCartaTransform(condition.build(arg), ifTrue != null ? ifTrue.build(arg) : null, ifFalse != null ? ifFalse.build(arg) : null);
+    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform<>();
+        return new ConditionalPipelineCartaTransform<>(condition.build(arg), ifTrue != null ? ifTrue.build(arg) : null, ifFalse != null ? ifFalse.build(arg) : null);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
         }
 
         @Nonnull
-        public abstract ConditionalPipelineCartaTransform.Condition build(@Nonnull Argument arg);
+        public abstract ConditionalPipelineCartaTransform.Condition<String> build(@Nonnull Argument arg);
 
         public String getId() {
             return this.id;

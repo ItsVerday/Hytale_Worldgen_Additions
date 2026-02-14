@@ -13,17 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTransform {
+public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
     private final long seed;
     private final PositionProvider positions;
     private final DistanceFunction distanceFunction;
-    private final CellValue[] cellValues;
+    private final List<CellValue<R>> cellValues;
     private double maximumWeight;
 
-    private double maxDistance;
-    private double maxDistanceSquared;
+    private final double maxDistance;
+    private final double maxDistanceSquared;
 
-    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, CellValue[] cellValues, double maxDistance) {
+    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance) {
         this.seed = seed;
         this.positions = positions;
         this.distanceFunction = distanceFunction;
@@ -32,18 +32,18 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
         this.maxDistanceSquared = maxDistance * maxDistance;
 
         maximumWeight = 0;
-        for (CellValue cellValue: cellValues) {
+        for (CellValue<R> cellValue: cellValues) {
             maximumWeight += cellValue.weight;
         }
     }
 
     @NullableDecl
     @Override
-    public String process(@NonNullDecl Context ctx) {
+    public R process(@NonNullDecl Context<R> ctx) {
         // Implementation modified from PositionsDensity
         Vector3d min = new Vector3d(ctx.position.x - maxDistance, 0, ctx.position.y - maxDistanceSquared);
         Vector3d max = new Vector3d(ctx.position.x + maxDistance, 384, ctx.position.y + maxDistanceSquared);
-        double[] distance = new double[]{Double.MAX_VALUE, Double.MAX_VALUE};
+        double[] distance = new double[] {Double.MAX_VALUE, Double.MAX_VALUE};
         boolean[] hasClosestPoint = new boolean[2];
         Vector2d closestPoint = new Vector2d();
         Vector2d previousClosestPoint = new Vector2d();
@@ -76,7 +76,7 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
         distance[1] = Math.sqrt(distance[1]);
 
         double value = HashUtil.random(seed, Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.x : 0), Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.y : 0)) * maximumWeight;
-        for (CellValue cellValue: cellValues) {
+        for (CellValue<R> cellValue: cellValues) {
             value -= cellValue.weight;
             if (value < 0) return cellValue.value.process(ctx);
         }
@@ -85,11 +85,11 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
     }
 
     @Override
-    public List<String> allPossibleValues() {
-        ArrayList<String> values = new ArrayList<>();
+    public List<R> allPossibleValues() {
+        ArrayList<R> values = new ArrayList<>();
 
-        for (CellValue cellValue: cellValues) {
-            for (String possibility: cellValue.value.allPossibleValues()) {
+        for (CellValue<R> cellValue: cellValues) {
+            for (R possibility: cellValue.value.allPossibleValues()) {
                 if (!values.contains(possibility)) {
                     values.add(possibility);
                 }
@@ -100,21 +100,21 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
     }
 
     @Override
-    public int getMaxPipelineBiomeDistance() {
+    public int getMaxPipelineValueDistance() {
         int distance = 0;
-        for (CellValue cellValue: cellValues) {
-            int newDistance = cellValue.value.getMaxPipelineBiomeDistance();
+        for (CellValue<R> cellValue: cellValues) {
+            int newDistance = cellValue.value.getMaxPipelineValueDistance();
             if (newDistance > distance) distance = newDistance;
         }
 
         return distance;
     }
 
-    public static class CellValue {
+    public static class CellValue<R> {
         double weight;
-        PipelineCartaTransform value;
+        PipelineCartaTransform<R> value;
 
-        public CellValue(double weight, PipelineCartaTransform value) {
+        public CellValue(double weight, PipelineCartaTransform<R> value) {
             this.weight = weight;
             this.value = value;
         }

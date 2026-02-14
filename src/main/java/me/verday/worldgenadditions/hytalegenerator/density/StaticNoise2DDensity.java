@@ -5,7 +5,7 @@ import com.hypixel.hytale.math.util.HashUtil;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class StaticNoise2DDensity extends Density {
-    private long seed;
+    private final long seed;
 
     public StaticNoise2DDensity(long seed) {
         this.seed = seed;

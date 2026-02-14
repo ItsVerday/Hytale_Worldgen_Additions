@@ -8,23 +8,23 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PipelineCartaStage {
-    private PipelineCarta carta = null;
-    private PipelineCartaStage previousStage = null;
+public class PipelineCartaStage<R> {
+    private PipelineCarta<R> carta = null;
+    private PipelineCartaStage<R> previousStage = null;
     private int stageIndex;
 
-    private final PipelineCartaTransform root;
+    private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final ConcurrentHashMap<Vector2i, String> biomeCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, ConcurrentHashMap<Vector2i, Integer>> biomeDistanceCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Vector2i, R> valueCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<R, ConcurrentHashMap<Vector2i, Integer>> valueDistanceCache = new ConcurrentHashMap<>();
 
-    public PipelineCartaStage(PipelineCartaTransform root, boolean skip) {
+    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
         this.skip = skip;
     }
 
-    public void setCarta(PipelineCarta carta) {
+    public void setCarta(PipelineCarta<R> carta) {
         this.carta = carta;
     }
 
@@ -32,23 +32,23 @@ public class PipelineCartaStage {
         this.stageIndex = stageIndex;
     }
 
-    public PipelineCartaStage getPrevious() {
+    public PipelineCartaStage<R> getPrevious() {
         if (previousStage == null) previousStage = carta.getPreviousStage(stageIndex);
         return previousStage;
     }
 
-    public int queryBiomeDistanceSquared(@Nonnull PipelineCartaTransform.Context ctx, String biomeId) {
-        if (!biomeDistanceCache.containsKey(biomeId)) biomeDistanceCache.put(biomeId, new ConcurrentHashMap<>());
+    public int queryValueDistanceSquared(@Nonnull PipelineCartaTransform.Context<R> ctx, R value) {
+        if (!valueDistanceCache.containsKey(value)) valueDistanceCache.put(value, new ConcurrentHashMap<>());
 
-        ConcurrentHashMap<Vector2i, Integer> thisBiomeDistanceCache = biomeDistanceCache.get(biomeId);
-        if (thisBiomeDistanceCache.containsKey(ctx.position)) return thisBiomeDistanceCache.get(ctx.position);
+        ConcurrentHashMap<Vector2i, Integer> thisValueDistanceCache = valueDistanceCache.get(value);
+        if (thisValueDistanceCache.containsKey(ctx.position)) return thisValueDistanceCache.get(ctx.position);
 
-        return calculateBiomeDistance(ctx, thisBiomeDistanceCache, biomeId, carta.getMaxPipelineBiomeDistance());
+        return calculateValueDistance(ctx, thisValueDistanceCache, value, carta.getMaxPipelineValueDistance());
     }
 
-    private int calculateBiomeDistance(@Nonnull PipelineCartaTransform.Context ctx, ConcurrentHashMap<Vector2i, Integer> cache, String biomeId, int maximumDistance) {
-        String biomeHere = queryBiome(ctx);
-        if (biomeId.equals(biomeHere)) {
+    private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ConcurrentHashMap<Vector2i, Integer> cache, R value, int maximumDistance) {
+        R valueHere = queryValue(ctx);
+        if (value.equals(valueHere)) {
             cache.put(ctx.position, 0);
             return 0;
         }
@@ -57,21 +57,21 @@ public class PipelineCartaStage {
         int z = ctx.position.y;
 
         for (int range = 1; range <= maximumDistance; range++) {
-            boolean foundBiome = false;
+            boolean foundValue = false;
             int foundDistance = Integer.MAX_VALUE;
             for (int dx = -range; dx <= range; dx++) {
                 for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
-                    PipelineCartaTransform.Context newCtx = ctx.withPosition(x + dx, z + dz);
-                    String biomeThere = queryBiome(newCtx);
-                    if (biomeId.equals(biomeThere)) {
-                        foundBiome = true;
+                    PipelineCartaTransform.Context<R> newCtx = ctx.withPosition(x + dx, z + dz);
+                    R valueThere = queryValue(newCtx);
+                    if (value.equals(valueThere)) {
+                        foundValue = true;
                         int distance = distanceSquared(ctx.position, newCtx.position);
                         if (distance < foundDistance) foundDistance = distance;
                     }
                 }
             }
 
-            if (foundBiome) {
+            if (foundValue) {
                 cache.put(ctx.position, foundDistance);
                 return foundDistance;
             }
@@ -88,29 +88,25 @@ public class PipelineCartaStage {
     }
 
     @Nullable
-    public String queryBiome(@Nonnull PipelineCartaTransform.Context ctx) {
-        String biomeId = process(ctx);
-        if (biomeId != null) return biomeId;
+    public R queryValue(@Nonnull PipelineCartaTransform.Context<R> ctx) {
+        R value = process(ctx);
+        if (value != null) return value;
         if (!ctx.fallthrough) return null;
 
-        return ctx.queryBiome();
+        return ctx.queryValue();
     }
 
     @Nullable
-    public String process(@Nonnull PipelineCartaTransform.Context ctx) {
-        if (!biomeCache.containsKey(ctx.position)) {
-            String biomeId = root.process(ctx);
-            if (biomeId == null) biomeId = "";
-            biomeCache.put(ctx.position, biomeId);
+    public R process(@Nonnull PipelineCartaTransform.Context<R> ctx) {
+        if (!valueCache.containsKey(ctx.position)) {
+            R value = root.process(ctx);
+            valueCache.put(ctx.position, value);
         }
 
-        String biomeId = biomeCache.get(ctx.position);
-        if (biomeId.isEmpty()) return null;
-
-        return biomeId;
+        return valueCache.get(ctx.position);
     }
 
-    public List<String> allPossibleValues() {
+    public List<R> allPossibleValues() {
         return root.allPossibleValues();
     }
 
@@ -118,7 +114,7 @@ public class PipelineCartaStage {
         return skip;
     }
 
-    public int getMaxPipelineBiomeDistance() {
-        return root.getMaxPipelineBiomeDistance();
+    public int getMaxPipelineValueDistance() {
+        return root.getMaxPipelineValueDistance();
     }
 }
