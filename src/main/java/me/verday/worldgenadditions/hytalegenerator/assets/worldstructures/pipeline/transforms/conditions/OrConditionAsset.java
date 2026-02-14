@@ -21,13 +21,13 @@ public class OrConditionAsset extends ConditionalPipelineCartaTransformAsset.Con
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        ArrayList<ConditionalPipelineCartaTransform.Condition> newConditions = new ArrayList<>();
+    public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        ArrayList<ConditionalPipelineCartaTransform.Condition<String>> newConditions = new ArrayList<>();
         for (ConditionalPipelineCartaTransformAsset.ConditionAsset condition: conditions) {
             newConditions.add(condition.build(arg));
         }
 
-        return new OrCondition(newConditions.toArray(new ConditionalPipelineCartaTransform.Condition[0]));
+        return new OrCondition<>(newConditions);
     }
 
     @Override

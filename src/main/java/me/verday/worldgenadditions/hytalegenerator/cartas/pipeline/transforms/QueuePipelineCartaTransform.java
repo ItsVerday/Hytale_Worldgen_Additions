@@ -8,25 +8,21 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueuePipelineCartaTransform extends PipelineCartaTransform {
+public class QueuePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
     @Nonnull
-    private PipelineCartaTransform[] children;
+    private final List<PipelineCartaTransform<R>> children;
 
-    public QueuePipelineCartaTransform() {
-    }
-
-    @Override
-    public void setInputs(PipelineCartaTransform[] inputs) {
-        this.children = inputs;
+    public QueuePipelineCartaTransform(@NonNullDecl List<PipelineCartaTransform<R>> children) {
+        this.children = children;
     }
 
     @NullableDecl
     @Override
-    public String process(@NonNullDecl Context ctx) {
-        Context childCtx = new Context(ctx);
+    public R process(@NonNullDecl Context<R> ctx) {
+        Context<R> childCtx = new Context<>(ctx);
         childCtx.fallthrough = false;
-        for (PipelineCartaTransform child: children) {
-            String result = child.process(childCtx);
+        for (PipelineCartaTransform<R> child: children) {
+            R result = child.process(childCtx);
             if (result != null) return result;
         }
 
@@ -34,11 +30,11 @@ public class QueuePipelineCartaTransform extends PipelineCartaTransform {
     }
 
     @Override
-    public List<String> allPossibleValues() {
-        ArrayList<String> values = new ArrayList<>();
+    public List<R> allPossibleValues() {
+        ArrayList<R> values = new ArrayList<>();
 
-        for (PipelineCartaTransform child: children) {
-            for (String possibility: child.allPossibleValues()) {
+        for (PipelineCartaTransform<R> child: children) {
+            for (R possibility: child.allPossibleValues()) {
                 if (!values.contains(possibility)) {
                     values.add(possibility);
                 }
@@ -49,10 +45,10 @@ public class QueuePipelineCartaTransform extends PipelineCartaTransform {
     }
 
     @Override
-    public int getMaxPipelineBiomeDistance() {
+    public int getMaxPipelineValueDistance() {
         int distance = 0;
-        for (PipelineCartaTransform child: children) {
-            int newDistance = child.getMaxPipelineBiomeDistance();
+        for (PipelineCartaTransform<R> child: children) {
+            int newDistance = child.getMaxPipelineValueDistance();
             if (newDistance > distance) distance = newDistance;
         }
 

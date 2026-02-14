@@ -18,8 +18,8 @@ public class NotConditionAsset extends ConditionalPipelineCartaTransformAsset.Co
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        return new NotCondition(condition.build(arg));
+    public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        return new NotCondition<>(condition.build(arg));
     }
 
     @Override

@@ -21,13 +21,13 @@ public class AndConditionAsset extends ConditionalPipelineCartaTransformAsset.Co
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        ArrayList<ConditionalPipelineCartaTransform.Condition> newConditions = new ArrayList<>();
+    public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        ArrayList<ConditionalPipelineCartaTransform.Condition<String>> newConditions = new ArrayList<>();
         for (ConditionalPipelineCartaTransformAsset.ConditionAsset condition: conditions) {
             newConditions.add(condition.build(arg));
         }
 
-        return new AndCondition(newConditions.toArray(new ConditionalPipelineCartaTransform.Condition[0]));
+        return new AndCondition<>(newConditions);
     }
 
     @Override

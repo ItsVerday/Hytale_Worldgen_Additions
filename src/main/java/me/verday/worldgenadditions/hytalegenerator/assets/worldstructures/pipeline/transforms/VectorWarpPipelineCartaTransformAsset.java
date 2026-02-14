@@ -9,6 +9,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.VectorWarpPipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -29,14 +30,16 @@ public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransfor
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform<>();
+
         Density warpFieldDensity = warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer));
-        PipelineCartaTransform child = null;
+        PipelineCartaTransform<String> child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
         }
 
-        return new VectorWarpPipelineCartaTransform(child, warpFieldDensity, sampleDistance, warpFactor);
+        return new VectorWarpPipelineCartaTransform<>(child, warpFieldDensity, sampleDistance, warpFactor);
     }
 
     @Override

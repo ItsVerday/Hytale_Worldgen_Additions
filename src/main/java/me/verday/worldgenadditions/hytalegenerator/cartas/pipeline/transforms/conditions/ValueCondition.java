@@ -3,15 +3,15 @@ package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.c
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 
-public class BiomeCondition extends ConditionalPipelineCartaTransform.Condition {
-    private final String biomeId;
+public class ValueCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
+    private final R value;
 
-    public BiomeCondition(String biomeId) {
-        this.biomeId = biomeId;
+    public ValueCondition(R value) {
+        this.value = value;
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.Context context) {
-        return context.queryBiome().equals(biomeId);
+    public boolean process(PipelineCartaTransform.Context<R> context) {
+        return context.queryValue().equals(value);
     }
 }
