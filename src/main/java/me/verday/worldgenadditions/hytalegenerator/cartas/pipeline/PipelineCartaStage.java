@@ -42,43 +42,45 @@ public class PipelineCartaStage<R> {
         if (!valueDistanceCache.containsKey(value)) valueDistanceCache.put(value, new ConcurrentHashMap<>());
 
         ConcurrentHashMap<Vector2i, Integer> thisValueDistanceCache = valueDistanceCache.get(value);
-        if (thisValueDistanceCache.containsKey(ctx.position)) return thisValueDistanceCache.get(ctx.position);
+        Vector2i position = ctx.getIntPosition();
+        if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
 
         return calculateValueDistance(ctx, thisValueDistanceCache, value, carta.getMaxPipelineValueDistance());
     }
 
     private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ConcurrentHashMap<Vector2i, Integer> cache, R value, int maximumDistance) {
         R valueHere = queryValue(ctx);
+        Vector2i position = ctx.getIntPosition();
         if (value.equals(valueHere)) {
-            cache.put(ctx.position, 0);
+            cache.put(position, 0);
             return 0;
         }
 
-        int x = ctx.position.x;
-        int z = ctx.position.y;
+        int x = position.x;
+        int z = position.y;
 
         for (int range = 1; range <= maximumDistance; range++) {
             boolean foundValue = false;
             int foundDistance = Integer.MAX_VALUE;
             for (int dx = -range; dx <= range; dx++) {
                 for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
-                    PipelineCartaTransform.Context<R> newCtx = ctx.withPosition(x + dx, z + dz);
+                    PipelineCartaTransform.Context<R> newCtx = ctx.withOffset(dx, dz);
                     R valueThere = queryValue(newCtx);
                     if (value.equals(valueThere)) {
                         foundValue = true;
-                        int distance = distanceSquared(ctx.position, newCtx.position);
+                        int distance = distanceSquared(position, newCtx.getIntPosition());
                         if (distance < foundDistance) foundDistance = distance;
                     }
                 }
             }
 
             if (foundValue) {
-                cache.put(ctx.position, foundDistance);
+                cache.put(position, foundDistance);
                 return foundDistance;
             }
         }
 
-        cache.put(ctx.position, Integer.MAX_VALUE);
+        cache.put(position, Integer.MAX_VALUE);
         return Integer.MAX_VALUE;
     }
 
@@ -99,12 +101,13 @@ public class PipelineCartaStage<R> {
 
     @Nullable
     public R process(@Nonnull PipelineCartaTransform.Context<R> ctx) {
-        if (!valueCache.containsKey(ctx.position)) {
+        Vector2i position = ctx.getIntPosition();
+        if (!valueCache.containsKey(position)) {
             R value = root.process(ctx);
-            valueCache.put(ctx.position, Optional.ofNullable(value));
+            valueCache.put(position, Optional.ofNullable(value));
         }
 
-        Optional<R> value = valueCache.get(ctx.position);
+        Optional<R> value = valueCache.get(position);
         return value.orElse(null);
     }
 

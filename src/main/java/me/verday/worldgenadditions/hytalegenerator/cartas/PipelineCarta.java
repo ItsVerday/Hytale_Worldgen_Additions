@@ -2,7 +2,7 @@ package me.verday.worldgenadditions.hytalegenerator.cartas;
 
 import com.hypixel.hytale.builtin.hytalegenerator.framework.interfaces.functions.BiCarta;
 import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
-import com.hypixel.hytale.math.vector.Vector2i;
+import com.hypixel.hytale.math.vector.Vector2d;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -33,7 +33,7 @@ public class PipelineCarta<R> extends BiCarta<R> {
     @Override
     public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
         PipelineCartaStage<R> lastStage = stages.getLast();
-        PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2i(x, z), id, lastStage, true);
+        PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2d(x, z), id, lastStage, true);
         return lastStage.queryValue(ctx);
     }
 

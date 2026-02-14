@@ -1,6 +1,7 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
+import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector2i;
 
 import javax.annotation.Nonnull;
@@ -18,14 +19,14 @@ public abstract class PipelineCartaTransform<R> {
 
     public static class Context<R> {
         @Nonnull
-        public Vector2i position;
+        public Vector2d position;
         @Nonnull
         public WorkerIndexer.Id workerId;
         @Nonnull
         public PipelineCartaStage<R> stage;
         public boolean fallthrough;
 
-        public Context(@Nonnull Vector2i position, @Nonnull WorkerIndexer.Id workerId, @Nonnull PipelineCartaStage<R> stage, boolean fallthrough) {
+        public Context(@Nonnull Vector2d position, @Nonnull WorkerIndexer.Id workerId, @Nonnull PipelineCartaStage<R> stage, boolean fallthrough) {
             this.position = position;
             this.workerId = workerId;
             this.stage = stage;
@@ -43,12 +44,12 @@ public abstract class PipelineCartaTransform<R> {
             return new Context<>(position, workerId, newStage, fallthrough);
         }
 
-        public Context<R> withPosition(int x, int z) {
-            return new Context<>(new Vector2i(x, z), workerId, stage, fallthrough);
+        public Context<R> withPosition(double x, double z) {
+            return new Context<>(new Vector2d(x, z), workerId, stage, fallthrough);
         }
 
         public Context<R> withOffset(double x, double z) {
-            return new Context<>(new Vector2i((int) Math.floor(position.x + x), (int) Math.floor(position.y + z)), workerId, stage, fallthrough);
+            return new Context<>(new Vector2d(position.x + x, position.y + z), workerId, stage, fallthrough);
         }
 
         public R queryValue() {
@@ -59,6 +60,10 @@ public abstract class PipelineCartaTransform<R> {
         public int queryValueDistanceSquared(R value) {
             PipelineCartaStage<R> previousStage = stage.getPrevious();
             return previousStage.queryValueDistanceSquared(withStage(previousStage), value);
+        }
+
+        public Vector2i getIntPosition() {
+            return new Vector2i((int) position.x, (int) position.y);
         }
     }
 }
