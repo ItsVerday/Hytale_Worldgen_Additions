@@ -2,7 +2,6 @@ package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.c
 
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
-import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.FieldFunctionPipelineCartaTransform;
 
 import java.util.List;
 

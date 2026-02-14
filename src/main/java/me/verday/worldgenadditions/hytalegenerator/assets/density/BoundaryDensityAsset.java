@@ -33,7 +33,10 @@ public class BoundaryDensityAsset extends DensityAsset {
     public Density build(@NonNullDecl Argument argument) {
         if (this.isSkipped()) return new ConstantValueDensity(0.0);
 
-        return new BoundaryDensity(this.buildFirstInput(argument), cutoff, width, bias);
+        Density child = this.buildFirstInput(argument);
+        if (child == null) return new ConstantValueDensity(0.0);
+
+        return new BoundaryDensity(child, cutoff, width, bias);
     }
 
     @Override
