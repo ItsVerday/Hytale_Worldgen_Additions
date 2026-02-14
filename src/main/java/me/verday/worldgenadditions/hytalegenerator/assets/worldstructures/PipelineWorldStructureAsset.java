@@ -26,6 +26,8 @@ import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.co
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PipelineWorldStructureAsset extends WorldStructureAsset {
     public static final BuilderCodec<PipelineWorldStructureAsset> CODEC = BuilderCodec.builder(PipelineWorldStructureAsset.class, PipelineWorldStructureAsset::new, WorldStructureAsset.ABSTRACT_CODEC)
@@ -71,11 +73,20 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             finalStages.add(stage.build(arg));
         }
 
+        ConcurrentHashMap<String, Optional<BiomeType>> biomeTypeCache = new ConcurrentHashMap<>();
+
         PipelineCarta<String> biomeIdCarta = new PipelineCarta<>(finalStages);
         FunctionCarta<String, BiomeType> carta = new FunctionCarta<>(biomeIdCarta, biomeId -> {
-            BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
-            if (biomeAsset == null) return null;
-            return biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
+            if (!biomeTypeCache.containsKey(biomeId)) {
+                BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
+                if (biomeAsset != null) {
+                    biomeTypeCache.put(biomeId, Optional.of(biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer)));
+                } else {
+                    biomeTypeCache.put(biomeId, Optional.empty());
+                }
+            }
+
+            return biomeTypeCache.get(biomeId).orElse(null);
         });
 
         SimpleBiomeMap<SolidMaterial> biomeMap = new SimpleBiomeMap<>(carta);

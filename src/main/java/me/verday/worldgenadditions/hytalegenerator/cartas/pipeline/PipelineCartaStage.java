@@ -6,6 +6,7 @@ import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PipelineCartaStage<R> {
@@ -16,7 +17,7 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final ConcurrentHashMap<Vector2i, R> valueCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Vector2i, Optional<R>> valueCache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<R, ConcurrentHashMap<Vector2i, Integer>> valueDistanceCache = new ConcurrentHashMap<>();
 
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
@@ -100,10 +101,11 @@ public class PipelineCartaStage<R> {
     public R process(@Nonnull PipelineCartaTransform.Context<R> ctx) {
         if (!valueCache.containsKey(ctx.position)) {
             R value = root.process(ctx);
-            valueCache.put(ctx.position, value);
+            valueCache.put(ctx.position, Optional.ofNullable(value));
         }
 
-        return valueCache.get(ctx.position);
+        Optional<R> value = valueCache.get(ctx.position);
+        return value.orElse(null);
     }
 
     public List<R> allPossibleValues() {
