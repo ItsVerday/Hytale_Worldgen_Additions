@@ -1,0 +1,28 @@
+{
+    "Id": "BiomePipeline.Transforms.Queue",
+    "Title": "Queue Transform",
+    "Color": "Grey",
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Inputs",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Inputs",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "Queue",
+        "Inputs": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Inputs"
+        }
+    }
+}

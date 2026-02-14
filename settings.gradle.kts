@@ -1,4 +1,4 @@
-rootProject.name = "dev.hytalemodding"
+rootProject.name = "Verdays_Worldgen_Additions"
 
 plugins {
     // See documentation on https://scaffoldit.dev
@@ -21,8 +21,8 @@ hytale {
     }
 
     manifest {
-        Group = "HytaleModding"
-        Name = "ExamplePlugin"
-        Main = "dev.hytalemodding.ExamplePlugin"
+        Group = "Verday"
+        Name = "Worldgen_Additions"
+        Main = "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
     }
 }

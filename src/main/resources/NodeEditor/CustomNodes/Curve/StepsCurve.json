@@ -1,0 +1,108 @@
+{
+    "Id": "StepsCurve",
+    "Title": "Steps Curve",
+    "Color": "Orange",
+    "Content": [
+        {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 250
+            }
+        },
+        {
+            "Id": "FromMin",
+            "Type": "Float",
+            "Options": {
+                "Label": "FromMin",
+                "Default": 0,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "FromMax",
+            "Type": "Float",
+            "Options": {
+                "Label": "FromMax",
+                "Default": 1,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "ToMin",
+            "Type": "Float",
+            "Options": {
+                "Label": "ToMin",
+                "Default": 0,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "ToMax",
+            "Type": "Float",
+            "Options": {
+                "Label": "ToMax",
+                "Default": 1,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "CurveExponent",
+            "Type": "Float",
+            "Options": {
+                "Label": "CurveExponent",
+                "Default": 1,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "StepCount",
+            "Type": "Int",
+            "Options": {
+                "Label": "StepCount",
+                "Default": 1,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "WallWidth",
+            "Type": "Float",
+            "Options": {
+                "Label": "WallWidth",
+                "Default": 0,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "StepSlope",
+            "Type": "Float",
+            "Options": {
+                "Label": "StepSlope",
+                "Default": 0,
+                "Width": 100
+            }
+        }
+    ],
+    "Outputs": [],
+    "Inputs": [
+        {
+            "Id": "Input",
+            "Type": "CurveConnection",
+            "Color": "Orange"
+        }
+    ],
+    "Schema": {
+        "Type": "Steps",
+        "ExportAs": "ExportAs",
+        "FromMin": "FromMin",
+        "FromMax": "FromMax",
+        "ToMin": "ToMin",
+        "ToMax": "ToMax",
+        "CurveExponent": "CurveExponent",
+        "StepCount": "StepCount",
+        "WallWidth": "WallWidth",
+        "StepSlope": "StepSlope"
+    }
+}

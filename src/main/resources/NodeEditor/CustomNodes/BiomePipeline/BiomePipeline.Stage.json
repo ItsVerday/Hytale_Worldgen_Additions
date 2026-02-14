@@ -1,0 +1,38 @@
+{
+    "Id": "BiomePipeline.Stage",
+    "Title": "Stage",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.StageConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "TransformsPin",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Transform",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "Skip": "Skip",
+        "Root": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "TransformsPin"
+        }
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "Id": "StaticNoise3DDensityNode",
+    "Title": "StaticNoise3D Density",
+    "Color": "Purple",
+    "Content": [
+        {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 250
+            }
+        },
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
+            "Id": "Seed",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Seed",
+                "Default": "A",
+                "Width": 250
+            }
+        }
+    ],
+    "Outputs": [],
+    "Inputs": [
+        {
+            "Id": "DensityOutput",
+            "Type": "DensityConnection",
+            "Color": "Purple"
+        }
+    ],
+    "Schema": {
+        "Type": "StaticNoise3D",
+        "ExportAs": "ExportAs",
+        "Skip": "Skip",
+        "Seed": "Seed"
+    }
+}

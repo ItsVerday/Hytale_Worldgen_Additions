@@ -1,0 +1,72 @@
+{
+    "Id": "BiomePipeline.Transforms.PositionsCellNoise",
+    "Title": "PositionsCellNoise Transform",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Seed",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Seed",
+                "Default": "A",
+                "Width": 200
+            }
+        },
+        {
+            "Id": "MaxDistance",
+            "Type": "Float",
+            "Options": {
+                "Label": "MaxDistance",
+                "Default": 32,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Positions",
+            "Type": "PositionsConnection",
+            "Color": "Grey",
+            "Label": "Positions",
+            "Multiple": false
+        },
+        {
+            "Id": "DistanceFunction",
+            "Type": "DistanceFunctionPCNConnection",
+            "Color": "Grey",
+            "Label": "DistanceFunction",
+            "Multiple": false
+        },
+        {
+            "Id": "CellValues",
+            "Type": "BiomePipeline.CellValuesConnection",
+            "Color": "Grey",
+            "Label": "CellValues",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "PositionsCellNoise",
+        "Seed": "Seed",
+        "MaxDistance": "MaxDistance",
+        "Positions": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Positions"
+        },
+        "DistanceFunction": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "DistanceFunction"
+        },
+        "CellValues": {
+            "Node": "BiomePipeline.PCNCellValues.CellValue",
+            "Pin": "CellValues"
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "Id": "BiomePipeline",
+    "Title": "Biome",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "DefaultBiome",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "DefaultBiome",
+                "Default": "",
+                "Width": 200
+            }
+        },
+        {
+            "Id": "DefaultTransitionDistance",
+            "Type": "Int",
+            "Options": {
+                "Label": "DefaultTransitionDistance",
+                "Default": 32,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "MaxBiomeEdgeDistance",
+            "Type": "Int",
+            "Options": {
+                "Label": "MaxBiomeEdgeDistance",
+                "Default": 32,
+                "Width": 50
+            }
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "StagesPin",
+            "Type": "BiomePipeline.StageConnection",
+            "Color": "Grey",
+            "Label": "Stages",
+            "Multiple": true
+        },
+        {
+            "Id": "ContentFields",
+            "Type": "BiomePipeline.ContentFields",
+            "Color": "Grey",
+            "Label": "ContentFields",
+            "Multiple": true
+        }
+    ],
+    "Inputs": [],
+    "Schema": {
+        "Type": "Pipeline",
+        "DefaultBiome": "DefaultBiome",
+        "DefaultTransitionDistance": "DefaultTransitionDistance",
+        "MaxBiomeEdgeDistance": "MaxBiomeEdgeDistance",
+        "Stages": {
+            "Node": "BiomePipeline.Stage",
+            "Pin": "StagesPin"
+        },
+        "ContentFields": {
+            "Node": "Generic",
+            "Pin": "ContentFields"
+        }
+    }
+}

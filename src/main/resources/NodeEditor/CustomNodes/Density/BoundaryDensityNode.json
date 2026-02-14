@@ -1,0 +1,79 @@
+{
+    "Id": "BoundaryDensityNode",
+    "Title": "Boundary Density",
+    "Color": "Purple",
+    "Content": [
+        {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 250
+            }
+        },
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
+            "Id": "Cutoff",
+            "Type": "Float",
+            "Options": {
+                "Label": "Cutoff",
+                "Default": 0.0,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "Width",
+            "Type": "Float",
+            "Options": {
+                "Label": "Width",
+                "Default": 1.0,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "Bias",
+            "Type": "Float",
+            "Options": {
+                "Label": "Bias",
+                "Default": 0.5,
+                "Width": 50
+            }
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "DensityInputs",
+            "Type": "DensityConnection",
+            "Color": "Purple",
+            "Multiple": true,
+            "Label": "Inputs"
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "DensityOutput",
+            "Type": "DensityConnection",
+            "Color": "Purple"
+        }
+    ],
+    "Schema": {
+        "Type": "Boundary",
+        "ExportAs": "ExportAs",
+        "Skip": "Skip",
+        "Cutoff": "Cutoff",
+        "Width": "Width",
+        "Bias": "Bias",
+        "Inputs": {
+            "Node": "DensityNodeVariants",
+            "Pin": "DensityInputs"
+        }
+    }
+}

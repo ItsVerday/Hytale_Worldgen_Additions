@@ -1,0 +1,37 @@
+{
+    "Id": "BiomePipeline.Conditions.BiomeDistance",
+    "Title": "BiomeDistance Condition",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Biome",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Biome",
+                "Default": "",
+                "Width": 200
+            }
+        },
+        {
+            "Id": "Distance",
+            "Type": "Int",
+            "Options": {
+                "Label": "Distance",
+                "Default": 8,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Schema": {
+        "Type": "BiomeDistance",
+        "Biome": "Biome",
+        "Distance": "Distance"
+    }
+}

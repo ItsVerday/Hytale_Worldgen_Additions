@@ -1,0 +1,27 @@
+{
+    "Id": "BiomePipeline.Transforms.Constant",
+    "Title": "Constant Transform",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Biome",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Biome",
+                "Default": "",
+                "Width": 200
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Schema": {
+        "Type": "Constant",
+        "Value": "Biome"
+    }
+}

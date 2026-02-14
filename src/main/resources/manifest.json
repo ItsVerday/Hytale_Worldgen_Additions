@@ -1,20 +1,17 @@
 {
-    "Group": "HytaleModding",
-    "Name": "ExamplePlugin",
-    "Version": "0.0.0",
-    "Description": "Description of your plugin",
+    "Group": "Verday",
+    "Name": "Worldgen_Additions",
+    "Version": "0.1.0",
+    "Description": "Custom Worldgen v2 nodes",
     "Authors": [
         {
-            "Name": "Your Name",
-            "Email": "your.email@example.com",
-            "Url": "https://your-website.com"
+            "Name": "Verday"
         }
     ],
-    "Website": "https://your-plugin-website.com",
     "DisabledByDefault": false,
     "IncludesAssetPack": false,
     "Dependencies": {},
     "OptionalDependencies": {},
     "ServerVersion": "*",
-    "Main": "dev.hytalemodding.ExamplePlugin"
+    "Main": "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
 }

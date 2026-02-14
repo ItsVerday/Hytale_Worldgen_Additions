@@ -1,0 +1,58 @@
+{
+    "Id": "ThresholdCurve",
+    "Title": "Threshold Curve",
+    "Color": "Orange",
+    "Content": [
+        {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 250
+            }
+        },
+        {
+            "Id": "Low",
+            "Type": "Float",
+            "Options": {
+                "Label": "Low",
+                "Default": 0,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "High",
+            "Type": "Float",
+            "Options": {
+                "Label": "High",
+                "Default": 1,
+                "Width": 100
+            }
+        },
+        {
+            "Id": "Cutoff",
+            "Type": "Float",
+            "Options": {
+                "Label": "Cutoff",
+                "Default": 0,
+                "Width": 100
+            }
+        }
+    ],
+    "Outputs": [],
+    "Inputs": [
+        {
+            "Id": "Input",
+            "Type": "CurveConnection",
+            "Color": "Orange"
+        }
+    ],
+    "Schema": {
+        "Type": "Threshold",
+        "ExportAs": "ExportAs",
+        "Low": "Low",
+        "High": "High",
+        "Cutoff": "Cutoff"
+    }
+}

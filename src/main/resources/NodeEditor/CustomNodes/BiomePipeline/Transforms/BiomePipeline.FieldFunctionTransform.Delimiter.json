@@ -1,0 +1,49 @@
+{
+    "Id": "BiomePipeline.FieldFunctionTransform.Delimiter",
+    "Title": "FFT Delimiter",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "From",
+            "Type": "Float",
+            "Options": {
+                "Label": "From",
+                "Default": 0,
+                "Width": 200
+            }
+        },
+        {
+            "Id": "To",
+            "Type": "Float",
+            "Options": {
+                "Label": "To",
+                "Default": 0,
+                "Width": 200
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.FieldFunctionTransform.Delimiter",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Biome",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Biome",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "From": "From",
+        "To": "To",
+        "Biome": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Biome"
+        }
+    }
+}

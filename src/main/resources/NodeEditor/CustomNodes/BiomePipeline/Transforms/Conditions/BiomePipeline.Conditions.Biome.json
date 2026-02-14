@@ -1,0 +1,27 @@
+{
+    "Id": "BiomePipeline.Conditions.Biome",
+    "Title": "Biome Condition",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "BiomeID",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Biome",
+                "Default": "",
+                "Width": 200
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Schema": {
+        "Type": "Biome",
+        "Biome": "BiomeID"
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "Id": "BiomePipeline.Transforms.Conditional",
+    "Title": "Conditional Transform",
+    "Color": "Grey",
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Condition",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "Grey",
+            "Label": "Condition",
+            "Multiple": false
+        },
+        {
+            "Id": "IfTrue",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "True",
+            "Multiple": false
+        },
+        {
+            "Id": "IfFalse",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "False",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "Type": "Conditional",
+        "Condition": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Condition"
+        },
+        "IfTrue": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "IfTrue"
+        },
+        "IfFalse": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "IfFalse"
+        }
+    }
+}

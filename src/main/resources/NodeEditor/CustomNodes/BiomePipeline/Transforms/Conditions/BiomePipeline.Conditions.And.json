@@ -1,0 +1,28 @@
+{
+    "Id": "BiomePipeline.Conditions.And",
+    "Title": "And Condition",
+    "Color": "Grey",
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Conditions",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "Grey",
+            "Label": "Conditions",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "And",
+        "Conditions": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Conditions"
+        }
+    }
+}

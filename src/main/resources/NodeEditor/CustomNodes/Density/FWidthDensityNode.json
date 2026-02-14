@@ -1,0 +1,59 @@
+{
+    "Id": "FWidthDensityNode",
+    "Title": "FWidth Density",
+    "Color": "Purple",
+    "Content": [
+        {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 250
+            }
+        },
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
+            "Id": "SampleDistance",
+            "Type": "Float",
+            "Options": {
+                "Label": "SampleDistance",
+                "Default": 1.0,
+                "Width": 50
+            }
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "DensityInputs",
+            "Type": "DensityConnection",
+            "Color": "Purple",
+            "Multiple": true,
+            "Label": "Inputs"
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "DensityOutput",
+            "Type": "DensityConnection",
+            "Color": "Purple"
+        }
+    ],
+    "Schema": {
+        "Type": "FWidth",
+        "ExportAs": "ExportAs",
+        "Skip": "Skip",
+        "SampleDistance": "SampleDistance",
+        "Inputs": {
+            "Node": "DensityNodeVariants",
+            "Pin": "DensityInputs"
+        }
+    }
+}

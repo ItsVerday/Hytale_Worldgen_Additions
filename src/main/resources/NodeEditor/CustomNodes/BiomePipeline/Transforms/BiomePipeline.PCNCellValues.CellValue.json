@@ -1,0 +1,39 @@
+{
+    "Id": "BiomePipeline.PCNCellValues.CellValue",
+    "Title": "PCN Cell Value",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Weight",
+            "Type": "Float",
+            "Options": {
+                "Label": "Weight",
+                "Default": 1,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.CellValuesConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Biome",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Biome",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "Weight": "Weight",
+        "Biome": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Biome"
+        }
+    }
+}

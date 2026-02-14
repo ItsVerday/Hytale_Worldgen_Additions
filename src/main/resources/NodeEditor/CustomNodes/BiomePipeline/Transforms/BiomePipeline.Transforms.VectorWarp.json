@@ -1,0 +1,61 @@
+{
+    "Id": "BiomePipeline.Transforms.VectorWarp",
+    "Title": "VectorWarp Transform",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "SampleDistance",
+            "Type": "Float",
+            "Options": {
+                "Label": "SampleDistance",
+                "Default": 1,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "WarpFactor",
+            "Type": "Float",
+            "Options": {
+                "Label": "WarpFactor",
+                "Default": 1,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "WarpField",
+            "Type": "DensityConnection",
+            "Color": "Grey",
+            "Label": "WarpField",
+            "Multiple": false
+        },
+        {
+            "Id": "Inputs",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Input",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "VectorWarp",
+        "SampleDistance": "SampleDistance",
+        "WarpFactor": "WarpFactor",
+        "WarpField": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "WarpField"
+        },
+        "Inputs": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Inputs"
+        }
+    }
+}

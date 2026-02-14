@@ -1,0 +1,39 @@
+{
+    "Id": "BiomePipeline.Transforms.FieldFunction",
+    "Title": "FieldFunction Transform",
+    "Color": "Grey",
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "FieldFunction",
+            "Type": "DensityConnection",
+            "Color": "Grey",
+            "Label": "Density",
+            "Multiple": false
+        },
+        {
+            "Id": "Delimiters",
+            "Type": "BiomePipeline.FieldFunctionTransform.Delimiter",
+            "Color": "Grey",
+            "Label": "Delimiters",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "FieldFunction",
+        "FieldFunction": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "FieldFunction"
+        },
+        "Delimiters": {
+            "Node": "BiomePipeline.FieldFunctionTransform.Delimiter",
+            "Pin": "Delimiters"
+        }
+    }
+}
