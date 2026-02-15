@@ -3,11 +3,14 @@ package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.c
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 
+import javax.annotation.Nonnull;
+
 public class ValueDistanceCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
+    @Nonnull
     private final R value;
     private final double distance;
 
-    public ValueDistanceCondition(R value, double distance) {
+    public ValueDistanceCondition(@Nonnull R value, double distance) {
         this.value = value;
         this.distance = distance;
     }

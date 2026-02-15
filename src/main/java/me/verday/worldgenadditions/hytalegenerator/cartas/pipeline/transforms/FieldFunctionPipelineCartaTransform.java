@@ -34,7 +34,7 @@ public class FieldFunctionPipelineCartaTransform<R> extends PipelineCartaTransfo
         childContext.position = new Vector3d(ctx.position.x, 0, ctx.position.y);
         childContext.workerId = ctx.workerId;
 
-        double densityValue = this.density.process(childContext);
+        double densityValue = density.process(childContext);
         for (FieldDelimiter<R> delimiter: delimiters) {
             if (delimiter.isInside(densityValue)) {
                 return delimiter.value.process(ctx);
