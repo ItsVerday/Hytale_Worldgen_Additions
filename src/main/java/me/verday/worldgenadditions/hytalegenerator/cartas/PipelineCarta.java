@@ -12,22 +12,11 @@ import java.util.List;
 
 public class PipelineCarta<R> extends BiCarta<R> {
     private final List<PipelineCartaStage<R>> stages;
-    private int maxPipelineValueDistance = 0;
     private List<R> allPossibleValues = null;
 
     public PipelineCarta(List<PipelineCartaStage<R>> stages) {
         this.stages = stages;
-
         int index = 0;
-        for (PipelineCartaStage<R> stage: stages) {
-            stage.setCarta(this);
-            stage.setStageIndex(index++);
-
-            int distance = stage.getMaxPipelineValueDistance();
-            if (distance > maxPipelineValueDistance) {
-                maxPipelineValueDistance = distance;
-            }
-        }
     }
 
     @Override
@@ -59,9 +48,5 @@ public class PipelineCarta<R> extends BiCarta<R> {
         }
 
         return allPossibleValues;
-    }
-
-    public int getMaxPipelineValueDistance() {
-        return maxPipelineValueDistance;
     }
 }

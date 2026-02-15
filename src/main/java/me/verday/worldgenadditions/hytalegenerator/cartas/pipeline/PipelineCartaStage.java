@@ -50,7 +50,7 @@ public class PipelineCartaStage<R> {
         Vector2i position = ctx.getIntPosition();
         if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
 
-        return calculateValueDistance(ctx, thisValueDistanceCache, value, carta.getMaxPipelineValueDistance());
+        return calculateValueDistance(ctx, thisValueDistanceCache, value, root.getMaxPipelineValueDistance());
     }
 
     private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ModuloVector2iCache<Integer> cache, R value, int maximumDistance) {
@@ -123,9 +123,5 @@ public class PipelineCartaStage<R> {
 
     public boolean isSkipped() {
         return skip;
-    }
-
-    public int getMaxPipelineValueDistance() {
-        return root.getMaxPipelineValueDistance();
     }
 }
