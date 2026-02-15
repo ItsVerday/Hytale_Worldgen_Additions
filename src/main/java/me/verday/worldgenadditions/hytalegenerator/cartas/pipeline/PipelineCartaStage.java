@@ -1,14 +1,11 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
-import com.hypixel.hytale.builtin.hytalegenerator.LoggerUtil;
 import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
-import org.jline.utils.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +18,12 @@ public class PipelineCartaStage<R> {
     private final boolean skip;
 
     private final WorkerIndexer.Data<ModuloVector2iCache<Optional<R>>> valueCache;
-    private final WorkerIndexer.Data<HashMap<R, ModuloVector2iCache<Integer>>> valueDistanceCache;
 
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip, WorkerIndexer indexer) {
         this.root = root;
         this.skip = skip;
 
         valueCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), () -> new ModuloVector2iCache<>(6));
-        valueDistanceCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), HashMap::new);
     }
 
     public void setCarta(PipelineCarta<R> carta) {
@@ -42,59 +37,6 @@ public class PipelineCartaStage<R> {
     public PipelineCartaStage<R> getPrevious() {
         if (previousStage == null) previousStage = carta.getPreviousStage(stageIndex);
         return previousStage;
-    }
-
-    public int queryValueDistanceSquared(@Nonnull PipelineCartaTransform.Context<R> ctx, R value, int maximumDistance) {
-        HashMap<R, ModuloVector2iCache<Integer>> myValueDistanceCache = valueDistanceCache.get(ctx.workerId);
-        if (!myValueDistanceCache.containsKey(value)) myValueDistanceCache.put(value, new ModuloVector2iCache<>(6));
-
-        ModuloVector2iCache<Integer> thisValueDistanceCache = myValueDistanceCache.get(value);
-        Vector2i position = ctx.getIntPosition();
-        if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
-
-        return calculateValueDistance(ctx, thisValueDistanceCache, value, maximumDistance);
-    }
-
-    private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ModuloVector2iCache<Integer> cache, R value, int maximumDistance) {
-        R valueHere = queryValue(ctx);
-        Vector2i position = ctx.getIntPosition();
-        if (value.equals(valueHere)) {
-            cache.put(position, 0);
-            return 0;
-        }
-
-        int x = position.x;
-        int z = position.y;
-
-        int foundDistance = Integer.MAX_VALUE;
-        for (int range = 1; range <= maximumDistance; range++) {
-            for (int dx = -range; dx <= range; dx++) {
-                for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
-                    if (dx * dx + dz * dz > maximumDistance * maximumDistance) continue;
-
-                    PipelineCartaTransform.Context<R> newCtx = ctx.withOffset(dx, dz);
-                    R valueThere = queryValue(newCtx);
-                    if (value.equals(valueThere)) {
-                        int distance = distanceSquared(position, newCtx.getIntPosition());
-                        if (distance < foundDistance) foundDistance = distance;
-                    }
-                }
-            }
-
-            if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
-                cache.put(position, foundDistance);
-                return foundDistance;
-            }
-        }
-
-        cache.put(position, Integer.MAX_VALUE);
-        return Integer.MAX_VALUE;
-    }
-
-    private int distanceSquared(Vector2i a, Vector2i b) {
-        int dx = a.x - b.x;
-        int dy = a.y - b.y;
-        return dx * dx + dy * dy;
     }
 
     @Nullable
@@ -125,9 +67,5 @@ public class PipelineCartaStage<R> {
 
     public boolean isSkipped() {
         return skip;
-    }
-
-    public int getMaxPipelineBiomeDistance() {
-        return root.getMaxPipelineValueDistance();
     }
 }

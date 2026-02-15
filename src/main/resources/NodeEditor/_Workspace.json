@@ -45,8 +45,8 @@
             "BiomePipeline.Conditions.Or",
             "BiomePipeline.Conditions.Not",
             "BiomePipeline.Conditions.Biome",
-            "BiomePipeline.Conditions.BiomeDistance",
-            "BiomePipeline.Conditions.BiomeDistanceDensity"
+            "BiomePipeline.Conditions.Distance",
+            "BiomePipeline.Conditions.DistanceDensity"
         ],
         "Material": [
             "Material"
@@ -328,8 +328,8 @@
                 "Or": "BiomePipeline.Conditions.Or",
                 "Not": "BiomePipeline.Conditions.Not",
                 "Biome": "BiomePipeline.Conditions.Biome",
-                "BiomeDistance": "BiomePipeline.Conditions.BiomeDistance",
-                "BiomeDistanceDensity": "BiomePipeline.Conditions.BiomeDistanceDensity"
+                "Distance": "BiomePipeline.Conditions.Distance",
+                "DistanceDensity": "BiomePipeline.Conditions.DistanceDensity"
             }
         },
         "DensityNodeVariants": {

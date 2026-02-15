@@ -44,10 +44,6 @@ public abstract class PipelineCartaTransform<R> {
             return new Context<>(new Vector2d(position), workerId, newStage, fallthrough);
         }
 
-        public Context<R> withPosition(double x, double z) {
-            return new Context<>(new Vector2d(x, z), workerId, stage, fallthrough);
-        }
-
         public Context<R> withOffset(double x, double z) {
             return new Context<>(new Vector2d(position.x + x, position.y + z), workerId, stage, fallthrough);
         }
@@ -55,11 +51,6 @@ public abstract class PipelineCartaTransform<R> {
         public R queryValue() {
             PipelineCartaStage<R> previousStage = stage.getPrevious();
             return previousStage.queryValue(withStage(previousStage));
-        }
-
-        public int queryValueDistanceSquared(R value) {
-            PipelineCartaStage<R> previousStage = stage.getPrevious();
-            return previousStage.queryValueDistanceSquared(withStage(previousStage), value, stage.getMaxPipelineBiomeDistance());
         }
 
         public Vector2i getIntPosition() {

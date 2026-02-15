@@ -1,17 +1,8 @@
 {
-    "Id": "BiomePipeline.Conditions.BiomeDistanceDensity",
-    "Title": "BiomeDistanceDensity Condition",
+    "Id": "BiomePipeline.Conditions.DistanceDensity",
+    "Title": "DistanceDensity Condition",
     "Color": "191,158,36",
     "Content": [
-        {
-            "Id": "Biome",
-            "Type": "SmallString",
-            "Options": {
-                "Label": "Biome",
-                "Default": "",
-                "Width": 200
-            }
-        },
         {
             "Id": "DistanceMin",
             "Type": "Float",
@@ -45,16 +36,26 @@
             "Color": "Purple",
             "Label": "Density",
             "Multiple": false
+        },
+        {
+            "Id": "Condition",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "191,158,36",
+            "Label": "Condition",
+            "Multiple": false
         }
     ],
     "Schema": {
-        "Type": "BiomeDistanceDensity",
-        "Biome": "Biome",
+        "Type": "DistanceDensity",
         "DistanceMin": "DistanceMin",
         "DistanceMax": "DistanceMax",
         "Density": {
             "Node": "DensityNodeVariants",
             "Pin": "Density"
+        },
+        "Condition": {
+            "Node": "BiomePipelineConditionVariants",
+            "Pin": "Condition"
         }
     }
 }

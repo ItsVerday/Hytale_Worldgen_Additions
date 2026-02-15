@@ -1,0 +1,40 @@
+{
+    "Id": "BiomePipeline.Conditions.Distance",
+    "Title": "Distance Condition",
+    "Color": "191,158,36",
+    "Content": [
+        {
+            "Id": "DistanceValue",
+            "Type": "Float",
+            "Options": {
+                "Label": "Distance",
+                "Default": 8,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "191,158,36"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Condition",
+            "Type": "BiomePipeline.ConditionalConditionConnection",
+            "Color": "191,158,36",
+            "Label": "Condition",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "Type": "Distance",
+        "Distance": "DistanceValue",
+        "Condition": {
+            "Node": "BiomePipelineConditionVariants",
+            "Pin": "Condition"
+        }
+    }
+}

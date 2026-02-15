@@ -7,12 +7,12 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
-import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.ValueDistanceDensityCondition;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.DistanceDensityCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-public class BiomeDistanceDensityConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
-    public static final BuilderCodec<BiomeDistanceDensityConditionAsset> CODEC = BuilderCodec.builder(BiomeDistanceDensityConditionAsset.class, BiomeDistanceDensityConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
-            .append(new KeyedCodec<>("Biome", Codec.STRING, true), (t, k) -> t.biomeId = k, t -> t.biomeId)
+public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
+    public static final BuilderCodec<DistanceDensityConditionAsset> CODEC = BuilderCodec.builder(DistanceDensityConditionAsset.class, DistanceDensityConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
+            .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, true), (t, k) -> t.condition = k, t -> t.condition)
             .add()
             .append(new KeyedCodec<>("DistanceMin", Codec.DOUBLE, true), (t, k) -> t.distanceMin = k, t -> t.distanceMin)
             .add()
@@ -22,7 +22,7 @@ public class BiomeDistanceDensityConditionAsset extends ConditionalPipelineCarta
             .add()
             .build();
 
-    private String biomeId;
+    private ConditionalPipelineCartaTransformAsset.ConditionAsset condition;
     private double distanceMin;
     private double distanceMax;
     private DensityAsset densityAsset;
@@ -30,7 +30,7 @@ public class BiomeDistanceDensityConditionAsset extends ConditionalPipelineCarta
     @NonNullDecl
     @Override
     public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        return new ValueDistanceDensityCondition<>(biomeId, distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)));
+        return new DistanceDensityCondition<>(arg.workerIndexer, condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)));
     }
 
     @Override
