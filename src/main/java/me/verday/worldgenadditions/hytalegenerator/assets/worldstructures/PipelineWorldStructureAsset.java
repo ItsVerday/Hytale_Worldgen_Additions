@@ -66,7 +66,7 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
         }
 
         ArrayList<PipelineCartaStage<String>> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(defaultBiomeId), false));
+        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(defaultBiomeId), false, argument.workerIndexer));
 
         PipelineCartaTransformAsset.Argument arg = new PipelineCartaTransformAsset.Argument(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
         for (PipelineCartaStageAsset stage: stages) {

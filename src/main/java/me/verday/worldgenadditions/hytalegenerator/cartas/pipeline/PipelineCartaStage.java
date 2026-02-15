@@ -1,13 +1,14 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
+import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PipelineCartaStage<R> {
     private PipelineCarta<R> carta = null;
@@ -17,12 +18,15 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final ConcurrentHashMap<Vector2i, Optional<R>> valueCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<R, ConcurrentHashMap<Vector2i, Integer>> valueDistanceCache = new ConcurrentHashMap<>();
+    private final WorkerIndexer.Data<ModuloVector2iCache<Optional<R>>> valueCache;
+    private final WorkerIndexer.Data<HashMap<R, ModuloVector2iCache<Integer>>> valueDistanceCache;
 
-    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
+    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip, WorkerIndexer indexer) {
         this.root = root;
         this.skip = skip;
+
+        valueCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), () -> new ModuloVector2iCache<>(6));
+        valueDistanceCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), HashMap::new);
     }
 
     public void setCarta(PipelineCarta<R> carta) {
@@ -39,16 +43,17 @@ public class PipelineCartaStage<R> {
     }
 
     public int queryValueDistanceSquared(@Nonnull PipelineCartaTransform.Context<R> ctx, R value) {
-        if (!valueDistanceCache.containsKey(value)) valueDistanceCache.put(value, new ConcurrentHashMap<>());
+        HashMap<R, ModuloVector2iCache<Integer>> myValueDistanceCache = valueDistanceCache.get(ctx.workerId);
+        if (!myValueDistanceCache.containsKey(value)) myValueDistanceCache.put(value, new ModuloVector2iCache<>(6));
 
-        ConcurrentHashMap<Vector2i, Integer> thisValueDistanceCache = valueDistanceCache.get(value);
+        ModuloVector2iCache<Integer> thisValueDistanceCache = myValueDistanceCache.get(value);
         Vector2i position = ctx.getIntPosition();
         if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
 
         return calculateValueDistance(ctx, thisValueDistanceCache, value, carta.getMaxPipelineValueDistance());
     }
 
-    private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ConcurrentHashMap<Vector2i, Integer> cache, R value, int maximumDistance) {
+    private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ModuloVector2iCache<Integer> cache, R value, int maximumDistance) {
         R valueHere = queryValue(ctx);
         Vector2i position = ctx.getIntPosition();
         if (value.equals(valueHere)) {
@@ -101,13 +106,14 @@ public class PipelineCartaStage<R> {
 
     @Nullable
     public R process(@Nonnull PipelineCartaTransform.Context<R> ctx) {
+        ModuloVector2iCache<Optional<R>> myValueCache = valueCache.get(ctx.workerId);
         Vector2i position = ctx.getIntPosition();
-        if (!valueCache.containsKey(position)) {
+        if (!myValueCache.containsKey(position)) {
             R value = root.process(ctx);
-            valueCache.put(position, Optional.ofNullable(value));
+            myValueCache.put(position, Optional.ofNullable(value));
         }
 
-        Optional<R> value = valueCache.get(position);
+        Optional<R> value = myValueCache.get(position);
         return value.orElse(null);
     }
 
