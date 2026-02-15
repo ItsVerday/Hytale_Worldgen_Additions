@@ -34,14 +34,14 @@ public abstract class PipelineCartaTransform<R> {
         }
 
         public Context(@Nonnull Context<R> ctx) {
-            this.position = ctx.position;
+            this.position = new Vector2d(ctx.position);
             this.workerId = ctx.workerId;
             this.stage = ctx.stage;
             this.fallthrough = ctx.fallthrough;
         }
 
         public Context<R> withStage(PipelineCartaStage<R> newStage) {
-            return new Context<>(position, workerId, newStage, fallthrough);
+            return new Context<>(new Vector2d(position), workerId, newStage, fallthrough);
         }
 
         public Context<R> withPosition(double x, double z) {

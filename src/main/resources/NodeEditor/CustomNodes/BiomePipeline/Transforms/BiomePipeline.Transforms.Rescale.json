@@ -1,0 +1,40 @@
+{
+    "Id": "BiomePipeline.Transforms.Rescale",
+    "Title": "Rescale Transform",
+    "Color": "Grey",
+    "Content": [
+        {
+            "Id": "Scale",
+            "Type": "Float",
+            "Options": {
+                "Label": "Scale",
+                "Default": 2,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Inputs",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "Grey",
+            "Label": "Input",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "Rescale",
+        "Scale": "Scale",
+        "Inputs": {
+            "Node": "BiomePipeline.Transforms.Constant",
+            "Pin": "Inputs"
+        }
+    }
+}
