@@ -36,7 +36,8 @@
             "BiomePipeline.Transforms.FieldFunction",
             "BiomePipeline.Transforms.PositionsCellNoise",
             "BiomePipeline.Transforms.Queue",
-            "BiomePipeline.Transforms.VectorWarp"
+            "BiomePipeline.Transforms.VectorWarp",
+            "BiomePipeline.Transforms.Rescale"
         ],
         "Material": [
             "Material"
