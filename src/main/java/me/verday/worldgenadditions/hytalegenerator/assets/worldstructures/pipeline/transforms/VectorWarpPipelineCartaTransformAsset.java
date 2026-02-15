@@ -3,6 +3,7 @@ package me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipel
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.ConstantDensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
+import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.MultiCacheDensity;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -33,7 +34,7 @@ public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransfor
     public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
-        Density warpFieldDensity = warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer));
+        Density warpFieldDensity = new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)), arg.workerIndexer.getWorkerCount(), 64);
         PipelineCartaTransform<String> child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
