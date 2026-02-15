@@ -45,7 +45,8 @@
             "BiomePipeline.Conditions.Or",
             "BiomePipeline.Conditions.Not",
             "BiomePipeline.Conditions.Biome",
-            "BiomePipeline.Conditions.BiomeDistance"
+            "BiomePipeline.Conditions.BiomeDistance",
+            "BiomePipeline.Conditions.BiomeDistanceDensity"
         ],
         "Material": [
             "Material"
@@ -308,6 +309,29 @@
         ]
     },
     "Variants": {
+        "BiomePipelineTransformVariants": {
+            "VariantFieldName": "Type",
+            "Variants": {
+                "Constant": "BiomePipeline.Transforms.Constant",
+                "Conditional": "BiomePipeline.Transforms.Conditional",
+                "FieldFunction": "BiomePipeline.Transforms.FieldFunction",
+                "PositionsCellNoise": "BiomePipeline.Transforms.PositionsCellNoise",
+                "Queue": "BiomePipeline.Transforms.Queue",
+                "VectorWarp": "BiomePipeline.Transforms.VectorWarp",
+                "Rescale": "BiomePipeline.Transforms.Rescale"
+            }
+        },
+        "BiomePipelineConditionVariants": {
+            "VariantFieldName": "Type",
+            "Variants": {
+                "And": "BiomePipeline.Conditions.And",
+                "Or": "BiomePipeline.Conditions.Or",
+                "Not": "BiomePipeline.Conditions.Not",
+                "Biome": "BiomePipeline.Conditions.Biome",
+                "BiomeDistance": "BiomePipeline.Conditions.BiomeDistance",
+                "BiomeDistanceDensity": "BiomePipeline.Conditions.BiomeDistanceDensity"
+            }
+        },
         "DensityNodeVariants": {
             "VariantFieldName": "Type",
             "Variants": {

@@ -57,11 +57,11 @@
         "Seed": "Seed",
         "MaxDistance": "MaxDistance",
         "Positions": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Positions"
         },
         "DistanceFunction": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "DistanceFunction"
         },
         "CellValues": {

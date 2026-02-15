@@ -21,7 +21,7 @@
     "Schema": {
         "Type": "And",
         "Conditions": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineConditionVariants",
             "Pin": "Conditions"
         }
     }

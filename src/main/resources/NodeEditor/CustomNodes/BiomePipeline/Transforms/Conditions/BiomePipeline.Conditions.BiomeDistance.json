@@ -14,7 +14,7 @@
         },
         {
             "Id": "Distance",
-            "Type": "Int",
+            "Type": "Float",
             "Options": {
                 "Label": "Distance",
                 "Default": 8,

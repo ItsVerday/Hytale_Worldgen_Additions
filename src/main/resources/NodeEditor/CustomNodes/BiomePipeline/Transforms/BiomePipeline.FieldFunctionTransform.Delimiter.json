@@ -42,7 +42,7 @@
         "From": "From",
         "To": "To",
         "Biome": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Biome"
         }
     }

@@ -50,11 +50,11 @@
         "SampleDistance": "SampleDistance",
         "WarpFactor": "WarpFactor",
         "WarpField": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "WarpField"
         },
         "Inputs": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Inputs"
         }
     }

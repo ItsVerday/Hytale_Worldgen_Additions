@@ -33,7 +33,7 @@
         "Type": "Rescale",
         "Scale": "Scale",
         "Inputs": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Inputs"
         }
     }

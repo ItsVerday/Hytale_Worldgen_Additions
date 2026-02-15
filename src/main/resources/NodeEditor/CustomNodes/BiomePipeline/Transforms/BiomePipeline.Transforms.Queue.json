@@ -21,7 +21,7 @@
     "Schema": {
         "Type": "Queue",
         "Inputs": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Inputs"
         }
     }

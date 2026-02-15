@@ -45,7 +45,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Or", OrConditionAsset.class, OrConditionAsset.CODEC)
                 .register("Not", NotConditionAsset.class, NotConditionAsset.CODEC)
                 .register("Biome", BiomeConditionAsset.class, BiomeConditionAsset.CODEC)
-                .register("BiomeDistance", BiomeDistanceConditionAsset.class, BiomeDistanceConditionAsset.CODEC);
+                .register("BiomeDistance", BiomeDistanceConditionAsset.class, BiomeDistanceConditionAsset.CODEC)
+                .register("BiomeDistanceDensity", BiomeDistanceDensityConditionAsset.class, BiomeDistanceDensityConditionAsset.CODEC);
 
         // Density
         getCodecRegistry(DensityAsset.CODEC)

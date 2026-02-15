@@ -32,7 +32,7 @@
     "Schema": {
         "Weight": "Weight",
         "Biome": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "Biome"
         }
     }

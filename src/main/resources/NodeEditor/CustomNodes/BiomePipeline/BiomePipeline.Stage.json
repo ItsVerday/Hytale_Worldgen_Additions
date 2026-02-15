@@ -31,7 +31,7 @@
     "Schema": {
         "Skip": "Skip",
         "Root": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "BiomePipelineTransformVariants",
             "Pin": "TransformsPin"
         }
     }

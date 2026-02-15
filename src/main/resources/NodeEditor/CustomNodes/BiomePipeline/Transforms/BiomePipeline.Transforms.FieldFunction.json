@@ -28,7 +28,7 @@
     "Schema": {
         "Type": "FieldFunction",
         "FieldFunction": {
-            "Node": "BiomePipeline.Transforms.Constant",
+            "Node": "DensityNodeVariants",
             "Pin": "FieldFunction"
         },
         "Delimiters": {
