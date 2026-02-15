@@ -1,7 +1,5 @@
 package me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms;
 
-import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
-import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;

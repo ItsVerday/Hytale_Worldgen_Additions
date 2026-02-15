@@ -1,6 +1,5 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
-import com.hypixel.hytale.builtin.hytalegenerator.LoggerUtil;
 import com.hypixel.hytale.math.vector.Vector2i;
 
 import javax.annotation.Nonnull;

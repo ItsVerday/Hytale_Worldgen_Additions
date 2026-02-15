@@ -16,7 +16,12 @@ public class PipelineCarta<R> extends BiCarta<R> {
 
     public PipelineCarta(List<PipelineCartaStage<R>> stages) {
         this.stages = stages;
+
         int index = 0;
+        for (PipelineCartaStage<R> stage: stages) {
+            stage.setCarta(this);
+            stage.setStageIndex(index++);
+        }
     }
 
     @Override
