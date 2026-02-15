@@ -1,33 +1,33 @@
 {
     "Id": "BiomePipeline.Transforms.Conditional",
     "Title": "Conditional Transform",
-    "Color": "Grey",
+    "Color": "32,153,60",
     "Inputs": [
         {
             "Id": "Output",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey"
+            "Color": "32,153,60"
         }
     ],
     "Outputs": [
         {
             "Id": "Condition",
             "Type": "BiomePipeline.ConditionalConditionConnection",
-            "Color": "Grey",
+            "Color": "191,158,36",
             "Label": "Condition",
             "Multiple": false
         },
         {
             "Id": "IfTrue",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey",
+            "Color": "32,153,60",
             "Label": "True",
             "Multiple": false
         },
         {
             "Id": "IfFalse",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey",
+            "Color": "32,153,60",
             "Label": "False",
             "Multiple": false
         }

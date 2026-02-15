@@ -1,7 +1,7 @@
 {
     "Id": "BiomePipeline.Stage",
     "Title": "Stage",
-    "Color": "Grey",
+    "Color": "30,150,122",
     "Content": [
         {
             "Id": "Skip",
@@ -16,14 +16,14 @@
         {
             "Id": "Output",
             "Type": "BiomePipeline.StageConnection",
-            "Color": "Grey"
+            "Color": "30,150,122"
         }
     ],
     "Outputs": [
         {
             "Id": "TransformsPin",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey",
+            "Color": "32,153,60",
             "Label": "Transform",
             "Multiple": false
         }

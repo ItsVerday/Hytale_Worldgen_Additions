@@ -25,10 +25,9 @@
     },
     "NodeCategories": {
         "BiomePipeline": [
-            "Biome"
-        ],
-        "BiomePipelineStage": [
-            "BiomePipeline.Stage"
+            "BiomePipeline",
+            "BiomePipeline.Stage",
+            "BiomePipeline.ContentFields.BaseHeight"
         ],
         "BiomePipelineTransforms": [
             "BiomePipeline.Transforms.Constant",
@@ -37,7 +36,16 @@
             "BiomePipeline.Transforms.PositionsCellNoise",
             "BiomePipeline.Transforms.Queue",
             "BiomePipeline.Transforms.VectorWarp",
-            "BiomePipeline.Transforms.Rescale"
+            "BiomePipeline.Transforms.Rescale",
+            "BiomePipeline.FieldFunctionTransform.Delimiter",
+            "BiomePipeline.PCNCellValues.CellValue"
+        ],
+        "BiomePipelineConditions": [
+            "BiomePipeline.Conditions.And",
+            "BiomePipeline.Conditions.Or",
+            "BiomePipeline.Conditions.Not",
+            "BiomePipeline.Conditions.Biome",
+            "BiomePipeline.Conditions.BiomeDistance"
         ],
         "Material": [
             "Material"

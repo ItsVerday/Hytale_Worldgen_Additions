@@ -1,7 +1,7 @@
 {
     "Id": "BiomePipeline.Transforms.Constant",
     "Title": "Constant Transform",
-    "Color": "Grey",
+    "Color": "32,153,60",
     "Content": [
         {
             "Id": "Biome",
@@ -17,7 +17,7 @@
         {
             "Id": "Output",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey"
+            "Color": "32,153,60"
         }
     ],
     "Schema": {

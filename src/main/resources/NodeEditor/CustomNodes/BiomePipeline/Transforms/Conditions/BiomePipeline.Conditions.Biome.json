@@ -1,7 +1,7 @@
 {
     "Id": "BiomePipeline.Conditions.Biome",
     "Title": "Biome Condition",
-    "Color": "Grey",
+    "Color": "191,158,36",
     "Content": [
         {
             "Id": "BiomeID",
@@ -17,7 +17,7 @@
         {
             "Id": "Output",
             "Type": "BiomePipeline.ConditionalConditionConnection",
-            "Color": "Grey"
+            "Color": "191,158,36"
         }
     ],
     "Schema": {

@@ -1,7 +1,7 @@
 {
     "Id": "BiomePipeline",
     "Title": "Biome",
-    "Color": "Grey",
+    "Color": "30,150,122",
     "Content": [
         {
             "Id": "DefaultBiome",
@@ -35,14 +35,14 @@
         {
             "Id": "StagesPin",
             "Type": "BiomePipeline.StageConnection",
-            "Color": "Grey",
+            "Color": "30,150,122",
             "Label": "Stages",
             "Multiple": true
         },
         {
             "Id": "ContentFields",
             "Type": "BiomePipeline.ContentFields",
-            "Color": "Grey",
+            "Color": "30,150,122",
             "Label": "ContentFields",
             "Multiple": true
         }
@@ -58,7 +58,7 @@
             "Pin": "StagesPin"
         },
         "ContentFields": {
-            "Node": "Generic",
+            "Node": "BiomePipeline.ContentFields.BaseHeight",
             "Pin": "ContentFields"
         }
     }

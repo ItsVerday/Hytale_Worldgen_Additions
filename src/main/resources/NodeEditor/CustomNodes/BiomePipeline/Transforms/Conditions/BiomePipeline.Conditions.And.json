@@ -1,19 +1,19 @@
 {
     "Id": "BiomePipeline.Conditions.And",
     "Title": "And Condition",
-    "Color": "Grey",
+    "Color": "191,158,36",
     "Inputs": [
         {
             "Id": "Output",
             "Type": "BiomePipeline.ConditionalConditionConnection",
-            "Color": "Grey"
+            "Color": "191,158,36"
         }
     ],
     "Outputs": [
         {
             "Id": "Conditions",
             "Type": "BiomePipeline.ConditionalConditionConnection",
-            "Color": "Grey",
+            "Color": "191,158,36",
             "Label": "Conditions",
             "Multiple": true
         }

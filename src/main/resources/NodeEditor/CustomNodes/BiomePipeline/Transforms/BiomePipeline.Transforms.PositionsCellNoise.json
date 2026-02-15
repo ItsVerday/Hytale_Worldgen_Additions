@@ -1,7 +1,7 @@
 {
     "Id": "BiomePipeline.Transforms.PositionsCellNoise",
     "Title": "PositionsCellNoise Transform",
-    "Color": "Grey",
+    "Color": "32,153,60",
     "Content": [
         {
             "Id": "Seed",
@@ -26,28 +26,28 @@
         {
             "Id": "Output",
             "Type": "BiomePipeline.TransformConnection",
-            "Color": "Grey"
+            "Color": "32,153,60"
         }
     ],
     "Outputs": [
         {
             "Id": "Positions",
             "Type": "PositionsConnection",
-            "Color": "Grey",
+            "Color": "Blue",
             "Label": "Positions",
             "Multiple": false
         },
         {
             "Id": "DistanceFunction",
             "Type": "DistanceFunctionPCNConnection",
-            "Color": "Grey",
+            "Color": "Olive",
             "Label": "DistanceFunction",
             "Multiple": false
         },
         {
             "Id": "CellValues",
             "Type": "BiomePipeline.CellValuesConnection",
-            "Color": "Grey",
+            "Color": "28,145,166",
             "Label": "CellValues",
             "Multiple": true
         }
