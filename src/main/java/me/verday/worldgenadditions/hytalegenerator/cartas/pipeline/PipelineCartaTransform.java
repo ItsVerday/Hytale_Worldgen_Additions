@@ -59,7 +59,7 @@ public abstract class PipelineCartaTransform<R> {
 
         public int queryValueDistanceSquared(R value) {
             PipelineCartaStage<R> previousStage = stage.getPrevious();
-            return previousStage.queryValueDistanceSquared(withStage(previousStage), value);
+            return previousStage.queryValueDistanceSquared(withStage(previousStage), value, stage.getMaxPipelineBiomeDistance());
         }
 
         public Vector2i getIntPosition() {

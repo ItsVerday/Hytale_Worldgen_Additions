@@ -1,8 +1,10 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
+import com.hypixel.hytale.builtin.hytalegenerator.LoggerUtil;
 import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
+import org.jline.utils.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,7 +44,7 @@ public class PipelineCartaStage<R> {
         return previousStage;
     }
 
-    public int queryValueDistanceSquared(@Nonnull PipelineCartaTransform.Context<R> ctx, R value) {
+    public int queryValueDistanceSquared(@Nonnull PipelineCartaTransform.Context<R> ctx, R value, int maximumDistance) {
         HashMap<R, ModuloVector2iCache<Integer>> myValueDistanceCache = valueDistanceCache.get(ctx.workerId);
         if (!myValueDistanceCache.containsKey(value)) myValueDistanceCache.put(value, new ModuloVector2iCache<>(6));
 
@@ -50,7 +52,7 @@ public class PipelineCartaStage<R> {
         Vector2i position = ctx.getIntPosition();
         if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
 
-        return calculateValueDistance(ctx, thisValueDistanceCache, value, root.getMaxPipelineValueDistance());
+        return calculateValueDistance(ctx, thisValueDistanceCache, value, maximumDistance);
     }
 
     private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx, ModuloVector2iCache<Integer> cache, R value, int maximumDistance) {
@@ -64,22 +66,22 @@ public class PipelineCartaStage<R> {
         int x = position.x;
         int z = position.y;
 
+        int foundDistance = Integer.MAX_VALUE;
         for (int range = 1; range <= maximumDistance; range++) {
-            boolean foundValue = false;
-            int foundDistance = Integer.MAX_VALUE;
             for (int dx = -range; dx <= range; dx++) {
                 for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
+                    if (dx * dx + dz * dz > maximumDistance * maximumDistance) continue;
+
                     PipelineCartaTransform.Context<R> newCtx = ctx.withOffset(dx, dz);
                     R valueThere = queryValue(newCtx);
                     if (value.equals(valueThere)) {
-                        foundValue = true;
                         int distance = distanceSquared(position, newCtx.getIntPosition());
                         if (distance < foundDistance) foundDistance = distance;
                     }
                 }
             }
 
-            if (foundValue) {
+            if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
                 cache.put(position, foundDistance);
                 return foundDistance;
             }
@@ -123,5 +125,9 @@ public class PipelineCartaStage<R> {
 
     public boolean isSkipped() {
         return skip;
+    }
+
+    public int getMaxPipelineBiomeDistance() {
+        return root.getMaxPipelineValueDistance();
     }
 }
