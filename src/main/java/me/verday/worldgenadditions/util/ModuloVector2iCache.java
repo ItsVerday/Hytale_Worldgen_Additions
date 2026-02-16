@@ -1,4 +1,4 @@
-package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
+package me.verday.worldgenadditions.util;
 
 import com.hypixel.hytale.math.vector.Vector2i;
 
@@ -24,7 +24,7 @@ public class ModuloVector2iCache<V> {
     }
 
     private int indexForPosition(@Nonnull Vector2i position) {
-        return modulo(Objects.requireNonNull(position).x, moduloBits) | modulo(position.y, moduloBits) << moduloBits;
+        return modulo(Objects.requireNonNull(position).x, moduloBits) | (modulo(position.y, moduloBits) << moduloBits);
     }
 
     @Nullable
