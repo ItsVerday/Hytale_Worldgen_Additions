@@ -41,20 +41,20 @@ public class PipelineCartaStage<R> {
     }
 
     @Nullable
-    public R queryValue(@Nonnull PipelineCartaTransform.Context<R> ctx) {
-        R value = process(ctx);
+    public R queryValue(@Nonnull PipelineCartaTransform.Context<R> context) {
+        R value = process(context);
         if (value != null) return value;
-        if (!ctx.fallthrough) return null;
+        if (!context.fallthrough) return null;
 
-        return ctx.queryValue();
+        return context.queryValue();
     }
 
     @Nullable
-    public R process(@Nonnull PipelineCartaTransform.Context<R> ctx) {
-        ModuloVector2iCache<Optional<R>> myValueCache = valueCache.get(ctx.workerId);
-        Vector2i position = ctx.getIntPosition();
+    public R process(@Nonnull PipelineCartaTransform.Context<R> context) {
+        ModuloVector2iCache<Optional<R>> myValueCache = valueCache.get(context.workerId);
+        Vector2i position = context.getIntPosition();
         if (!myValueCache.containsKey(position)) {
-            R value = root.process(ctx);
+            R value = root.process(context);
             myValueCache.put(position, Optional.ofNullable(value));
         }
 

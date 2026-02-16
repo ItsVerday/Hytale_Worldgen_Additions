@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class PipelineCartaTransform<R> {
     @Nullable
-    public abstract R process(@Nonnull Context<R> ctx);
+    public abstract R process(@Nonnull Context<R> context);
     public abstract List<R> allPossibleValues();
 
     public int getMaxPipelineValueDistance() {
@@ -33,11 +33,11 @@ public abstract class PipelineCartaTransform<R> {
             this.fallthrough = fallthrough;
         }
 
-        public Context(@Nonnull Context<R> ctx) {
-            this.position = new Vector2d(ctx.position);
-            this.workerId = ctx.workerId;
-            this.stage = ctx.stage;
-            this.fallthrough = ctx.fallthrough;
+        public Context(@Nonnull Context<R> context) {
+            this.position = new Vector2d(context.position);
+            this.workerId = context.workerId;
+            this.stage = context.stage;
+            this.fallthrough = context.fallthrough;
         }
 
         public Context<R> withStage(PipelineCartaStage<R> newStage) {

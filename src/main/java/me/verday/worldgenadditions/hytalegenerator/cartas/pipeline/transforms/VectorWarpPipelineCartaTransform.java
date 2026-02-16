@@ -27,35 +27,29 @@ public class VectorWarpPipelineCartaTransform<R> extends PipelineCartaTransform<
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
-        Density.Context densityCtx = new Density.Context();
-        densityCtx.position = new Vector3d(ctx.position.x, 0, ctx.position.y);
-        densityCtx.workerId = ctx.workerId;
+    public R process(@NonNullDecl Context<R> context) {
+        Density.Context densityContext = new Density.Context();
+        densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
+        densityContext.workerId = context.workerId;
 
-        double valueAtOrigin = warpField.process(densityCtx);
-        Density.Context densityChildCtx = new Density.Context(densityCtx);
-        densityChildCtx.position = new Vector3d(densityCtx.position.x + sampleDistance, densityCtx.position.y, densityCtx.position.z);
-        double deltaX = warpField.process(densityChildCtx) - valueAtOrigin;
-        densityChildCtx.position = new Vector3d(densityCtx.position.x, densityCtx.position.y, densityCtx.position.z + sampleDistance);
-        double deltaZ = warpField.process(densityChildCtx) - valueAtOrigin;
+        double valueAtOrigin = warpField.process(densityContext);
+        Density.Context densityChildContext = new Density.Context(densityContext);
+        densityChildContext.position = new Vector3d(densityContext.position.x + sampleDistance, densityContext.position.y, densityContext.position.z);
+        double deltaX = warpField.process(densityChildContext) - valueAtOrigin;
+        densityChildContext.position = new Vector3d(densityContext.position.x, densityContext.position.y, densityContext.position.z + sampleDistance);
+        double deltaZ = warpField.process(densityChildContext) - valueAtOrigin;
         double offsetX = deltaX * warpFactor / sampleDistance;
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
-        Context<R> childCtx = ctx.withOffset(offsetX, offsetZ);
+        Context<R> childContext = context.withOffset(offsetX, offsetZ);
 
-        if (child != null) return child.process(childCtx);
-        return childCtx.queryValue();
+        if (child != null) return child.process(childContext);
+        return childContext.queryValue();
     }
 
     @Override
     public List<R> allPossibleValues() {
         if (child != null) return child.allPossibleValues();
         return List.of();
-    }
-
-    @Override
-    public int getMaxPipelineValueDistance() {
-        if (child != null) return child.getMaxPipelineValueDistance();
-        return 0;
     }
 }

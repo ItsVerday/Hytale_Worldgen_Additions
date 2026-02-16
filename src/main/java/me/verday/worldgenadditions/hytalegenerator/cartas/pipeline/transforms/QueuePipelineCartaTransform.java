@@ -18,8 +18,8 @@ public class QueuePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
-        Context<R> childCtx = new Context<>(ctx);
+    public R process(@NonNullDecl Context<R> context) {
+        Context<R> childCtx = new Context<>(context);
         childCtx.fallthrough = false;
         for (PipelineCartaTransform<R> child: children) {
             R result = child.process(childCtx);
@@ -42,16 +42,5 @@ public class QueuePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
         }
 
         return values;
-    }
-
-    @Override
-    public int getMaxPipelineValueDistance() {
-        int distance = 0;
-        for (PipelineCartaTransform<R> child: children) {
-            int newDistance = child.getMaxPipelineValueDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        return distance;
     }
 }

@@ -19,8 +19,8 @@ public class RescalePipelineCartaTransform<R> extends PipelineCartaTransform<R> 
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
-        Context<R> childCtx = new Context<>(ctx);
+    public R process(@NonNullDecl Context<R> context) {
+        Context<R> childCtx = new Context<>(context);
         childCtx.position.scale(scalingFactor);
 
         if (child != null) return child.process(childCtx);

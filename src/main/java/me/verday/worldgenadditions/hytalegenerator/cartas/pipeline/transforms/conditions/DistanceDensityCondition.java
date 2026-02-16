@@ -16,7 +16,7 @@ public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
     private final Density density;
 
     public DistanceDensityCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distanceMinimum, double distanceMaximum, @Nonnull Density density) {
-        super(workerIndexer, child, (int) Math.ceil(distanceMaximum));
+        super(workerIndexer, child);
         this.distanceMinimum = distanceMinimum;
         this.distanceMaximum = distanceMaximum;
         this.density = density;

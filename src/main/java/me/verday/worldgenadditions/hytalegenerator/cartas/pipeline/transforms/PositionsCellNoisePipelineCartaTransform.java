@@ -39,10 +39,10 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
+    public R process(@NonNullDecl Context<R> context) {
         // Implementation modified from PositionsDensity
-        Vector3d min = new Vector3d(ctx.position.x - maxDistance, 0, ctx.position.y - maxDistanceSquared);
-        Vector3d max = new Vector3d(ctx.position.x + maxDistance, 384, ctx.position.y + maxDistanceSquared);
+        Vector3d min = new Vector3d(context.position.x - maxDistance, 0, context.position.y - maxDistanceSquared);
+        Vector3d max = new Vector3d(context.position.x + maxDistance, 384, context.position.y + maxDistanceSquared);
         double[] distance = new double[] {Double.MAX_VALUE, Double.MAX_VALUE};
         boolean[] hasClosestPoint = new boolean[2];
         Vector2d closestPoint = new Vector2d();
@@ -50,9 +50,9 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         Vector3d localPoint = new Vector3d();
 
         Consumer<Vector3d> positionsConsumer = providedPoint -> {
-            localPoint.x = providedPoint.x - ctx.position.x;
+            localPoint.x = providedPoint.x - context.position.x;
             localPoint.y = 0;
-            localPoint.z = providedPoint.z - ctx.position.y;
+            localPoint.z = providedPoint.z - context.position.y;
             double newDistance = this.distanceFunction.getDistance(localPoint);
             if (!(maxDistanceSquared < newDistance)) {
                 distance[1] = Math.max(Math.min(distance[1], newDistance), distance[0]);
@@ -70,7 +70,7 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         positionsContext.minInclusive = min;
         positionsContext.maxExclusive = max;
         positionsContext.consumer = positionsConsumer;
-        positionsContext.workerId = ctx.workerId;
+        positionsContext.workerId = context.workerId;
         positions.positionsIn(positionsContext);
         distance[0] = Math.sqrt(distance[0]);
         distance[1] = Math.sqrt(distance[1]);
@@ -78,7 +78,7 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         double value = HashUtil.random(seed, Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.x : 0), Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.y : 0)) * maximumWeight;
         for (CellValue<R> cellValue: cellValues) {
             value -= cellValue.weight;
-            if (value < 0) return cellValue.value.process(ctx);
+            if (value < 0) return cellValue.value.process(context);
         }
 
         return null;
@@ -97,17 +97,6 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         }
 
         return values;
-    }
-
-    @Override
-    public int getMaxPipelineValueDistance() {
-        int distance = 0;
-        for (CellValue<R> cellValue: cellValues) {
-            int newDistance = cellValue.value.getMaxPipelineValueDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        return distance;
     }
 
     public static class CellValue<R> {

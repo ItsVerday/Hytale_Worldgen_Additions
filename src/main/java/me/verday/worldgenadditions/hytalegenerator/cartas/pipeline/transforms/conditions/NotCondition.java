@@ -14,9 +14,4 @@ public class NotCondition<R> extends ConditionalPipelineCartaTransform.Condition
     public boolean process(PipelineCartaTransform.Context<R> context) {
         return !condition.process(context);
     }
-
-    @Override
-    public int getMaxPipelineBiomeDistance() {
-        return condition.getMaxPipelineBiomeDistance();
-    }
 }

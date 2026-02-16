@@ -23,11 +23,11 @@ public class ConditionalPipelineCartaTransform<R> extends PipelineCartaTransform
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
-        if (condition.process(ctx)) {
-            if (ifTrue != null) return ifTrue.process(ctx);
+    public R process(@NonNullDecl Context<R> context) {
+        if (condition.process(context)) {
+            if (ifTrue != null) return ifTrue.process(context);
         } else {
-            if (ifFalse != null) return ifFalse.process(ctx);
+            if (ifFalse != null) return ifFalse.process(context);
         }
 
         return null;
@@ -41,30 +41,7 @@ public class ConditionalPipelineCartaTransform<R> extends PipelineCartaTransform
         return values;
     }
 
-    @Override
-    public int getMaxPipelineValueDistance() {
-        int distance = 0;
-        if (ifTrue != null) {
-            int newDistance = ifTrue.getMaxPipelineValueDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        if (ifFalse != null) {
-            int newDistance = ifFalse.getMaxPipelineValueDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        int newDistance = condition.getMaxPipelineBiomeDistance();
-        if (newDistance > distance) distance = newDistance;
-
-        return distance;
-    }
-
     public abstract static class Condition<R> {
         public abstract boolean process(Context<R> context);
-
-        public int getMaxPipelineBiomeDistance() {
-            return 0;
-        }
     }
 }

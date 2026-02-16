@@ -15,7 +15,7 @@ public class ConstantPipelineCartaTransform<R> extends PipelineCartaTransform<R>
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
+    public R process(@NonNullDecl Context<R> context) {
         return value;
     }
 

@@ -20,15 +20,4 @@ public class OrCondition<R> extends ConditionalPipelineCartaTransform.Condition<
 
         return false;
     }
-
-    @Override
-    public int getMaxPipelineBiomeDistance() {
-        int distance = 0;
-        for (ConditionalPipelineCartaTransform.Condition<R> condition: conditions) {
-            int newDistance = condition.getMaxPipelineBiomeDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        return distance;
-    }
 }

@@ -10,7 +10,7 @@ public class DistanceCondition<R> extends AbstractDistanceCondition<R> {
     private final double distance;
 
     public DistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance) {
-        super(workerIndexer, child, (int) Math.ceil(distance));
+        super(workerIndexer, child);
         this.distance = distance;
     }
 

@@ -29,15 +29,15 @@ public class FieldFunctionPipelineCartaTransform<R> extends PipelineCartaTransfo
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> ctx) {
+    public R process(@NonNullDecl Context<R> context) {
         Density.Context childContext = new Density.Context();
-        childContext.position = new Vector3d(ctx.position.x, 0, ctx.position.y);
-        childContext.workerId = ctx.workerId;
+        childContext.position = new Vector3d(context.position.x, 0, context.position.y);
+        childContext.workerId = context.workerId;
 
         double densityValue = density.process(childContext);
         for (FieldDelimiter<R> delimiter: delimiters) {
             if (delimiter.isInside(densityValue)) {
-                return delimiter.value.process(ctx);
+                return delimiter.value.process(context);
             }
         }
 
@@ -57,17 +57,6 @@ public class FieldFunctionPipelineCartaTransform<R> extends PipelineCartaTransfo
         }
 
         return values;
-    }
-
-    @Override
-    public int getMaxPipelineValueDistance() {
-        int distance = 0;
-        for (FieldDelimiter<R> delimiter: delimiters) {
-            int newDistance = delimiter.value.getMaxPipelineValueDistance();
-            if (newDistance > distance) distance = newDistance;
-        }
-
-        return distance;
     }
 
     public static class FieldDelimiter<R> {

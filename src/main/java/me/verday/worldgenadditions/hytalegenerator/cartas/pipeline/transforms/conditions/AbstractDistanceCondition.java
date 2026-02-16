@@ -12,35 +12,48 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
     @Nonnull
     private final ConditionalPipelineCartaTransform.Condition<R> child;
     private final WorkerIndexer.Data<ModuloVector2iCache<Integer>> distanceCache;
-    private final int maximumDistance;
 
-    public AbstractDistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child, int maximumDistance) {
+    public AbstractDistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child) {
         this.child = child;
         this.distanceCache = new WorkerIndexer.Data<>(workerIndexer.getWorkerCount(), () -> new ModuloVector2iCache<>(6));
-        this.maximumDistance = maximumDistance;
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.Context<R> context);
 
-    private int calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> ctx) {
-        ModuloVector2iCache<Integer> thisValueDistanceCache = distanceCache.get(ctx.workerId);
-        Vector2i position = ctx.getIntPosition();
+    private double calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> context, double expectedDistance) {
+        int maximumDistance = (int) Math.ceil(expectedDistance);
+        ModuloVector2iCache<Integer> thisValueDistanceCache = distanceCache.get(context.workerId);
+        Vector2i position = context.getIntPosition();
         if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
-        if (child.process(ctx)) {
+
+        // Check if we are at a matching value
+        if (child.process(context)) {
             thisValueDistanceCache.put(position, 0);
             return 0;
         }
 
+        // Quickly find an upper bound on distance to matching value, if possible
+        int distanceEstimate = maximumDistance;
+        for (int d = 1; d < maximumDistance; d++) {
+            if (child.process(context.withOffset(d, 0)) || child.process(context.withOffset(-d, 0)) || child.process(context.withOffset(0, d)) || child.process(context.withOffset(0, -d))) {
+                if (d < expectedDistance) {
+                    thisValueDistanceCache.put(position, d * d);
+                    return d * d;
+                }
+
+                distanceEstimate = d;
+                break;
+            }
+        }
+
+        // More thorough check for matching values
         int foundDistance = Integer.MAX_VALUE;
-        for (int range = 1; range <= maximumDistance; range++) {
+        for (int range = 1; range <= distanceEstimate; range++) {
             for (int dx = -range; dx <= range; dx++) {
                 for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
-                    if (dx * dx + dz * dz > maximumDistance * maximumDistance) continue;
-                    PipelineCartaTransform.Context<R> newCtx = ctx.withOffset(dx, dz);
-                    if (child.process(newCtx)) {
-                        int distance = distanceSquared(position, newCtx.getIntPosition());
-                        if (distance < foundDistance) foundDistance = distance;
-                    }
+                    int distance = dx * dx + dz * dz;
+                    if (distance > distanceEstimate * distanceEstimate || distance > foundDistance) continue;
+                    if (child.process(context.withOffset(dx, dz))) foundDistance = distance;
                 }
             }
 
@@ -54,20 +67,12 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
         return Integer.MAX_VALUE;
     }
 
-    private int distanceSquared(Vector2i a, Vector2i b) {
-        int dx = a.x - b.x;
-        int dy = a.y - b.y;
-        return dx * dx + dy * dy;
+    private boolean withinDistance(@Nonnull PipelineCartaTransform.Context<R> context, double distance) {
+        return calculateValueDistance(context, distance) <= distance * distance;
     }
 
     @Override
     public boolean process(PipelineCartaTransform.Context<R> context) {
-        double distance = getDistanceToQuery(context);
-        return calculateValueDistance(context) <= distance * distance;
-    }
-
-    @Override
-    public int getMaxPipelineBiomeDistance() {
-        return maximumDistance;
+        return withinDistance(context, getDistanceToQuery(context));
     }
 }
