@@ -36,15 +36,15 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
         Density functionTree = densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer));
-        ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter<String>> delimiters = new ArrayList<>(delimiterAssets.length);
+        ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter<Integer>> delimiters = new ArrayList<>(delimiterAssets.length);
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {
-            PipelineCartaTransform<String> node = delimiterAsset.transform != null ? delimiterAsset.transform.build(arg) : new NonePipelineCartaTransform<>();
-            FieldFunctionPipelineCartaTransform.FieldDelimiter<String> delimiter = new FieldFunctionPipelineCartaTransform.FieldDelimiter<>(node, delimiterAsset.from, delimiterAsset.to);
+            PipelineCartaTransform<Integer> node = delimiterAsset.transform != null ? delimiterAsset.transform.build(arg) : new NonePipelineCartaTransform<>();
+            FieldFunctionPipelineCartaTransform.FieldDelimiter<Integer> delimiter = new FieldFunctionPipelineCartaTransform.FieldDelimiter<>(node, delimiterAsset.from, delimiterAsset.to);
             delimiters.add(delimiter);
         }
 

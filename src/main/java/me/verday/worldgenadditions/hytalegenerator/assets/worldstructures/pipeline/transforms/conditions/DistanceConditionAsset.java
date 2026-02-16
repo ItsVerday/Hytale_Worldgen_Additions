@@ -23,7 +23,7 @@ public class DistanceConditionAsset extends ConditionalPipelineCartaTransformAss
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+    public ConditionalPipelineCartaTransform.Condition<Integer> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
         if (condition == null) return new NoneCondition<>();
 
         return new DistanceCondition<>(arg.workerIndexer, condition.build(arg), distance);

@@ -15,6 +15,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import me.verday.worldgenadditions.util.FastReadIntegerCache;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
     }
 
     @Nonnull
-    public abstract PipelineCartaTransform<String> build(@Nonnull Argument arg);
+    public abstract PipelineCartaTransform<Integer> build(@Nonnull Argument arg);
 
     @Override
     public void cleanUp() {
@@ -59,8 +60,8 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
     }
 
     @Nonnull
-    public List<PipelineCartaTransform<String>> buildInputs(@Nonnull Argument argument, boolean excludeSkipped) {
-        ArrayList<PipelineCartaTransform<String>> nodes = new ArrayList<>();
+    public List<PipelineCartaTransform<Integer>> buildInputs(@Nonnull Argument argument, boolean excludeSkipped) {
+        ArrayList<PipelineCartaTransform<Integer>> nodes = new ArrayList<>();
 
         for (PipelineCartaTransformAsset asset: inputs) {
             if (!excludeSkipped || !asset.isSkipped()) {
@@ -85,12 +86,14 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
         public SeedBox parentSeed;
         public ReferenceBundle referenceBundle;
         public WorkerIndexer workerIndexer;
+        public FastReadIntegerCache<String> biomeIds;
 
         public Argument(@Nonnull MaterialCache materialCache, @Nonnull SeedBox parentSeed, @Nonnull ReferenceBundle referenceBundle, @Nonnull WorkerIndexer workerIndexer) {
             this.materialCache = materialCache;
             this.parentSeed = parentSeed;
             this.referenceBundle = referenceBundle;
             this.workerIndexer = workerIndexer;
+            biomeIds = new FastReadIntegerCache<>();
         }
 
         public Argument(@Nonnull Argument argument) {
@@ -98,6 +101,11 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             this.parentSeed = argument.parentSeed;
             this.referenceBundle = argument.referenceBundle;
             this.workerIndexer = argument.workerIndexer;
+            this.biomeIds = argument.biomeIds;
+        }
+
+        public int cacheBiomeId(String biomeId) {
+            return biomeIds.add(biomeId);
         }
     }
 }
