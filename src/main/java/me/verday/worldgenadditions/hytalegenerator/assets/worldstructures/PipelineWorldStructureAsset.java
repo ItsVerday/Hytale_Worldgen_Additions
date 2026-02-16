@@ -74,6 +74,8 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
         }
 
         ConcurrentHashMap<String, Optional<BiomeType>> biomeTypeCache = new ConcurrentHashMap<>();
+        BiomeAsset defaultBiomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(defaultBiomeId);
+        if (defaultBiomeAsset != null) biomeTypeCache.put(defaultBiomeId, Optional.of(defaultBiomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer)));
 
         PipelineCarta<String> biomeIdCarta = new PipelineCarta<>(finalStages);
         FunctionCarta<String, BiomeType> carta = new FunctionCarta<>(biomeIdCarta, biomeId -> {
@@ -82,7 +84,7 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
                 if (biomeAsset != null) {
                     biomeTypeCache.put(biomeId, Optional.of(biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer)));
                 } else {
-                    biomeTypeCache.put(biomeId, Optional.empty());
+                    biomeTypeCache.put(biomeId, biomeTypeCache.get(defaultBiomeId));
                 }
             }
 
