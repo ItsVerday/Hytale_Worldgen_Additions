@@ -24,7 +24,7 @@ public class PipelineCartaStage<R> {
         this.root = root;
         this.skip = skip;
 
-        valueCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), () -> new ModuloVector2iCache<>(6));
+        valueCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), () -> new ModuloVector2iCache<>(8));
     }
 
     public void setCarta(PipelineCarta<R> carta) {

@@ -15,34 +15,28 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
 
     public AbstractDistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child) {
         this.child = child;
-        this.distanceCache = new WorkerIndexer.Data<>(workerIndexer.getWorkerCount(), () -> new ModuloVector2iCache<>(6));
+        this.distanceCache = new WorkerIndexer.Data<>(workerIndexer.getWorkerCount(), () -> new ModuloVector2iCache<>(8));
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.Context<R> context);
 
-    private double calculateValueDistance(@Nonnull PipelineCartaTransform.Context<R> context, double expectedDistance) {
-        int maximumDistance = (int) Math.ceil(expectedDistance);
+    private boolean withinDistance(@Nonnull PipelineCartaTransform.Context<R> context, double maxDistance) {
         ModuloVector2iCache<Integer> thisValueDistanceCache = distanceCache.get(context.workerId);
         Vector2i position = context.getIntPosition();
-        if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position);
+        if (thisValueDistanceCache.containsKey(position)) return thisValueDistanceCache.get(position) <= maxDistance * maxDistance;
 
         // Check if we are at a matching value
         if (child.process(context)) {
             thisValueDistanceCache.put(position, 0);
-            return 0;
+            return true;
         }
 
         // Quickly find an upper bound on distance to matching value, if possible
-        int distanceEstimate = maximumDistance;
-        for (int d = 1; d < maximumDistance; d++) {
+        int distanceEstimate = (int) Math.ceil(maxDistance);
+        for (int d = 1; d < maxDistance; d++) {
             if (child.process(context.withOffset(d, 0)) || child.process(context.withOffset(-d, 0)) || child.process(context.withOffset(0, d)) || child.process(context.withOffset(0, -d))) {
-                if (d < expectedDistance) {
-                    thisValueDistanceCache.put(position, d * d);
-                    return d * d;
-                }
-
-                distanceEstimate = d;
-                break;
+                thisValueDistanceCache.put(position, d * d);
+                return d <= maxDistance;
             }
         }
 
@@ -59,16 +53,12 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
 
             if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
                 thisValueDistanceCache.put(position, foundDistance);
-                return foundDistance;
+                return foundDistance <= maxDistance * maxDistance;
             }
         }
 
         thisValueDistanceCache.put(position, Integer.MAX_VALUE);
-        return Integer.MAX_VALUE;
-    }
-
-    private boolean withinDistance(@Nonnull PipelineCartaTransform.Context<R> context, double distance) {
-        return calculateValueDistance(context, distance) <= distance * distance;
+        return false;
     }
 
     @Override
