@@ -19,10 +19,10 @@ public class RescalePipelineCartaTransformAsset extends PipelineCartaTransformAs
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
-        PipelineCartaTransform<String> child = null;
+        PipelineCartaTransform<Integer> child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
         }

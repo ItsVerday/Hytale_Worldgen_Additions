@@ -42,11 +42,11 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
         SeedBox childSeed = arg.parentSeed.child(seed);
-        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<String>> finalCellValues = new ArrayList<>();
+        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<Integer>> finalCellValues = new ArrayList<>();
         for (CellValueAsset cellValue: cellValues) {
             finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>()));
         }
