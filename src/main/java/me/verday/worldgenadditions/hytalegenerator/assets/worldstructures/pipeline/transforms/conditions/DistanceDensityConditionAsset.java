@@ -8,11 +8,12 @@ import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeli
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.DistanceDensityCondition;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
     public static final BuilderCodec<DistanceDensityConditionAsset> CODEC = BuilderCodec.builder(DistanceDensityConditionAsset.class, DistanceDensityConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
-            .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, true), (t, k) -> t.condition = k, t -> t.condition)
+            .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, false), (t, k) -> t.condition = k, t -> t.condition)
             .add()
             .append(new KeyedCodec<>("DistanceMin", Codec.DOUBLE, true), (t, k) -> t.distanceMin = k, t -> t.distanceMin)
             .add()
@@ -30,6 +31,8 @@ public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTrans
     @NonNullDecl
     @Override
     public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        if (condition == null) return new NoneCondition<>();
+
         return new DistanceDensityCondition<>(arg.workerIndexer, condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)));
     }
 

@@ -48,7 +48,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
         SeedBox childSeed = arg.parentSeed.child(seed);
         ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<String>> finalCellValues = new ArrayList<>();
         for (CellValueAsset cellValue: cellValues) {
-            finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform.build(arg)));
+            finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>()));
         }
 
         return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
@@ -64,7 +64,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
     public static class CellValueAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, CellValueAsset>> {
         public static final AssetBuilderCodec<String, CellValueAsset> CODEC = AssetBuilderCodec.builder(CellValueAsset.class, CellValueAsset::new, Codec.STRING, (asset, id) -> asset.id = id, config -> config.id, (config, data) -> config.data = data, config -> config.data)
-                .append(new KeyedCodec<>("Biome", PipelineCartaTransformAsset.CODEC, true), (t, out) -> t.transform = out, t -> t.transform)
+                .append(new KeyedCodec<>("Biome", PipelineCartaTransformAsset.CODEC, false), (t, out) -> t.transform = out, t -> t.transform)
                 .add()
                 .append(new KeyedCodec<>("Weight", Codec.DOUBLE, true), (t, k) -> t.weight = k, t -> t.weight)
                 .add()
@@ -74,7 +74,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
         private AssetExtraInfo.Data data;
 
         private double weight;
-        private PipelineCartaTransformAsset transform = new ConstantPipelineCartaTransformAsset();
+        private PipelineCartaTransformAsset transform;
 
         public String getId() {
             return this.id;
@@ -82,7 +82,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
         @Override
         public void cleanUp() {
-            this.transform.cleanUp();
+            if (transform != null) transform.cleanUp();
         }
     }
 }

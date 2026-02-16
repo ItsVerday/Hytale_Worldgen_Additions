@@ -43,7 +43,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
         ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter<String>> delimiters = new ArrayList<>(delimiterAssets.length);
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {
-            PipelineCartaTransform<String> node = delimiterAsset.transform.build(arg);
+            PipelineCartaTransform<String> node = delimiterAsset.transform != null ? delimiterAsset.transform.build(arg) : new NonePipelineCartaTransform<>();
             FieldFunctionPipelineCartaTransform.FieldDelimiter<String> delimiter = new FieldFunctionPipelineCartaTransform.FieldDelimiter<>(node, delimiterAsset.from, delimiterAsset.to);
             delimiters.add(delimiter);
         }
@@ -66,7 +66,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
                 .add()
                 .append(new KeyedCodec<>("To", Codec.DOUBLE, true), (t, out) -> t.to = out, t -> t.to)
                 .add()
-                .append(new KeyedCodec<>("Biome", PipelineCartaTransformAsset.CODEC, true), (t, out) -> t.transform = out, t -> t.transform)
+                .append(new KeyedCodec<>("Biome", PipelineCartaTransformAsset.CODEC, false), (t, out) -> t.transform = out, t -> t.transform)
                 .add()
                 .build();
 
@@ -82,7 +82,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
         @Override
         public void cleanUp() {
-            this.transform.cleanUp();
+            if (transform != null) transform.cleanUp();
         }
     }
 }

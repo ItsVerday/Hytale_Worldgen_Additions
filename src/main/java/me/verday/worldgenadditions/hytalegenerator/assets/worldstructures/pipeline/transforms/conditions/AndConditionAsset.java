@@ -7,13 +7,14 @@ import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeli
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.AndCondition;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
 
 public class AndConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
     public static final BuilderCodec<AndConditionAsset> CODEC = BuilderCodec.builder(AndConditionAsset.class, AndConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
-            .append(new KeyedCodec<>("Conditions", new ArrayCodec<>(ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, ConditionalPipelineCartaTransformAsset.ConditionAsset[]::new), true), (t, k) -> t.conditions = k, t -> t.conditions)
+            .append(new KeyedCodec<>("Conditions", new ArrayCodec<>(ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, ConditionalPipelineCartaTransformAsset.ConditionAsset[]::new), false), (t, k) -> t.conditions = k, t -> t.conditions)
             .add()
             .build();
 
@@ -22,6 +23,8 @@ public class AndConditionAsset extends ConditionalPipelineCartaTransformAsset.Co
     @NonNullDecl
     @Override
     public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        if (conditions == null) return new NoneCondition<>();
+
         ArrayList<ConditionalPipelineCartaTransform.Condition<String>> newConditions = new ArrayList<>();
         for (ConditionalPipelineCartaTransformAsset.ConditionAsset condition: conditions) {
             newConditions.add(condition.build(arg));

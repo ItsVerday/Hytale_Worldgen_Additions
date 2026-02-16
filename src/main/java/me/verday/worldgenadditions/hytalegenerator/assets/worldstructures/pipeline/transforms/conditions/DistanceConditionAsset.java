@@ -7,11 +7,12 @@ import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeli
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.DistanceCondition;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class DistanceConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
     public static final BuilderCodec<DistanceConditionAsset> CODEC = BuilderCodec.builder(DistanceConditionAsset.class, DistanceConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
-            .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, true), (t, k) -> t.condition = k, t -> t.condition)
+            .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, false), (t, k) -> t.condition = k, t -> t.condition)
             .add()
             .append(new KeyedCodec<>("Distance", Codec.DOUBLE, true), (t, k) -> t.distance = k, t -> t.distance)
             .add()
@@ -23,6 +24,8 @@ public class DistanceConditionAsset extends ConditionalPipelineCartaTransformAss
     @NonNullDecl
     @Override
     public ConditionalPipelineCartaTransform.Condition<String> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        if (condition == null) return new NoneCondition<>();
+
         return new DistanceCondition<>(arg.workerIndexer, condition.build(arg), distance);
     }
 
