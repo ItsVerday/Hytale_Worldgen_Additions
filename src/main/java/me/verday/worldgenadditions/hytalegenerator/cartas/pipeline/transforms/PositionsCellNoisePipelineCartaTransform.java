@@ -75,10 +75,12 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         distance[0] = Math.sqrt(distance[0]);
         distance[1] = Math.sqrt(distance[1]);
 
-        double value = HashUtil.random(seed, Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.x : 0), Double.doubleToLongBits(hasClosestPoint[0] ? closestPoint.y : 0)) * maximumWeight;
-        for (CellValue<R> cellValue: cellValues) {
-            value -= cellValue.weight;
-            if (value < 0) return cellValue.value.process(context);
+        if (hasClosestPoint[0]) {
+            double value = HashUtil.random(seed, Double.doubleToLongBits(closestPoint.x), Double.doubleToLongBits(closestPoint.y)) * maximumWeight;
+            for (CellValue<R> cellValue : cellValues) {
+                value -= cellValue.weight;
+                if (value < 0) return cellValue.value.process(context);
+            }
         }
 
         return null;
