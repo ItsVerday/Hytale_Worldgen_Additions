@@ -31,11 +31,11 @@ public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransfor
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<String> build(@NonNullDecl Argument arg) {
+    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
         Density warpFieldDensity = new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)), arg.workerIndexer.getWorkerCount(), 64);
-        PipelineCartaTransform<String> child = null;
+        PipelineCartaTransform<Integer> child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
         }

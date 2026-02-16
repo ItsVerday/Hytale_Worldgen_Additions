@@ -23,11 +23,11 @@ import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.*;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.*;
+import me.verday.worldgenadditions.util.FastReadIntegerCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 public class PipelineWorldStructureAsset extends WorldStructureAsset {
     public static final BuilderCodec<PipelineWorldStructureAsset> CODEC = BuilderCodec.builder(PipelineWorldStructureAsset.class, PipelineWorldStructureAsset::new, WorldStructureAsset.ABSTRACT_CODEC)
@@ -65,31 +65,28 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             }
         }
 
-        ArrayList<PipelineCartaStage<String>> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(defaultBiomeId), false, argument.workerIndexer));
-
         PipelineCartaTransformAsset.Argument arg = new PipelineCartaTransformAsset.Argument(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
+        ArrayList<PipelineCartaStage<Integer>> finalStages = new ArrayList<>();
+        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(arg.cacheBiomeId(defaultBiomeId)), false, argument.workerIndexer));
+
         for (PipelineCartaStageAsset stage: stages) {
             finalStages.add(stage.build(arg));
         }
 
-        ConcurrentHashMap<String, Optional<BiomeType>> biomeTypeCache = new ConcurrentHashMap<>();
         BiomeAsset defaultBiomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(defaultBiomeId);
-        if (defaultBiomeAsset != null) biomeTypeCache.put(defaultBiomeId, Optional.of(defaultBiomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer)));
+        BiomeType defaultBiomeType = Objects.requireNonNull(defaultBiomeAsset).build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
 
-        PipelineCarta<String> biomeIdCarta = new PipelineCarta<>(finalStages);
-        FunctionCarta<String, BiomeType> carta = new FunctionCarta<>(biomeIdCarta, biomeId -> {
-            if (!biomeTypeCache.containsKey(biomeId)) {
-                BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
-                if (biomeAsset != null) {
-                    biomeTypeCache.put(biomeId, Optional.of(biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer)));
-                } else {
-                    biomeTypeCache.put(biomeId, biomeTypeCache.get(defaultBiomeId));
-                }
+        FastReadIntegerCache<BiomeType> biomeTypes = arg.biomeIds.map(biomeId -> {
+            BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
+            if (biomeAsset != null) {
+                return biomeAsset.build(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerIndexer);
+            } else {
+                return defaultBiomeType;
             }
-
-            return biomeTypeCache.get(biomeId).orElse(null);
         });
+
+        PipelineCarta<Integer> biomeIdCarta = new PipelineCarta<>(finalStages);
+        FunctionCarta<Integer, BiomeType> carta = new FunctionCarta<>(biomeIdCarta, biomeTypes::get);
 
         SimpleBiomeMap<SolidMaterial> biomeMap = new SimpleBiomeMap<>(carta);
         int defaultRadius = Math.max(1, this.biomeTransitionDistance / 2);
