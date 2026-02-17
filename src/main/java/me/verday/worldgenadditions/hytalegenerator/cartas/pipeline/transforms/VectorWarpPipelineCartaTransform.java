@@ -4,11 +4,9 @@ import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.math.vector.Vector3d;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class VectorWarpPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
     @Nonnull
