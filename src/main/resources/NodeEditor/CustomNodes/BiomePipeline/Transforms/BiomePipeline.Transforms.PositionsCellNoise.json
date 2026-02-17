@@ -4,6 +4,14 @@
     "Color": "32,153,60",
     "Content": [
         {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
             "Id": "Seed",
             "Type": "SmallString",
             "Options": {
@@ -54,6 +62,7 @@
     ],
     "Schema": {
         "Type": "PositionsCellNoise",
+        "Skip": "Skip",
         "Seed": "Seed",
         "MaxDistance": "MaxDistance",
         "Positions": {

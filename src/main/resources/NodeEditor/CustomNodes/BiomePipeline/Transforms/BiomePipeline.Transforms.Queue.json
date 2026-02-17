@@ -2,6 +2,16 @@
     "Id": "BiomePipeline.Transforms.Queue",
     "Title": "Queue Biome Transform",
     "Color": "32,153,60",
+    "Content": [
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        }
+    ],
     "Inputs": [
         {
             "Id": "Output",
@@ -20,6 +30,7 @@
     ],
     "Schema": {
         "Type": "Queue",
+        "Skip": "Skip",
         "Inputs": {
             "Node": "BiomePipelineTransformVariants",
             "Pin": "Inputs"

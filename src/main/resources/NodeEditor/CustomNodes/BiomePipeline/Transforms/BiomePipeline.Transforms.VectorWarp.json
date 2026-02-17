@@ -4,6 +4,14 @@
     "Color": "32,153,60",
     "Content": [
         {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
             "Id": "SampleDistance",
             "Type": "Float",
             "Options": {
@@ -47,6 +55,7 @@
     ],
     "Schema": {
         "Type": "VectorWarp",
+        "Skip": "Skip",
         "SampleDistance": "SampleDistance",
         "WarpFactor": "WarpFactor",
         "WarpField": {

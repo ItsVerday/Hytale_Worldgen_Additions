@@ -4,6 +4,14 @@
     "Color": "32,153,60",
     "Content": [
         {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
             "Id": "Biome",
             "Type": "SmallString",
             "Options": {
@@ -22,6 +30,7 @@
     ],
     "Schema": {
         "Type": "Constant",
+        "Skip": "Skip",
         "Value": "Biome"
     }
 }
