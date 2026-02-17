@@ -1,0 +1,59 @@
+{
+    "Id": "BiomePipeline.Transforms.Smoothing",
+    "Title": "Smooth Biome Transform",
+    "Color": "32,153,60",
+    "Content": [
+        {
+            "Id": "Skip",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Skip",
+                "Default": false
+            }
+        },
+        {
+            "Id": "Radius",
+            "Type": "Float",
+            "Options": {
+                "Label": "Radius",
+                "Default": 5,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "Threshold",
+            "Type": "Float",
+            "Options": {
+                "Label": "Threshold",
+                "Default": 0.5,
+                "Width": 50
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "32,153,60"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Inputs",
+            "Type": "BiomePipeline.TransformConnection",
+            "Color": "32,153,60",
+            "Label": "Input",
+            "Multiple": true
+        }
+    ],
+    "Schema": {
+        "Type": "Smoothing",
+        "Skip": "Skip",
+        "Radius": "Radius",
+        "Threshold": "Threshold",
+        "Inputs": {
+            "Node": "BiomePipelineTransformVariants",
+            "Pin": "Inputs"
+        }
+    }
+}

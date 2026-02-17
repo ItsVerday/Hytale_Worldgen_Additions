@@ -1,8 +1,6 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,12 +14,7 @@ public abstract class AbstractContextModificationPipelineCartaTransform<R> exten
         this.child = child;
     }
 
-    public abstract Context<R> modifyChildContext(@Nonnull Context<R> context);
-
-    @NullableDecl
-    @Override
-    public R process(@NonNullDecl Context<R> context) {
-        Context<R> childContext = modifyChildContext(context);
+    protected R processChild(@Nonnull Context<R> childContext) {
         if (child != null) return child.process(childContext);
         return childContext.queryValue();
     }

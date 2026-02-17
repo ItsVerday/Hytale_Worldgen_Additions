@@ -37,6 +37,7 @@
             "BiomePipeline.Transforms.Queue",
             "BiomePipeline.Transforms.VectorWarp",
             "BiomePipeline.Transforms.Rescale",
+            "BiomePipeline.Transforms.Smoothing",
             "BiomePipeline.FieldFunctionTransform.Delimiter",
             "BiomePipeline.PCNCellValues.CellValue"
         ],
@@ -320,7 +321,8 @@
                 "PositionsCellNoise": "BiomePipeline.Transforms.PositionsCellNoise",
                 "Queue": "BiomePipeline.Transforms.Queue",
                 "VectorWarp": "BiomePipeline.Transforms.VectorWarp",
-                "Rescale": "BiomePipeline.Transforms.Rescale"
+                "Rescale": "BiomePipeline.Transforms.Rescale",
+                "Smoothing": "BiomePipeline.Transforms.Smoothing"
             }
         },
         "BiomePipelineConditionVariants": {

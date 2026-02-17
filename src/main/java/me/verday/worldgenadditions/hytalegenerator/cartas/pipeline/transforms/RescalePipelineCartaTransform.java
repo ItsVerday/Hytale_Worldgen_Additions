@@ -2,6 +2,7 @@ package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nullable;
 
@@ -13,10 +14,11 @@ public class RescalePipelineCartaTransform<R> extends AbstractContextModificatio
         this.scalingFactor = scalingFactor;
     }
 
+    @NullableDecl
     @Override
-    public Context<R> modifyChildContext(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl Context<R> context) {
         Context<R> childContext = new Context<>(context);
         childContext.position.scale(scalingFactor);
-        return childContext;
+        return processChild(childContext);
     }
 }

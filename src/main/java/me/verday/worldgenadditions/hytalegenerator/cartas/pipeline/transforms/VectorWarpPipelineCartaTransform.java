@@ -4,6 +4,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.math.vector.Vector3d;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,8 +22,9 @@ public class VectorWarpPipelineCartaTransform<R> extends AbstractContextModifica
         this.warpFactor = warpFactor;
     }
 
+    @NullableDecl
     @Override
-    public Context<R> modifyChildContext(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl Context<R> context) {
         Density.Context densityContext = new Density.Context();
         densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
 
@@ -35,6 +37,6 @@ public class VectorWarpPipelineCartaTransform<R> extends AbstractContextModifica
         double offsetX = deltaX * warpFactor / sampleDistance;
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
-        return context.withOffset(offsetX, offsetZ);
+        return processChild(context.withOffset(offsetX, offsetZ));
     }
 }
