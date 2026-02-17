@@ -70,7 +70,6 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         positionsContext.minInclusive = min;
         positionsContext.maxExclusive = max;
         positionsContext.consumer = positionsConsumer;
-        positionsContext.workerId = context.workerId;
         positions.positionsIn(positionsContext);
         distance[0] = Math.sqrt(distance[0]);
         distance[1] = Math.sqrt(distance[1]);

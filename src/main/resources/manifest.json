@@ -12,6 +12,6 @@
     "IncludesAssetPack": false,
     "Dependencies": {},
     "OptionalDependencies": {},
-    "ServerVersion": "*",
+    "ServerVersion": "2026.02.17-255364b8e",
     "Main": "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
 }

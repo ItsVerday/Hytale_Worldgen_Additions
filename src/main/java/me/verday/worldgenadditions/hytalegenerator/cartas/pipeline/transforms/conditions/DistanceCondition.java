@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 public class DistanceCondition<R> extends AbstractDistanceCondition<R> {
     private final double distance;
 
-    public DistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance) {
-        super(workerIndexer, child);
+    public DistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance) {
+        super(child);
         this.distance = distance;
     }
 

@@ -39,7 +39,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
     public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
-        Density functionTree = densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer));
+        Density functionTree = densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId));
         ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter<Integer>> delimiters = new ArrayList<>(delimiterAssets.length);
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {

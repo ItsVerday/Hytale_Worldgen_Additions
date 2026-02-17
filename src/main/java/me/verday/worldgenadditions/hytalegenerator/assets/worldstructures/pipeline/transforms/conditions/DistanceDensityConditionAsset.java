@@ -33,7 +33,7 @@ public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTrans
     public ConditionalPipelineCartaTransform.Condition<Integer> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
         if (condition == null) return new NoneCondition<>();
 
-        return new DistanceDensityCondition<>(arg.workerIndexer, condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerIndexer)));
+        return new DistanceDensityCondition<>(condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)));
     }
 
     @Override

@@ -15,6 +15,6 @@ public class QueuePipelineCartaTransformAsset extends PipelineCartaTransformAsse
     @Override
     public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
-        return new QueuePipelineCartaTransform<>(buildInputs(arg, false));
+        return new QueuePipelineCartaTransform<>(buildInputs(arg, true));
     }
 }

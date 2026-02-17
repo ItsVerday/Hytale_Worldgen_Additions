@@ -15,8 +15,8 @@ public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
     @Nonnull
     private final Density density;
 
-    public DistanceDensityCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distanceMinimum, double distanceMaximum, @Nonnull Density density) {
-        super(workerIndexer, child);
+    public DistanceDensityCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distanceMinimum, double distanceMaximum, @Nonnull Density density) {
+        super(child);
         this.distanceMinimum = distanceMinimum;
         this.distanceMaximum = distanceMaximum;
         this.density = density;
@@ -26,7 +26,6 @@ public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
     public double getDistanceToQuery(PipelineCartaTransform.Context<R> context) {
         Density.Context childContext = new Density.Context();
         childContext.position = new Vector3d(context.position.x, 0, context.position.y);
-        childContext.workerId = context.workerId;
         double densityValue = density.process(childContext);
         if (densityValue < -1) densityValue = -1;
         if (densityValue > 1) densityValue = 1;

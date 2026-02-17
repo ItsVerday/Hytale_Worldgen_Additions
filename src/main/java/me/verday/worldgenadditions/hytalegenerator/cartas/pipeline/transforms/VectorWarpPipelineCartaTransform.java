@@ -30,7 +30,6 @@ public class VectorWarpPipelineCartaTransform<R> extends PipelineCartaTransform<
     public R process(@NonNullDecl Context<R> context) {
         Density.Context densityContext = new Density.Context();
         densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
-        densityContext.workerId = context.workerId;
 
         double valueAtOrigin = warpField.process(densityContext);
         Density.Context densityChildContext = new Density.Context(densityContext);

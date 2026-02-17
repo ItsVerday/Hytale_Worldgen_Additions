@@ -5,7 +5,10 @@ import com.hypixel.hytale.assetstore.codec.AssetCodecMapCodec;
 import com.hypixel.hytale.assetstore.codec.ContainedAssetCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
+import com.hypixel.hytale.builtin.hytalegenerator.Registry;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
+import com.hypixel.hytale.builtin.hytalegenerator.assets.biomes.BiomeAsset;
+import com.hypixel.hytale.builtin.hytalegenerator.biome.Biome;
 import com.hypixel.hytale.builtin.hytalegenerator.material.MaterialCache;
 import com.hypixel.hytale.builtin.hytalegenerator.referencebundle.ReferenceBundle;
 import com.hypixel.hytale.builtin.hytalegenerator.seed.SeedBox;
@@ -15,10 +18,10 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import me.verday.worldgenadditions.util.FastReadIntegerCache;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaTransformAsset>> {
@@ -85,27 +88,44 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
         public MaterialCache materialCache;
         public SeedBox parentSeed;
         public ReferenceBundle referenceBundle;
-        public WorkerIndexer workerIndexer;
-        public FastReadIntegerCache<String> biomeIds;
+        public WorkerIndexer.Id workerId;
+        public String defaultBiomeId;
+        public final HashMap<String, Biome> biomesById;
+        public final Registry<Biome> biomeRegistry;
 
-        public Argument(@Nonnull MaterialCache materialCache, @Nonnull SeedBox parentSeed, @Nonnull ReferenceBundle referenceBundle, @Nonnull WorkerIndexer workerIndexer) {
+        public Argument(@Nonnull MaterialCache materialCache, @Nonnull SeedBox parentSeed, @Nonnull ReferenceBundle referenceBundle, @Nonnull WorkerIndexer.Id workerId, @Nonnull String defaultBiomeId) {
             this.materialCache = materialCache;
             this.parentSeed = parentSeed;
             this.referenceBundle = referenceBundle;
-            this.workerIndexer = workerIndexer;
-            biomeIds = new FastReadIntegerCache<>();
+            this.workerId = workerId;
+            this.defaultBiomeId = defaultBiomeId;
+            this.biomeRegistry = new Registry<>();
+            this.biomesById = new HashMap<>();
+
+            cacheBiomeId(defaultBiomeId);
         }
 
         public Argument(@Nonnull Argument argument) {
             this.materialCache = argument.materialCache;
             this.parentSeed = argument.parentSeed;
             this.referenceBundle = argument.referenceBundle;
-            this.workerIndexer = argument.workerIndexer;
-            this.biomeIds = argument.biomeIds;
+            this.workerId = argument.workerId;
+            this.defaultBiomeId = argument.defaultBiomeId;
+            this.biomeRegistry = argument.biomeRegistry;
+            this.biomesById = argument.biomesById;
         }
 
         public int cacheBiomeId(String biomeId) {
-            return biomeIds.add(biomeId);
+            if (!biomesById.containsKey(biomeId)) {
+                BiomeAsset biomeAsset = BiomeAsset.getAssetStore().getAssetMap().getAsset(biomeId);
+                if (biomeAsset != null) {
+                    biomesById.put(biomeId, biomeAsset.build(materialCache, parentSeed, referenceBundle, workerId));
+                } else {
+                    biomesById.put(biomeId, biomesById.get(defaultBiomeId));
+                }
+            }
+
+            return biomeRegistry.getIdOrRegister(biomesById.get(biomeId));
         }
     }
 }

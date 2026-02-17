@@ -1,21 +1,21 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
-import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.util.ModuloVector2iCache;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
+import me.verday.worldgenadditions.util.WorkerIndexerData;
 
 import javax.annotation.Nonnull;
 
 public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
     @Nonnull
     private final ConditionalPipelineCartaTransform.Condition<R> child;
-    private final WorkerIndexer.Data<ModuloVector2iCache<Integer>> distanceCache;
+    private final WorkerIndexerData<ModuloVector2iCache<Integer>> distanceCache;
 
-    public AbstractDistanceCondition(WorkerIndexer workerIndexer, @Nonnull ConditionalPipelineCartaTransform.Condition<R> child) {
+    public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child) {
         this.child = child;
-        this.distanceCache = new WorkerIndexer.Data<>(workerIndexer.getWorkerCount(), () -> new ModuloVector2iCache<>(8));
+        this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.Context<R> context);

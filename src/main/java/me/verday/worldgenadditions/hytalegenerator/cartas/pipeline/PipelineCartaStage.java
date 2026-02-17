@@ -4,6 +4,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import me.verday.worldgenadditions.util.ModuloVector2iCache;
+import me.verday.worldgenadditions.util.WorkerIndexerData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,13 +19,13 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final WorkerIndexer.Data<ModuloVector2iCache<Optional<R>>> valueCache;
+    private final WorkerIndexerData<ModuloVector2iCache<Optional<R>>> valueCache;
 
-    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip, WorkerIndexer indexer) {
+    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
         this.skip = skip;
 
-        valueCache = new WorkerIndexer.Data<>(indexer.getWorkerCount(), () -> new ModuloVector2iCache<>(8));
+        valueCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     public void setCarta(PipelineCarta<R> carta) {
