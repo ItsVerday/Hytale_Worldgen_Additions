@@ -1,6 +1,6 @@
 {
     "Id": "BiomePipeline.Transforms.Conditional",
-    "Title": "Conditional Transform",
+    "Title": "Conditional Biome Transform",
     "Color": "32,153,60",
     "Inputs": [
         {

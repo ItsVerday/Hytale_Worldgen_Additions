@@ -20,7 +20,7 @@
         },
         "BiomePipeline": {
             "RootNodeType": "BiomePipeline",
-            "MenuName": "HytaleGenerator - Biome Pipeline"
+            "MenuName": "HytaleGenerator - BiomePipeline"
         }
     },
     "NodeCategories": {
@@ -49,7 +49,8 @@
             "BiomePipeline.Conditions.DistanceDensity"
         ],
         "Material": [
-            "Material"
+            "Material",
+            "OrthogonalRotation"
         ],
         "Density Nodes": [
             "ConstantDensityNode",
@@ -120,6 +121,7 @@
             "Exported.Density",
             "Terrain.Density",
             "DistanceToBiomeEdge.Density",
+            "YSampled.Density",
             "BoundaryDensityNode",
             "FWidthDensityNode",
             "StaticNoise2DDensityNode",
@@ -134,6 +136,9 @@
         ],
         "Points": [
             "Point3D"
+        ],
+        "Bounds": [
+            "DecimalBounds3d"
         ],
         "Range": [
             "Decimal.Range",
@@ -163,16 +168,12 @@
             "StepsCurve",
             "ThresholdCurve"
         ],
-        "FunctionForY": [
-            "FunctionForY",
-            "FunctionForYPoint"
-        ],
         "Positions": [
             "Mesh2DPositions",
             "Mesh3DPositions",
             "ListPositions",
             "FieldFunctionPositions",
-            "Sphere.Positions",
+            "Bound.Positions",
             "OccurrencePositions",
             "OffsetPositions",
             "UnionPositions",
@@ -181,7 +182,8 @@
             "BaseHeight.Positions",
             "Anchor.Positions",
             "ImportedPositions",
-            "Delimiter"
+            "Delimiter",
+            "Framework"
         ],
         "PositionsCellNoise Nodes": [
             "PositionsCellNoiseDensityNode",
@@ -401,6 +403,7 @@
                 "Exported": "Exported.Density",
                 "Terrain": "Terrain.Density",
                 "DistanceToBiomeEdge": "DistanceToBiomeEdge.Density",
+                "YSampled": "YSampled.Density",
                 "Boundary": "BoundaryDensityNode",
                 "FWidth": "FWidthDensityNode",
                 "StaticNoise2D": "StaticNoise2DDensityNode",
@@ -458,7 +461,8 @@
                 "BaseHeight": "BaseHeight.Positions",
                 "Imported": "ImportedPositions",
                 "Anchor": "Anchor.Positions",
-                "Sphere": "Sphere.Positions"
+                "Bound": "Bound.Positions",
+                "Framework": "Framework.Positions"
             }
         },
         "PointGeneratorVariants": {

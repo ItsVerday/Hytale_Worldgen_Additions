@@ -1,6 +1,6 @@
 {
     "Id": "BiomePipeline.Transforms.Rescale",
-    "Title": "Rescale Transform",
+    "Title": "Rescale Biome Transform",
     "Color": "32,153,60",
     "Content": [
         {

@@ -1,6 +1,6 @@
 {
     "Id": "BiomePipeline.Transforms.VectorWarp",
-    "Title": "VectorWarp Transform",
+    "Title": "VectorWarp Biome Transform",
     "Color": "32,153,60",
     "Content": [
         {

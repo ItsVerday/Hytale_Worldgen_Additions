@@ -40,11 +40,18 @@
             "Multiple": true
         },
         {
-            "Id": "ContentFields",
-            "Type": "BiomePipeline.ContentFields",
+            "Id": "Framework",
+            "Type": "Generic",
             "Color": "30,150,122",
-            "Label": "ContentFields",
+            "Label": "Framework",
             "Multiple": true
+        },
+        {
+            "Id": "SpawnPositions",
+            "Type": "PositionsConnection",
+            "Color": "Blue",
+            "Label": "SpawnPositions",
+            "Multiple": false
         }
     ],
     "Inputs": [],
@@ -57,9 +64,13 @@
             "Node": "BiomePipeline.Stage",
             "Pin": "StagesPin"
         },
-        "ContentFields": {
-            "Node": "BiomePipeline.ContentFields.BaseHeight",
-            "Pin": "ContentFields"
+        "Framework": {
+            "Node": "Generic",
+            "Pin": "Framework"
+        },
+        "SpawnPositions": {
+            "Node": "PositionsVariants",
+            "Pin": "SpawnPositions"
         }
     }
 }

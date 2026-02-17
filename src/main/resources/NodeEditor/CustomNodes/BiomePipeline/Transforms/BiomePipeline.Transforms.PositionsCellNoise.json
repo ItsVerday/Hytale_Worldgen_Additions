@@ -1,6 +1,6 @@
 {
     "Id": "BiomePipeline.Transforms.PositionsCellNoise",
-    "Title": "PositionsCellNoise Transform",
+    "Title": "PositionsCellNoise Biome Transform",
     "Color": "32,153,60",
     "Content": [
         {

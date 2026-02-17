@@ -1,6 +1,6 @@
 {
     "Id": "BiomePipeline.Transforms.Constant",
-    "Title": "Constant Transform",
+    "Title": "Constant Biome Transform",
     "Color": "32,153,60",
     "Content": [
         {
