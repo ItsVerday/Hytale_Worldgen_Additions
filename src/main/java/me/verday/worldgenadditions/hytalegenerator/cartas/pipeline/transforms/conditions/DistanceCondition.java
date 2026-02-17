@@ -1,6 +1,5 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
-import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 

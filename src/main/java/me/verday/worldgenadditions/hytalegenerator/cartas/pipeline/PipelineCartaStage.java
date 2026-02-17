@@ -1,6 +1,5 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
-import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import me.verday.worldgenadditions.util.ModuloVector2iCache;

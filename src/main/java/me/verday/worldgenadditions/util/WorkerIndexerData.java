@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.function.Supplier;
 
 public class WorkerIndexerData<T> {
-    private ArrayList<T> data = new ArrayList<>();
-    private Supplier<T> initialize;
+    private final ArrayList<T> data = new ArrayList<>();
+    private final Supplier<T> initialize;
 
     public WorkerIndexerData(Supplier<T> initialize) {
         this.initialize = initialize;
