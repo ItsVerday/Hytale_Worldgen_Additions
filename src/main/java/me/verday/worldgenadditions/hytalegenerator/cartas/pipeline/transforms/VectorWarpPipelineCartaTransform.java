@@ -10,24 +10,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class VectorWarpPipelineCartaTransform<R> extends PipelineCartaTransform<R> {
-    @Nullable
-    private final PipelineCartaTransform<R> child;
+public class VectorWarpPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
     @Nonnull
     private final Density warpField;
     private final double sampleDistance;
     private final double warpFactor;
 
     public VectorWarpPipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
-        this.child = child;
+        super(child);
         this.warpField = warpField;
         this.sampleDistance = sampleDistance;
         this.warpFactor = warpFactor;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public Context<R> modifyChildContext(@NonNullDecl Context<R> context) {
         Density.Context densityContext = new Density.Context();
         densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
 
@@ -40,15 +37,6 @@ public class VectorWarpPipelineCartaTransform<R> extends PipelineCartaTransform<
         double offsetX = deltaX * warpFactor / sampleDistance;
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
-        Context<R> childContext = context.withOffset(offsetX, offsetZ);
-
-        if (child != null) return child.process(childContext);
-        return childContext.queryValue();
-    }
-
-    @Override
-    public List<R> allPossibleValues() {
-        if (child != null) return child.allPossibleValues();
-        return List.of();
+        return context.withOffset(offsetX, offsetZ);
     }
 }

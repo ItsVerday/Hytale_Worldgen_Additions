@@ -7,28 +7,18 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RescalePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
-    @Nullable
-    private final PipelineCartaTransform<R> child;
+public class RescalePipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
     private final double scalingFactor;
 
     public RescalePipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, double scalingFactor) {
-        this.child = child;
+        super(child);
         this.scalingFactor = scalingFactor;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
-        Context<R> childCtx = new Context<>(context);
-        childCtx.position.scale(scalingFactor);
-
-        if (child != null) return child.process(childCtx);
-        return childCtx.queryValue();
-    }
-
-    @Override
-    public List<R> allPossibleValues() {
-        return List.of();
+    public Context<R> modifyChildContext(@NonNullDecl Context<R> context) {
+        Context<R> childContext = new Context<>(context);
+        childContext.position.scale(scalingFactor);
+        return childContext;
     }
 }
