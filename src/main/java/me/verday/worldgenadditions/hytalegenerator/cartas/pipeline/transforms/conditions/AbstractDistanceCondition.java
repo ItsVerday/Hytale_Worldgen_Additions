@@ -34,16 +34,24 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
             return true;
         }
 
-        // Quickly find an upper bound on distance to matching value, if possible
-        int distanceEstimate = (int) Math.ceil(maxDistance);
-        for (int d = 1; d < maxDistance; d++) {
+        // Quickly find an upper bound on distance to matching value in cardinal directions, if possible
+        for (int d = 1; d <= maxDistance; d++) {
             if (child.process(context.withOffset(d, 0)) || child.process(context.withOffset(-d, 0)) || child.process(context.withOffset(0, d)) || child.process(context.withOffset(0, -d))) {
                 thisValueDistanceCache.put(position, d * d);
                 return d <= maxDistance;
             }
         }
 
+        // Check diagonals in the same way
+        for (int d = 1; d * d * 2 <= maxDistance * maxDistance; d++) {
+            if (child.process(context.withOffset(d, d)) || child.process(context.withOffset(d, -d)) || child.process(context.withOffset(-d, d)) || child.process(context.withOffset(-d, -d))) {
+                thisValueDistanceCache.put(position, d * d * 2);
+                return d * d * 2 <= maxDistance * maxDistance;
+            }
+        }
+
         if (!fastMode) {
+            int distanceEstimate = (int) Math.ceil(maxDistance);
             // More thorough check for matching values
             int foundDistance = Integer.MAX_VALUE;
             for (int range = 1; range <= distanceEstimate; range++) {
