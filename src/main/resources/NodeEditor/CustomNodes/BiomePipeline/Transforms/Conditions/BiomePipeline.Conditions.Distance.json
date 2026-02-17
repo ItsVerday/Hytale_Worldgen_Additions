@@ -11,6 +11,14 @@
                 "Default": 8,
                 "Width": 50
             }
+        },
+        {
+            "Id": "Fast",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Fast Mode",
+                "Default": false
+            }
         }
     ],
     "Inputs": [
@@ -32,6 +40,7 @@
     "Schema": {
         "Type": "Distance",
         "Distance": "DistanceValue",
+        "Fast": "Fast",
         "Condition": {
             "Node": "BiomePipelineConditionVariants",
             "Pin": "Condition"

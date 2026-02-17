@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 public class DistanceCondition<R> extends AbstractDistanceCondition<R> {
     private final double distance;
 
-    public DistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance) {
-        super(child);
+    public DistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance, boolean fastMode) {
+        super(child, fastMode);
         this.distance = distance;
     }
 

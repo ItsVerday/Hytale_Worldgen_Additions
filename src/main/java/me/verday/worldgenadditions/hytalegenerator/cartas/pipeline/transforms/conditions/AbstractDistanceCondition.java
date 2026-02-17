@@ -11,10 +11,13 @@ import javax.annotation.Nonnull;
 public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
     @Nonnull
     private final ConditionalPipelineCartaTransform.Condition<R> child;
+    private final boolean fastMode;
+
     private final WorkerIndexerData<ModuloVector2iCache<Integer>> distanceCache;
 
-    public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child) {
+    public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, boolean fastMode) {
         this.child = child;
+        this.fastMode = fastMode;
         this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
@@ -40,20 +43,22 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
             }
         }
 
-        // More thorough check for matching values
-        int foundDistance = Integer.MAX_VALUE;
-        for (int range = 1; range <= distanceEstimate; range++) {
-            for (int dx = -range; dx <= range; dx++) {
-                for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
-                    int distance = dx * dx + dz * dz;
-                    if (distance > distanceEstimate * distanceEstimate || distance > foundDistance) continue;
-                    if (child.process(context.withOffset(dx, dz))) foundDistance = distance;
+        if (!fastMode) {
+            // More thorough check for matching values
+            int foundDistance = Integer.MAX_VALUE;
+            for (int range = 1; range <= distanceEstimate; range++) {
+                for (int dx = -range; dx <= range; dx++) {
+                    for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
+                        int distance = dx * dx + dz * dz;
+                        if (distance > distanceEstimate * distanceEstimate || distance > foundDistance) continue;
+                        if (child.process(context.withOffset(dx, dz))) foundDistance = distance;
+                    }
                 }
-            }
 
-            if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
-                thisValueDistanceCache.put(position, foundDistance);
-                return foundDistance <= maxDistance * maxDistance;
+                if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
+                    thisValueDistanceCache.put(position, foundDistance);
+                    return foundDistance <= maxDistance * maxDistance;
+                }
             }
         }
 

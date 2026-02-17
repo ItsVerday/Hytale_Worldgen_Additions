@@ -20,6 +20,14 @@
                 "Default": 10,
                 "Width": 50
             }
+        },
+        {
+            "Id": "Fast",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "Fast Mode",
+                "Default": false
+            }
         }
     ],
     "Inputs": [
@@ -49,6 +57,7 @@
         "Type": "DistanceDensity",
         "DistanceMin": "DistanceMin",
         "DistanceMax": "DistanceMax",
+        "Fast": "Fast",
         "Density": {
             "Node": "DensityNodeVariants",
             "Pin": "Density"

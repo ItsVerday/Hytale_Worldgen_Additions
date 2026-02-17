@@ -4,6 +4,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
+import com.hypixel.hytale.codec.validation.Validators;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
@@ -16,10 +17,14 @@ public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTrans
             .append(new KeyedCodec<>("Condition", ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC, false), (t, k) -> t.condition = k, t -> t.condition)
             .add()
             .append(new KeyedCodec<>("DistanceMin", Codec.DOUBLE, true), (t, k) -> t.distanceMin = k, t -> t.distanceMin)
+            .addValidator(Validators.greaterThanOrEqual(0.0))
             .add()
             .append(new KeyedCodec<>("DistanceMax", Codec.DOUBLE, true), (t, k) -> t.distanceMax = k, t -> t.distanceMax)
+            .addValidator(Validators.greaterThanOrEqual(0.0))
             .add()
             .append(new KeyedCodec<>("Density", DensityAsset.CODEC, true), (t, k) -> t.densityAsset = k, t -> t.densityAsset)
+            .add()
+            .append(new KeyedCodec<>("Fast", Codec.BOOLEAN, false), (t, k) -> t.fast = k, t -> t.fast)
             .add()
             .build();
 
@@ -27,13 +32,14 @@ public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTrans
     private double distanceMin;
     private double distanceMax;
     private DensityAsset densityAsset;
+    private boolean fast = false;
 
     @NonNullDecl
     @Override
     public ConditionalPipelineCartaTransform.Condition<Integer> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
         if (condition == null) return new NoneCondition<>();
 
-        return new DistanceDensityCondition<>(condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)));
+        return new DistanceDensityCondition<>(condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), fast);
     }
 
     @Override
