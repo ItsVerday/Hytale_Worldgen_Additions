@@ -8,6 +8,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.ConstantDensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
+import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.ConstantValueDensity;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
     public static final BuilderCodec<FieldFunctionPipelineCartaTransformAsset> CODEC = BuilderCodec.builder(FieldFunctionPipelineCartaTransformAsset.class, FieldFunctionPipelineCartaTransformAsset::new, PipelineCartaTransformAsset.ABSTRACT_CODEC)
-            .append(new KeyedCodec<>("FieldFunction", DensityAsset.CODEC, true), (t, k) -> t.densityAsset = k, t -> t.densityAsset)
+            .append(new KeyedCodec<>("FieldFunction", DensityAsset.CODEC, false), (t, k) -> t.densityAsset = k, t -> t.densityAsset)
             .add()
             .append(new KeyedCodec<>("Delimiters", new ArrayCodec<>(DelimiterAsset.CODEC, DelimiterAsset[]::new),true),
                     (t, k) -> t.delimiterAssets = k,
@@ -39,7 +40,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
     public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
-        Density functionTree = densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId));
+        Density functionTree = densityAsset != null ? densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : new ConstantValueDensity(0.0);
         ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter<Integer>> delimiters = new ArrayList<>(delimiterAssets.length);
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {
@@ -53,7 +54,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
     @Override
     public void cleanUp() {
-        this.densityAsset.cleanUp();
+        if (densityAsset != null) densityAsset.cleanUp();
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {
             delimiterAsset.cleanUp();

@@ -29,9 +29,4 @@ public class RescalePipelineCartaTransformAsset extends PipelineCartaTransformAs
 
         return new RescalePipelineCartaTransform<>(child, scalingFactor);
     }
-
-    @Override
-    public void cleanUp() {
-        super.cleanUp();
-    }
 }

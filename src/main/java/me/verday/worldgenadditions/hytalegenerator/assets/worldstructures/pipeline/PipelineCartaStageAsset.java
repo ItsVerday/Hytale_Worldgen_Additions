@@ -8,10 +8,11 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 
 public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaStageAsset>> {
     public static final AssetBuilderCodec<String, PipelineCartaStageAsset> CODEC = AssetBuilderCodec.builder(PipelineCartaStageAsset.class, PipelineCartaStageAsset::new, Codec.STRING, (asset, id) -> asset.id = id, config -> config.id, (config, data) -> config.data = data, config -> config.data)
-            .append(new KeyedCodec<>("Root", PipelineCartaTransformAsset.CODEC, true), (t, k) -> t.root = k, t -> t.root)
+            .append(new KeyedCodec<>("Root", PipelineCartaTransformAsset.CODEC, false), (t, k) -> t.root = k, t -> t.root)
             .add()
             .append(new KeyedCodec<>("Skip", Codec.BOOLEAN, false), (t, k) -> t.skip = k, t -> t.skip)
             .add()
@@ -20,11 +21,11 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
     private String id;
     private AssetExtraInfo.Data data;
 
-    private PipelineCartaTransformAsset root;
+    private PipelineCartaTransformAsset root = null;
     private boolean skip;
 
     public PipelineCartaStage<Integer> build(PipelineCartaTransformAsset.Argument arg) {
-        return new PipelineCartaStage<>(root.build(arg), isSkipped());
+        return new PipelineCartaStage<>(root != null ? root.build(arg) : new NonePipelineCartaTransform<>(), isSkipped());
     }
 
     @Override
@@ -34,7 +35,7 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
 
     @Override
     public void cleanUp() {
-        root.cleanUp();
+        if (root != null) root.cleanUp();
     }
 
     public boolean isSkipped() {
