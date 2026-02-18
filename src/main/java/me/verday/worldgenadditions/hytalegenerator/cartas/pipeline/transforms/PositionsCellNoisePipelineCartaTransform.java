@@ -18,16 +18,18 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
     private final PositionProvider positions;
     private final DistanceFunction distanceFunction;
     private final List<CellValue<R>> cellValues;
+    private final boolean originValues;
     private double maximumWeight;
 
     private final double maxDistance;
     private final double maxDistanceSquared;
 
-    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance) {
+    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance, boolean originValues) {
         this.seed = seed;
         this.positions = positions;
         this.distanceFunction = distanceFunction;
         this.cellValues = cellValues;
+        this.originValues = originValues;
         this.maxDistance = maxDistance;
         this.maxDistanceSquared = maxDistance * maxDistance;
 
@@ -75,10 +77,13 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         distance[1] = Math.sqrt(distance[1]);
 
         if (hasClosestPoint[0]) {
+            Context<R> childContext = new Context<>(context);
+            if (originValues) childContext.position = closestPoint;
+
             double value = HashUtil.random(seed, Double.doubleToLongBits(closestPoint.x), Double.doubleToLongBits(closestPoint.y)) * maximumWeight;
             for (CellValue<R> cellValue : cellValues) {
                 value -= cellValue.weight;
-                if (value < 0) return cellValue.value.process(context);
+                if (value < 0) return cellValue.value.process(childContext);
             }
         }
 

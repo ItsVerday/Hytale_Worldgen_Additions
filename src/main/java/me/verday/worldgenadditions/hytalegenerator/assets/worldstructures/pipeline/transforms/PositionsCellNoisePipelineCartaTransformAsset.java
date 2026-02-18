@@ -12,6 +12,7 @@ import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
+import com.hypixel.hytale.codec.validation.Validators;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
@@ -31,6 +32,9 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             .append(new KeyedCodec<>("CellValues", new ArrayCodec<>(CellValueAsset.CODEC, CellValueAsset[]::new), false), (t, k) -> t.cellValues = k, t -> t.cellValues)
             .add()
             .append(new KeyedCodec<>("MaxDistance", Codec.DOUBLE, true), (t, k) -> t.maxDistance = k, t -> t.maxDistance)
+            .addValidator(Validators.greaterThan(0.0))
+            .add()
+            .append(new KeyedCodec<>("OriginValues", Codec.BOOLEAN, false), (t, k) -> t.originValues = k, t -> t.originValues)
             .add()
             .build();
 
@@ -39,6 +43,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
     private DistanceFunctionAsset distanceFunction;
     private CellValueAsset[] cellValues = new CellValueAsset[0];
     private double maxDistance;
+    private boolean originValues = false;
 
     @NonNullDecl
     @Override
@@ -54,7 +59,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             }
         }
 
-        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
+        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance, originValues);
     }
 
     @Override

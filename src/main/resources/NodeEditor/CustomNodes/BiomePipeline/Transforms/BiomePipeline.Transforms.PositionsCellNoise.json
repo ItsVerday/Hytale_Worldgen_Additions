@@ -37,6 +37,14 @@
                 "Default": 32,
                 "Width": 50
             }
+        },
+        {
+            "Id": "OriginValues",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "OriginValues",
+                "Default": false
+            }
         }
     ],
     "Inputs": [
@@ -75,6 +83,7 @@
         "ExportAs": "ExportAs",
         "Seed": "Seed",
         "MaxDistance": "MaxDistance",
+        "OriginValues": "OriginValues",
         "Positions": {
             "Node": "BiomePipelineTransformVariants",
             "Pin": "Positions"
