@@ -8,7 +8,6 @@ import me.verday.worldgenadditions.util.WorkerIndexerData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 public class PipelineCartaStage<R> {
     private PipelineCarta<R> carta = null;
@@ -18,7 +17,7 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final WorkerIndexerData<ModuloVector2iCache<Optional<R>>> valueCache;
+    private final WorkerIndexerData<ModuloVector2iCache<R>> valueCache;
 
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
@@ -42,24 +41,15 @@ public class PipelineCartaStage<R> {
 
     @Nullable
     public R queryValue(@Nonnull PipelineCartaTransform.Context<R> context) {
-        R value = process(context);
-        if (value != null) return value;
-        if (!context.fallthrough) return null;
-
-        return context.queryValue();
-    }
-
-    @Nullable
-    public R process(@Nonnull PipelineCartaTransform.Context<R> context) {
-        ModuloVector2iCache<Optional<R>> myValueCache = valueCache.get(context.workerId);
+        ModuloVector2iCache<R> myValueCache = valueCache.get(context.workerId);
         Vector2i position = context.getIntPosition();
         if (!myValueCache.containsKey(position)) {
             R value = root.process(context);
-            myValueCache.put(position, Optional.ofNullable(value));
+            if (value == null && context.fallthrough) value = context.queryValue();
+            if (value != null) myValueCache.put(position, value);
         }
 
-        Optional<R> value = myValueCache.get(position);
-        return value.orElse(null);
+        return myValueCache.get(position);
     }
 
     public List<R> allPossibleValues() {
