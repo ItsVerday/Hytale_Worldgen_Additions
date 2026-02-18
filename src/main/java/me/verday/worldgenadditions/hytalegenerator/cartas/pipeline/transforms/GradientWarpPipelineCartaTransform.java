@@ -9,13 +9,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class VectorWarpPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
+public class GradientWarpPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
     @Nonnull
     private final Density warpField;
     private final double sampleDistance;
     private final double warpFactor;
 
-    public VectorWarpPipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
+    public GradientWarpPipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
         super(child);
         this.warpField = warpField;
         this.sampleDistance = sampleDistance;

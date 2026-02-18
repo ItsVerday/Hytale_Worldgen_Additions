@@ -11,11 +11,11 @@ import com.hypixel.hytale.codec.validation.Validators;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
-import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.VectorWarpPipelineCartaTransform;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.GradientWarpPipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
-    public static final BuilderCodec<VectorWarpPipelineCartaTransformAsset> CODEC = BuilderCodec.builder(VectorWarpPipelineCartaTransformAsset.class, VectorWarpPipelineCartaTransformAsset::new, PipelineCartaTransformAsset.ABSTRACT_CODEC)
+public class GradientWarpPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
+    public static final BuilderCodec<GradientWarpPipelineCartaTransformAsset> CODEC = BuilderCodec.builder(GradientWarpPipelineCartaTransformAsset.class, GradientWarpPipelineCartaTransformAsset::new, PipelineCartaTransformAsset.ABSTRACT_CODEC)
             .append(new KeyedCodec<>("WarpField", DensityAsset.CODEC, true), (t, k) -> t.warpField = k, t -> t.warpField)
             .add()
             .append(new KeyedCodec<>("SampleDistance", Codec.DOUBLE, false), (t, k) -> t.sampleDistance = k, t -> t.sampleDistance)
@@ -40,7 +40,7 @@ public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransfor
             child = inputs()[0].build(arg);
         }
 
-        return new VectorWarpPipelineCartaTransform<>(child, warpFieldDensity, sampleDistance, warpFactor);
+        return new GradientWarpPipelineCartaTransform<>(child, warpFieldDensity, sampleDistance, warpFactor);
     }
 
     @Override

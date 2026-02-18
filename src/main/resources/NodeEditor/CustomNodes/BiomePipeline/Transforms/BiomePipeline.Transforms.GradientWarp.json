@@ -1,6 +1,6 @@
 {
-    "Id": "BiomePipeline.Transforms.VectorWarp",
-    "Title": "VectorWarp Biome Transform",
+    "Id": "BiomePipeline.Transforms.GradientWarp",
+    "Title": "GradientWarp Biome Transform",
     "Color": "32,153,60",
     "Content": [
         {
@@ -63,7 +63,7 @@
         }
     ],
     "Schema": {
-        "Type": "VectorWarp",
+        "Type": "GradientWarp",
         "ExportAs": "ExportAs",
         "Skip": "Skip",
         "SampleDistance": "SampleDistance",
