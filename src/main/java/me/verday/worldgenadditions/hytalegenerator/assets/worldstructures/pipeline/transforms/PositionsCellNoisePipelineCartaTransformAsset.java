@@ -28,7 +28,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             .add()
             .append(new KeyedCodec<>("DistanceFunction", DistanceFunctionAsset.CODEC, true), (t, k) -> t.distanceFunction = k, t -> t.distanceFunction)
             .add()
-            .append(new KeyedCodec<>("CellValues", new ArrayCodec<>(CellValueAsset.CODEC, CellValueAsset[]::new), true), (t, k) -> t.cellValues = k, t -> t.cellValues)
+            .append(new KeyedCodec<>("CellValues", new ArrayCodec<>(CellValueAsset.CODEC, CellValueAsset[]::new), false), (t, k) -> t.cellValues = k, t -> t.cellValues)
             .add()
             .append(new KeyedCodec<>("MaxDistance", Codec.DOUBLE, true), (t, k) -> t.maxDistance = k, t -> t.maxDistance)
             .add()
@@ -37,18 +37,21 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
     private String seed;
     private PositionProviderAsset positions;
     private DistanceFunctionAsset distanceFunction;
-    private CellValueAsset[] cellValues;
+    private CellValueAsset[] cellValues = new CellValueAsset[0];
     private double maxDistance;
 
     @NonNullDecl
     @Override
     public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
+        if (positions == null || distanceFunction == null) return new NonePipelineCartaTransform<>();
 
         SeedBox childSeed = arg.parentSeed.child(seed);
         ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<Integer>> finalCellValues = new ArrayList<>();
-        for (CellValueAsset cellValue: cellValues) {
-            finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>()));
+        if (cellValues != null) {
+            for (CellValueAsset cellValue: cellValues) {
+                finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>()));
+            }
         }
 
         return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
@@ -58,8 +61,10 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
     public void cleanUp() {
         super.cleanUp();
         positions.cleanUp();
-        for (CellValueAsset cellValue: cellValues) {
-            cellValue.cleanUp();
+        if (cellValues != null) {
+            for (CellValueAsset cellValue : cellValues) {
+                cellValue.cleanUp();
+            }
         }
     }
 
