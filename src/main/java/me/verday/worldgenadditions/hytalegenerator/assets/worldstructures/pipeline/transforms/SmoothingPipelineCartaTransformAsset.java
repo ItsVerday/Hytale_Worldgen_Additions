@@ -13,7 +13,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 public class SmoothingPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
     public static final BuilderCodec<SmoothingPipelineCartaTransformAsset> CODEC = BuilderCodec.builder(SmoothingPipelineCartaTransformAsset.class, SmoothingPipelineCartaTransformAsset::new, PipelineCartaTransformAsset.ABSTRACT_CODEC)
             .append(new KeyedCodec<>("Radius", Codec.DOUBLE, true), (t, k) -> t.radius = k, t -> t.radius)
-            .addValidator(Validators.greaterThan(0.0))
+            .addValidator(Validators.greaterThanOrEqual(0.0))
             .add()
             .append(new KeyedCodec<>("Threshold", Codec.DOUBLE, false), (t, k) -> t.threshold = k, t -> t.threshold)
             .addValidator(Validators.range(0.0, 1.0))
@@ -33,6 +33,7 @@ public class SmoothingPipelineCartaTransformAsset extends PipelineCartaTransform
             child = inputs()[0].build(arg);
         }
 
+        if (radius == 0.0 && child != null) return child;
         return new SmoothingPipelineCartaTransform<>(child, radius, threshold);
     }
 }
