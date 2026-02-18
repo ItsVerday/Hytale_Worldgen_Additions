@@ -1,17 +1,8 @@
 {
-    "Id": "BiomePipeline.Transforms.Constant",
-    "Title": "Constant Biome Transform",
+    "Id": "BiomePipeline.Transforms.Imported",
+    "Title": "Imported Biome Transform",
     "Color": "32,153,60",
     "Content": [
-        {
-            "Id": "ExportAs",
-            "Type": "SmallString",
-            "Options": {
-                "Label": "ExportAs",
-                "Default": "",
-                "Width": 200
-            }
-        },
         {
             "Id": "Skip",
             "Type": "Checkbox",
@@ -21,10 +12,10 @@
             }
         },
         {
-            "Id": "Biome",
+            "Id": "Name",
             "Type": "SmallString",
             "Options": {
-                "Label": "Biome",
+                "Label": "Name",
                 "Default": "",
                 "Width": 200
             }
@@ -38,9 +29,8 @@
         }
     ],
     "Schema": {
-        "Type": "Constant",
-        "ExportAs": "ExportAs",
+        "Type": "Imported",
         "Skip": "Skip",
-        "Value": "Biome"
+        "Name": "Name"
     }
 }

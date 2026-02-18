@@ -5,6 +5,7 @@ import com.hypixel.hytale.assetstore.codec.AssetCodecMapCodec;
 import com.hypixel.hytale.assetstore.codec.ContainedAssetCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
+import com.hypixel.hytale.builtin.hytalegenerator.LoggerUtil;
 import com.hypixel.hytale.builtin.hytalegenerator.Registry;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.biomes.BiomeAsset;
@@ -23,9 +24,11 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaTransformAsset>> {
     private static final PipelineCartaTransformAsset[] EMPTY_INPUTS = new PipelineCartaTransformAsset[0];
+    public static final ConcurrentHashMap<String, PipelineCartaTransformAsset.Exported> exportedNodes = new ConcurrentHashMap<>();
     public static final AssetCodecMapCodec<String, PipelineCartaTransformAsset> CODEC = new AssetCodecMapCodec<>(Codec.STRING, (t, k) -> t.id = k, t -> t.id, (t, k) -> t.data = k, t -> t.data);
     public static final Codec<String> CHILD_ASSET_CODEC = new ContainedAssetCodec<>(PipelineCartaTransformAsset.class, CODEC);
     public static final Codec<String[]> CHILD_ASSET_CODEC_ARRAY = new ArrayCodec<>(CHILD_ASSET_CODEC, String[]::new);
@@ -34,12 +37,26 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             .add()
             .append(new KeyedCodec<>("Skip", Codec.BOOLEAN, false), (t, k) -> t.skip = k, t -> t.skip)
             .add()
+            .append(new KeyedCodec<>("ExportAs", Codec.STRING, false), (t, k) -> t.exportName = k, t -> t.exportName)
+            .add()
+            .afterDecode(asset -> {
+                if (asset.exportName != null && !asset.exportName.isEmpty()) {
+                    if (exportedNodes.containsKey(asset.exportName)) {
+                        LoggerUtil.getLogger().warning("Duplicate export name for asset: " + asset.exportName);
+                    }
+
+                    Exported exported = new Exported(asset);
+                    exportedNodes.put(asset.exportName, exported);
+                    LoggerUtil.getLogger().fine("Registered imported node asset with name '" + asset.exportName + "' with asset id '" + asset.id);
+                }
+            })
             .build();
 
     private String id;
     private AssetExtraInfo.Data data;
     private PipelineCartaTransformAsset[] inputs = EMPTY_INPUTS;
     private boolean skip = false;
+    protected String exportName = "";
 
     protected PipelineCartaTransformAsset() {
     }
@@ -84,6 +101,10 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
         return id;
     }
 
+    public static Exported getExportedAsset(@Nonnull String name) {
+        return exportedNodes.get(name);
+    }
+
     public static class Argument {
         public MaterialCache materialCache;
         public SeedBox parentSeed;
@@ -124,6 +145,15 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             }
 
             return biomeRegistry.getIdOrRegister(biomesById.get(biomeId));
+        }
+    }
+
+    public static class Exported {
+        @Nonnull
+        public PipelineCartaTransformAsset asset;
+
+        public Exported(@Nonnull PipelineCartaTransformAsset asset) {
+            this.asset = asset;
         }
     }
 }

@@ -38,7 +38,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("VectorWarp", VectorWarpPipelineCartaTransformAsset.class, VectorWarpPipelineCartaTransformAsset.CODEC)
                 .register("PositionsCellNoise", PositionsCellNoisePipelineCartaTransformAsset.class, PositionsCellNoisePipelineCartaTransformAsset.CODEC)
                 .register("Rescale", RescalePipelineCartaTransformAsset.class, RescalePipelineCartaTransformAsset.CODEC)
-                .register("Smoothing", SmoothingPipelineCartaTransformAsset.class, SmoothingPipelineCartaTransformAsset.CODEC);
+                .register("Smoothing", SmoothingPipelineCartaTransformAsset.class, SmoothingPipelineCartaTransformAsset.CODEC)
+                .register("Imported", ImportedPipelineCartaTransformAsset.class, ImportedPipelineCartaTransformAsset.CODEC);
 
         // Biome Pipeline Conditional Conditions
         getCodecRegistry(ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC)

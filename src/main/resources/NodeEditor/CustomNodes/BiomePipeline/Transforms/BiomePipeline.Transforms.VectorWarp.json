@@ -4,6 +4,15 @@
     "Color": "32,153,60",
     "Content": [
         {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 200
+            }
+        },
+        {
             "Id": "Skip",
             "Type": "Checkbox",
             "Options": {
@@ -55,6 +64,7 @@
     ],
     "Schema": {
         "Type": "VectorWarp",
+        "ExportAs": "ExportAs",
         "Skip": "Skip",
         "SampleDistance": "SampleDistance",
         "WarpFactor": "WarpFactor",

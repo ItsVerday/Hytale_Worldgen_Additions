@@ -4,6 +4,15 @@
     "Color": "32,153,60",
     "Content": [
         {
+            "Id": "ExportAs",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "ExportAs",
+                "Default": "",
+                "Width": 200
+            }
+        },
+        {
             "Id": "Skip",
             "Type": "Checkbox",
             "Options": {
@@ -44,6 +53,7 @@
     ],
     "Schema": {
         "Type": "Conditional",
+        "ExportAs": "ExportAs",
         "Skip": "Skip",
         "Condition": {
             "Node": "BiomePipelineConditionVariants",
