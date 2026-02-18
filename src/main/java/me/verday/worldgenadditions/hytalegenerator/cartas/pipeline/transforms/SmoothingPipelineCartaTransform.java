@@ -46,6 +46,6 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
             if (count == highestCount && count >= totalCount * threshold) return value;
         }
 
-        return null;
+        return processChild(context);
     }
 }
