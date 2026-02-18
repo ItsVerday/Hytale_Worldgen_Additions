@@ -67,6 +67,9 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
     @Override
     public void cleanUp() {
         this.cleanUpInputs();
+        if (exportName != null) {
+            exportedNodes.remove(exportName);
+        }
     }
 
     protected void cleanUpInputs() {

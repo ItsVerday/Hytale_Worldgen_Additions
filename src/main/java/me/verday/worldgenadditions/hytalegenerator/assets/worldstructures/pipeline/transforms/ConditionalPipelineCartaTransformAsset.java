@@ -44,6 +44,7 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
 
     @Override
     public void cleanUp() {
+        super.cleanUp();
         if (ifTrue != null) ifTrue.cleanUp();
         if (ifFalse != null) ifFalse.cleanUp();
         condition.cleanUp();

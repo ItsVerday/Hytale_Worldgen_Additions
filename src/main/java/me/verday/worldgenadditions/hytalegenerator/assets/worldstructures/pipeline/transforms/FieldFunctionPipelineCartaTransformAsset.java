@@ -54,6 +54,7 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
     @Override
     public void cleanUp() {
+        super.cleanUp();
         if (densityAsset != null) densityAsset.cleanUp();
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {

@@ -56,6 +56,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
     @Override
     public void cleanUp() {
+        super.cleanUp();
         positions.cleanUp();
         for (CellValueAsset cellValue: cellValues) {
             cellValue.cleanUp();
