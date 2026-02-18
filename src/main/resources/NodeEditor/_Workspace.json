@@ -35,7 +35,7 @@
             "BiomePipeline.Transforms.FieldFunction",
             "BiomePipeline.Transforms.PositionsCellNoise",
             "BiomePipeline.Transforms.Queue",
-            "BiomePipeline.Transforms.VectorWarp",
+            "BiomePipeline.Transforms.GradientWarp",
             "BiomePipeline.Transforms.Rescale",
             "BiomePipeline.Transforms.Smoothing",
             "BiomePipeline.Transforms.Imported",
@@ -321,7 +321,7 @@
                 "FieldFunction": "BiomePipeline.Transforms.FieldFunction",
                 "PositionsCellNoise": "BiomePipeline.Transforms.PositionsCellNoise",
                 "Queue": "BiomePipeline.Transforms.Queue",
-                "VectorWarp": "BiomePipeline.Transforms.VectorWarp",
+                "GradientWarp": "BiomePipeline.Transforms.GradientWarp",
                 "Rescale": "BiomePipeline.Transforms.Rescale",
                 "Smoothing": "BiomePipeline.Transforms.Smoothing",
                 "Imported": "BiomePipeline.Transforms.Imported"
