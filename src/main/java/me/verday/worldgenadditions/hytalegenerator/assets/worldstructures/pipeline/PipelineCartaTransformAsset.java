@@ -101,8 +101,6 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             this.defaultBiomeId = defaultBiomeId;
             this.biomeRegistry = new Registry<>();
             this.biomesById = new HashMap<>();
-
-            cacheBiomeId(defaultBiomeId);
         }
 
         public Argument(@Nonnull Argument argument) {

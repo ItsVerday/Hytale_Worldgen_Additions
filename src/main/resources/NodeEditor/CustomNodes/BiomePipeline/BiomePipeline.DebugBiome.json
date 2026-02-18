@@ -1,0 +1,39 @@
+{
+    "Id": "BiomePipeline.DebugBiome",
+    "Title": "Debug Biome",
+    "Color": "30,150,122",
+    "Content": [
+        {
+            "Id": "Name",
+            "Type": "SmallString",
+            "Options": {
+                "Label": "Name",
+                "Default": "Biome",
+                "Width": 200
+            }
+        }
+    ],
+    "Inputs": [
+        {
+            "Id": "Output",
+            "Type": "BiomePipeline.DebugBiomeConnection",
+            "Color": "30,150,122"
+        }
+    ],
+    "Outputs": [
+        {
+            "Id": "Material",
+            "Type": "Material.Connection",
+            "Color": "Yellow",
+            "Label": "Material",
+            "Multiple": false
+        }
+    ],
+    "Schema": {
+        "Name": "Name",
+        "Material": {
+            "Node": "Material",
+            "Pin": "Material"
+        }
+    }
+}

@@ -52,6 +52,13 @@
             "Color": "Blue",
             "Label": "SpawnPositions",
             "Multiple": false
+        },
+        {
+            "Id": "DebugBiomes",
+            "Type": "BiomePipeline.DebugBiomeConnection",
+            "Color": "30,150,122",
+            "Label": "DebugBiomes",
+            "Multiple": true
         }
     ],
     "Inputs": [],
@@ -71,6 +78,10 @@
         "SpawnPositions": {
             "Node": "PositionsVariants",
             "Pin": "SpawnPositions"
+        },
+        "DebugBiomes": {
+            "Node": "BiomePipeline.DebugBiome",
+            "Pin": "DebugBiomes"
         }
     }
 }

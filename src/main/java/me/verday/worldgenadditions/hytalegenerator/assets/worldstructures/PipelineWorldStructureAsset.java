@@ -14,6 +14,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import com.hypixel.hytale.codec.validation.Validators;
+import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaDebugBiomeAsset;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaStageAsset;
 import me.verday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
@@ -41,6 +42,8 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             .add()
             .append(new KeyedCodec<>("Stages", new ArrayCodec<>(PipelineCartaStageAsset.CODEC, PipelineCartaStageAsset[]::new), true), (t, k) -> t.stages = k, t -> t.stages)
             .add()
+            .append(new KeyedCodec<>("DebugBiomes", new ArrayCodec<>(PipelineCartaDebugBiomeAsset.CODEC, PipelineCartaDebugBiomeAsset[]::new), false), (t, k) -> t.debugBiomeAssets = k, t -> t.debugBiomeAssets)
+            .add()
             .build();
 
     private int biomeTransitionDistance = 32;
@@ -48,6 +51,7 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
     private String defaultBiomeId = "";
     private FrameworkAsset[] frameworkAssets = new FrameworkAsset[0];
     private PositionProviderAsset spawnPositionsAsset = new ListPositionProviderAsset();
+    private PipelineCartaDebugBiomeAsset[] debugBiomeAssets = new PipelineCartaDebugBiomeAsset[0];
 
     private PipelineCartaStageAsset[] stages = new PipelineCartaStageAsset[0];
 
@@ -60,23 +64,44 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             frameworkAsset.build(argument, referenceBundle);
         }
 
-        PipelineCartaTransformAsset.Argument arg = new PipelineCartaTransformAsset.Argument(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerId, defaultBiomeId);
+        PipelineCartaTransformAsset.Argument transformArgument = new PipelineCartaTransformAsset.Argument(argument.materialCache, argument.parentSeed, referenceBundle, argument.workerId, defaultBiomeId);
+        for (PipelineCartaDebugBiomeAsset debugBiomeAsset: debugBiomeAssets) {
+            transformArgument.biomesById.put(debugBiomeAsset.getBiomeName(), debugBiomeAsset.build(argument.materialCache));
+        }
+
         ArrayList<PipelineCartaStage<Integer>> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(arg.cacheBiomeId(defaultBiomeId)), false));
+        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(transformArgument.cacheBiomeId(defaultBiomeId)), false));
 
         for (PipelineCartaStageAsset stage: stages) {
-            finalStages.add(stage.build(arg));
+            finalStages.add(stage.build(transformArgument));
         }
 
         PipelineCarta<Integer> biomeCarta = new PipelineCarta<>(finalStages);
         int defaultRadius = Math.max(1, this.biomeTransitionDistance / 2);
         PositionProvider spawnPositions = spawnPositionsAsset.build(new PositionProviderAsset.Argument(argument.parentSeed, referenceBundle, argument.workerId));
-        return new WorldStructure(biomeCarta, arg.biomeRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);
+        return new WorldStructure(biomeCarta, transformArgument.biomeRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);
     }
 
     @NonNullDecl
     @Override
     public PositionProviderAsset getSpawnPositionsAsset() {
         return spawnPositionsAsset;
+    }
+
+    @Override
+    public void cleanUp() {
+        for (FrameworkAsset frameworkAsset: frameworkAssets) {
+            frameworkAsset.cleanUp();
+        }
+
+        for (PipelineCartaDebugBiomeAsset debugBiomeAsset: debugBiomeAssets) {
+            debugBiomeAsset.cleanUp();
+        }
+
+        spawnPositionsAsset.cleanUp();
+
+        for (PipelineCartaStageAsset stage: stages) {
+            stage.cleanUp();
+        }
     }
 }

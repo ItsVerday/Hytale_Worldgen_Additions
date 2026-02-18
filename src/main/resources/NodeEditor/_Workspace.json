@@ -27,7 +27,7 @@
         "BiomePipeline": [
             "BiomePipeline",
             "BiomePipeline.Stage",
-            "BiomePipeline.ContentFields.BaseHeight"
+            "BiomePipeline.DebugBiome"
         ],
         "BiomePipelineTransforms": [
             "BiomePipeline.Transforms.Constant",
