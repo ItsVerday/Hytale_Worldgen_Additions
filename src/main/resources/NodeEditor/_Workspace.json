@@ -38,6 +38,7 @@
             "BiomePipeline.Transforms.GradientWarp",
             "BiomePipeline.Transforms.Rescale",
             "BiomePipeline.Transforms.Smoothing",
+            "BiomePipeline.Transforms.Cache",
             "BiomePipeline.Transforms.Imported",
             "BiomePipeline.FieldFunctionTransform.Delimiter",
             "BiomePipeline.PCNCellValues.CellValue"
@@ -324,6 +325,7 @@
                 "GradientWarp": "BiomePipeline.Transforms.GradientWarp",
                 "Rescale": "BiomePipeline.Transforms.Rescale",
                 "Smoothing": "BiomePipeline.Transforms.Smoothing",
+                "Cache": "BiomePipeline.Transforms.Cache",
                 "Imported": "BiomePipeline.Transforms.Imported"
             }
         },
