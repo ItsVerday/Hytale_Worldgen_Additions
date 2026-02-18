@@ -4,6 +4,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.density.ConstantDensity
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.ConstantValueDensity;
+import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.MultiCacheDensity;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -34,7 +35,7 @@ public class GradientWarpPipelineCartaTransformAsset extends PipelineCartaTransf
     public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
         if (isSkipped()) return new NonePipelineCartaTransform<>();
 
-        Density warpFieldDensity = warpField != null ? warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : new ConstantValueDensity(0.0);
+        Density warpFieldDensity = warpField != null ? new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), 256) : new ConstantValueDensity(0.0);
         PipelineCartaTransform<Integer> child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
