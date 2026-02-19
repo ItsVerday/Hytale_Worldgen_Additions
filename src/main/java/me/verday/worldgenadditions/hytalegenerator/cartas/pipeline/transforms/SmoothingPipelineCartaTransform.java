@@ -24,20 +24,23 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
         HashMap<R, Integer> counts = new HashMap<>();
         int totalCount = 0;
         int highestCount = 0;
-        int totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1);
+        double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.78;
 
         for (int dx = -radiusInt; dx <= radiusInt; dx++) {
             for (int dz = -radiusInt; dz <= radiusInt; dz++) {
                 if (dx * dx + dz * dz > radius * radius) continue;
 
                 R value = processChild(context.withOffset(dx, dz));
+                if (value == null) continue;
+
                 int currentCount = 1;
                 if (counts.containsKey(value)) currentCount = counts.get(value) + 1;
                 counts.put(value, currentCount);
+
+                if (currentCount >= totalCountEstimate * threshold) return value;
+
                 if (currentCount > highestCount) highestCount = currentCount;
                 totalCount++;
-                // Optimization: If we have already passed the (estimated) threshold, just return early.
-                if (currentCount >= totalCountEstimate * threshold) return value;
             }
         }
 
