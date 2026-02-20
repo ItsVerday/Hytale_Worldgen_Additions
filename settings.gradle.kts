@@ -24,6 +24,6 @@ hytale {
         Group = "Verday"
         Name = "Worldgen_Additions"
         Main = "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
-        ServerVersion = "2026.02.18-f3b8fff95"
+        ServerVersion = "2026.02.19-1a311a592"
     }
 }
