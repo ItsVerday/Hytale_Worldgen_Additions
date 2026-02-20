@@ -5,6 +5,7 @@ import com.hypixel.hytale.assetstore.codec.AssetBuilderCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
+import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.positions.distancefunctions.DistanceFunctionAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.positionproviders.PositionProviderAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.seed.SeedBox;
@@ -34,11 +35,14 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             .append(new KeyedCodec<>("MaxDistance", Codec.DOUBLE, true), (t, k) -> t.maxDistance = k, t -> t.maxDistance)
             .addValidator(Validators.greaterThan(0.0))
             .add()
+            .append(new KeyedCodec<>("DistanceWarp", DensityAsset.CODEC, false), (t, k) -> t.distanceWarp = k, t -> t.distanceWarp)
+            .add()
             .build();
 
     private String seed;
     private PositionProviderAsset positions;
     private DistanceFunctionAsset distanceFunction;
+    private DensityAsset distanceWarp;
     private CellValueAsset[] cellValues = new CellValueAsset[0];
     private double maxDistance;
 
@@ -56,13 +60,14 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             }
         }
 
-        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
+        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, distanceWarp != null ? distanceWarp.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : null, maxDistance);
     }
 
     @Override
     public void cleanUp() {
         super.cleanUp();
         positions.cleanUp();
+        if (distanceWarp != null) distanceWarp.cleanUp();
         if (cellValues != null) {
             for (CellValueAsset cellValue : cellValues) {
                 cellValue.cleanUp();

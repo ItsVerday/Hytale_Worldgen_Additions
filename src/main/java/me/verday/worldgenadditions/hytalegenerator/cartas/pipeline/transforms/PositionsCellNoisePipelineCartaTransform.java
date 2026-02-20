@@ -1,5 +1,6 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
+import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.positions.distancefunctions.DistanceFunction;
 import com.hypixel.hytale.builtin.hytalegenerator.positionproviders.PositionProvider;
 import com.hypixel.hytale.math.util.HashUtil;
@@ -9,6 +10,7 @@ import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCarta
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,18 +20,19 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
     private final PositionProvider positions;
     private final DistanceFunction distanceFunction;
     private final List<CellValue<R>> cellValues;
+    @Nullable
+    private final Density distanceWarpField;
     private double maximumWeight;
 
     private final double maxDistance;
-    private final double maxDistanceSquared;
 
-    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance) {
+    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, @Nullable Density distanceWarpField, double maxDistance) {
         this.seed = seed;
         this.positions = positions;
         this.distanceFunction = distanceFunction;
         this.cellValues = cellValues;
+        this.distanceWarpField = distanceWarpField;
         this.maxDistance = maxDistance;
-        this.maxDistanceSquared = maxDistance * maxDistance;
 
         maximumWeight = 0;
         for (CellValue<R> cellValue: cellValues) {
@@ -41,10 +44,12 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
     @Override
     public R process(@NonNullDecl Context<R> context) {
         // Implementation modified from PositionsDensity
-        Vector3d min = new Vector3d(context.position.x - maxDistance, 0, context.position.y - maxDistanceSquared);
-        Vector3d max = new Vector3d(context.position.x + maxDistance, 384, context.position.y + maxDistanceSquared);
+        Vector3d min = new Vector3d(context.position.x - maxDistance, 0, context.position.y - maxDistance);
+        Vector3d max = new Vector3d(context.position.x + maxDistance, 384, context.position.y + maxDistance);
         double[] distance = new double[] {Double.MAX_VALUE};
         boolean[] hasClosestPoint = new boolean[1];
+        Density.Context densityContext = new Density.Context();
+        densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
         Vector2d closestPoint = new Vector2d();
         Vector3d localPoint = new Vector3d();
 
@@ -52,7 +57,14 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
             localPoint.x = providedPoint.x - context.position.x;
             localPoint.y = 0;
             localPoint.z = providedPoint.z - context.position.y;
-            double newDistance = distanceFunction.getDistance(localPoint);
+            double newDistance = Math.sqrt(distanceFunction.getDistance(localPoint));
+
+            if (distanceWarpField != null) {
+                Density.Context densityChildContext = new Density.Context(densityContext);
+                densityChildContext.position.add(providedPoint);
+                newDistance += distanceWarpField.process(densityChildContext);
+            }
+
             if (newDistance < distance[0]) {
                 distance[0] = newDistance;
                 closestPoint.assign(new Vector2d(providedPoint.x, providedPoint.z));

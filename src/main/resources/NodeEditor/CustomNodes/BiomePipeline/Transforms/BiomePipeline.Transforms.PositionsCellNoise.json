@@ -67,6 +67,13 @@
             "Color": "28,145,166",
             "Label": "CellValues",
             "Multiple": true
+        },
+        {
+            "Id": "DistanceWarp",
+            "Type": "DensityConnection",
+            "Color": "Purple",
+            "Label": "DistanceWarp",
+            "Multiple": false
         }
     ],
     "Schema": {
@@ -86,6 +93,10 @@
         "CellValues": {
             "Node": "BiomePipeline.PCNCellValues.CellValue",
             "Pin": "CellValues"
+        },
+        "DistanceWarp": {
+            "Node": "DensityNodeVariants",
+            "Pin": "DistanceWarp"
         }
     }
 }
