@@ -12,6 +12,7 @@ import java.util.List;
 
 public class PipelineCarta<R> extends BiCarta<R> {
     private final List<PipelineCartaStage<R>> stages;
+    private PipelineCartaStage<R> lastStage = null;
     private List<R> allPossibleValues = null;
 
     public PipelineCarta(List<PipelineCartaStage<R>> stages) {
@@ -26,17 +27,19 @@ public class PipelineCarta<R> extends BiCarta<R> {
 
     @Override
     public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        PipelineCartaStage<R> lastStage = getPreviousStage(stages.size());
+        if (lastStage == null) lastStage = getPreviousStage(stages.size());
         PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2d(x, z), id, lastStage, true);
         return lastStage.queryValue(ctx);
     }
 
     public PipelineCartaStage<R> getPreviousStage(int stageIndex) {
+        PipelineCartaStage<R> stage;
         do {
             stageIndex--;
-        } while (stages.get(stageIndex).isSkipped());
+            stage = stages.get(stageIndex);
+        } while (stage.isSkipped());
 
-        return stages.get(stageIndex);
+        return stage;
     }
 
     @Override

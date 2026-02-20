@@ -49,8 +49,11 @@ public abstract class PipelineCartaTransform<R> {
         }
 
         public R queryValue() {
-            PipelineCartaStage<R> previousStage = stage.getPrevious();
-            return previousStage.queryValue(withStage(previousStage));
+            return queryValueWithStage(stage.getPrevious());
+        }
+
+        private R queryValueWithStage(PipelineCartaStage<R> stageToQuery) {
+            return stageToQuery.queryValue(withStage(stageToQuery));
         }
 
         public Vector2i getIntPosition() {
