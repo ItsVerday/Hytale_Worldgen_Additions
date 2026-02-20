@@ -11,6 +11,14 @@
                 "Default": 1,
                 "Width": 50
             }
+        },
+        {
+            "Id": "OriginValue",
+            "Type": "Checkbox",
+            "Options": {
+                "Label": "OriginValue",
+                "Default": false
+            }
         }
     ],
     "Inputs": [
@@ -31,6 +39,7 @@
     ],
     "Schema": {
         "Weight": "Weight",
+        "OriginValue": "OriginValue",
         "Biome": {
             "Node": "BiomePipelineTransformVariants",
             "Pin": "Biome"

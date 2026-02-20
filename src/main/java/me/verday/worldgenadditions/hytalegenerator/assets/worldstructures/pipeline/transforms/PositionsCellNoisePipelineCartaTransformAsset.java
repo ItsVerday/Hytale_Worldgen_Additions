@@ -34,8 +34,6 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             .append(new KeyedCodec<>("MaxDistance", Codec.DOUBLE, true), (t, k) -> t.maxDistance = k, t -> t.maxDistance)
             .addValidator(Validators.greaterThan(0.0))
             .add()
-            .append(new KeyedCodec<>("OriginValues", Codec.BOOLEAN, false), (t, k) -> t.originValues = k, t -> t.originValues)
-            .add()
             .build();
 
     private String seed;
@@ -43,7 +41,6 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
     private DistanceFunctionAsset distanceFunction;
     private CellValueAsset[] cellValues = new CellValueAsset[0];
     private double maxDistance;
-    private boolean originValues = false;
 
     @NonNullDecl
     @Override
@@ -55,11 +52,11 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
         ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<Integer>> finalCellValues = new ArrayList<>();
         if (cellValues != null) {
             for (CellValueAsset cellValue: cellValues) {
-                finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>()));
+                finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>(), cellValue.originValue));
             }
         }
 
-        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance, originValues);
+        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, maxDistance);
     }
 
     @Override
@@ -79,6 +76,8 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
                 .add()
                 .append(new KeyedCodec<>("Weight", Codec.DOUBLE, true), (t, k) -> t.weight = k, t -> t.weight)
                 .add()
+                .append(new KeyedCodec<>("OriginValue", Codec.BOOLEAN, false), (t, k) -> t.originValue = k, t -> t.originValue)
+                .add()
                 .build();
 
         private String id;
@@ -86,6 +85,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
         private double weight;
         private PipelineCartaTransformAsset transform;
+        private boolean originValue = false;
 
         public String getId() {
             return this.id;

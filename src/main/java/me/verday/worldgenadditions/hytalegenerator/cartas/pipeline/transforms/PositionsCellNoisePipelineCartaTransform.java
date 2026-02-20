@@ -18,18 +18,16 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
     private final PositionProvider positions;
     private final DistanceFunction distanceFunction;
     private final List<CellValue<R>> cellValues;
-    private final boolean originValues;
     private double maximumWeight;
 
     private final double maxDistance;
     private final double maxDistanceSquared;
 
-    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance, boolean originValues) {
+    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue<R>> cellValues, double maxDistance) {
         this.seed = seed;
         this.positions = positions;
         this.distanceFunction = distanceFunction;
         this.cellValues = cellValues;
-        this.originValues = originValues;
         this.maxDistance = maxDistance;
         this.maxDistanceSquared = maxDistance * maxDistance;
 
@@ -69,13 +67,21 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         positions.positionsIn(positionsContext);
 
         if (hasClosestPoint[0]) {
-            Context<R> childContext = new Context<>(context);
-            if (originValues) childContext.position = closestPoint;
+            CellValue<R> cellValueHere = null;
+            double hashValue = HashUtil.random(seed, Double.doubleToLongBits(closestPoint.x), Double.doubleToLongBits(closestPoint.y)) * maximumWeight;
 
-            double value = HashUtil.random(seed, Double.doubleToLongBits(closestPoint.x), Double.doubleToLongBits(closestPoint.y)) * maximumWeight;
             for (CellValue<R> cellValue : cellValues) {
-                value -= cellValue.weight;
-                if (value < 0) return cellValue.value.process(childContext);
+                hashValue -= cellValue.weight;
+                if (hashValue < 0) {
+                    cellValueHere = cellValue;
+                    break;
+                }
+            }
+
+            if (cellValueHere != null) {
+                Context<R> childContext = new Context<>(context);
+                if (cellValueHere.originValue) childContext.position = closestPoint;
+                return cellValueHere.value.process(childContext);
             }
         }
 
@@ -100,10 +106,12 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
     public static class CellValue<R> {
         double weight;
         PipelineCartaTransform<R> value;
+        boolean originValue;
 
-        public CellValue(double weight, PipelineCartaTransform<R> value) {
+        public CellValue(double weight, PipelineCartaTransform<R> value, boolean originValue) {
             this.weight = weight;
             this.value = value;
+            this.originValue = originValue;
         }
     }
 }
