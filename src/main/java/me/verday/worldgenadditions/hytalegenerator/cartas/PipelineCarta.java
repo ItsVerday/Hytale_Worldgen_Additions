@@ -29,7 +29,7 @@ public class PipelineCarta<R> extends BiCarta<R> {
     public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
         if (lastStage == null) lastStage = getPreviousStage(stages.size());
         PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2d(x, z), id, lastStage, true);
-        return lastStage.queryValue(ctx);
+        return lastStage.process(ctx);
     }
 
     public PipelineCartaStage<R> getPreviousStage(int stageIndex) {

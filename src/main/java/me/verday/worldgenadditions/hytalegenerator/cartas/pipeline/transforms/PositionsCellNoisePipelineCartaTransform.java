@@ -57,11 +57,13 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
             localPoint.x = providedPoint.x - context.position.x;
             localPoint.y = 0;
             localPoint.z = providedPoint.z - context.position.y;
-            double newDistance = Math.sqrt(distanceFunction.getDistance(localPoint));
+            double newDistance = distanceFunction.getDistance(localPoint);
 
             if (distanceWarpField != null) {
+                newDistance = Math.sqrt(newDistance);
                 Density.Context densityChildContext = new Density.Context(densityContext);
                 densityChildContext.position.add(providedPoint);
+                densityChildContext.densityAnchor = new Vector3d(localPoint);
                 newDistance += distanceWarpField.process(densityChildContext);
             }
 
@@ -79,10 +81,10 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         positions.positionsIn(positionsContext);
 
         if (hasClosestPoint[0]) {
-            CellValue<R> cellValueHere = null;
             double hashValue = HashUtil.random(seed, Double.doubleToLongBits(closestPoint.x), Double.doubleToLongBits(closestPoint.y)) * maximumWeight;
 
-            for (CellValue<R> cellValue : cellValues) {
+            CellValue<R> cellValueHere = null;
+            for (CellValue<R> cellValue: cellValues) {
                 hashValue -= cellValue.weight;
                 if (hashValue < 0) {
                     cellValueHere = cellValue;

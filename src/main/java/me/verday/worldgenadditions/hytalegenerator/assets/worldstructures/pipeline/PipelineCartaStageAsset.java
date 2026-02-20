@@ -26,7 +26,7 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
     private boolean skip;
 
     public PipelineCartaStage<Integer> build(PipelineCartaTransformAsset.Argument arg) {
-        return new PipelineCartaStage<>(root != null ? new CachePipelineCartaTransform<>(root.build(arg)) : new NonePipelineCartaTransform<>(), isSkipped());
+        return new PipelineCartaStage<>(root != null ? root.build(arg) : new NonePipelineCartaTransform<>(), isSkipped());
     }
 
     @Override

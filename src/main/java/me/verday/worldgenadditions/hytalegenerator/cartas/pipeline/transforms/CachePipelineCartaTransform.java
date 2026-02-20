@@ -20,13 +20,13 @@ public class CachePipelineCartaTransform<R> extends AbstractContextModificationP
     @NullableDecl
     @Override
     public R process(@NonNullDecl Context<R> context) {
-        ModuloVector2iCache<Optional<R>> myValueCache = cache.get(context.workerId);
+        ModuloVector2iCache<Optional<R>> workerCache = cache.get(context.workerId);
         Vector2i position = context.getIntPosition();
-        if (!myValueCache.containsKey(position)) {
+        if (!workerCache.containsKey(position)) {
             R value = processChild(context);
-            myValueCache.put(position, Optional.ofNullable(value));
+            workerCache.put(position, Optional.ofNullable(value));
         }
 
-        return myValueCache.get(position).orElse(null);
+        return workerCache.get(position).orElse(null);
     }
 }
