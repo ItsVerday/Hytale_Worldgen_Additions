@@ -13,10 +13,6 @@ public abstract class PipelineCartaTransform<R> {
     public abstract R process(@Nonnull Context<R> context);
     public abstract List<R> allPossibleValues();
 
-    public int getMaxPipelineValueDistance() {
-        return 0;
-    }
-
     public static class Context<R> {
         @Nonnull
         public Vector2d position;

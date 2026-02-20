@@ -1,9 +1,6 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
-import com.hypixel.hytale.math.vector.Vector2i;
 import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
-import me.verday.worldgenadditions.util.ModuloVector2iCache;
-import me.verday.worldgenadditions.util.WorkerIndexerData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,13 +14,9 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final WorkerIndexerData<ModuloVector2iCache<R>> valueCache;
-
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
         this.skip = skip;
-
-        valueCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(6));
     }
 
     public void setCarta(PipelineCarta<R> carta) {
@@ -41,15 +34,9 @@ public class PipelineCartaStage<R> {
 
     @Nullable
     public R queryValue(@Nonnull PipelineCartaTransform.Context<R> context) {
-        ModuloVector2iCache<R> myValueCache = valueCache.get(context.workerId);
-        Vector2i position = context.getIntPosition();
-        if (!myValueCache.containsKey(position)) {
-            R value = root.process(context);
-            if (value == null && context.fallthrough) value = context.queryValue();
-            if (value != null) myValueCache.put(position, value);
-        }
-
-        return myValueCache.get(position);
+        R value = root.process(context);
+        if (value == null && context.fallthrough) value = context.queryValue();
+        return value;
     }
 
     public List<R> allPossibleValues() {

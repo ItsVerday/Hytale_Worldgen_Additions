@@ -8,6 +8,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
+import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 
 public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaStageAsset>> {
@@ -25,7 +26,7 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
     private boolean skip;
 
     public PipelineCartaStage<Integer> build(PipelineCartaTransformAsset.Argument arg) {
-        return new PipelineCartaStage<>(root != null ? root.build(arg) : new NonePipelineCartaTransform<>(), isSkipped());
+        return new PipelineCartaStage<>(root != null ? new CachePipelineCartaTransform<>(root.build(arg)) : new NonePipelineCartaTransform<>(), isSkipped());
     }
 
     @Override
