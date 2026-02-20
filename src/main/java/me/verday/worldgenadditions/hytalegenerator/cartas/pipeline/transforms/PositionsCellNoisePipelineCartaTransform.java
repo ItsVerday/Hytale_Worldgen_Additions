@@ -45,26 +45,20 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         // Implementation modified from PositionsDensity
         Vector3d min = new Vector3d(context.position.x - maxDistance, 0, context.position.y - maxDistanceSquared);
         Vector3d max = new Vector3d(context.position.x + maxDistance, 384, context.position.y + maxDistanceSquared);
-        double[] distance = new double[] {Double.MAX_VALUE, Double.MAX_VALUE};
-        boolean[] hasClosestPoint = new boolean[2];
+        double[] distance = new double[] {Double.MAX_VALUE};
+        boolean[] hasClosestPoint = new boolean[1];
         Vector2d closestPoint = new Vector2d();
-        Vector2d previousClosestPoint = new Vector2d();
         Vector3d localPoint = new Vector3d();
 
         Consumer<Vector3d> positionsConsumer = providedPoint -> {
             localPoint.x = providedPoint.x - context.position.x;
             localPoint.y = 0;
             localPoint.z = providedPoint.z - context.position.y;
-            double newDistance = this.distanceFunction.getDistance(localPoint);
-            if (!(maxDistanceSquared < newDistance)) {
-                distance[1] = Math.max(Math.min(distance[1], newDistance), distance[0]);
-                if (newDistance < distance[0]) {
-                    distance[0] = newDistance;
-                    previousClosestPoint.assign(closestPoint);
-                    closestPoint.assign(new Vector2d(providedPoint.x, providedPoint.z));
-                    hasClosestPoint[1] = hasClosestPoint[0];
-                    hasClosestPoint[0] = true;
-                }
+            double newDistance = distanceFunction.getDistance(localPoint);
+            if (newDistance < distance[0]) {
+                distance[0] = newDistance;
+                closestPoint.assign(new Vector2d(providedPoint.x, providedPoint.z));
+                hasClosestPoint[0] = true;
             }
         };
 
@@ -73,8 +67,6 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         positionsContext.maxExclusive = max;
         positionsContext.consumer = positionsConsumer;
         positions.positionsIn(positionsContext);
-        distance[0] = Math.sqrt(distance[0]);
-        distance[1] = Math.sqrt(distance[1]);
 
         if (hasClosestPoint[0]) {
             Context<R> childContext = new Context<>(context);
