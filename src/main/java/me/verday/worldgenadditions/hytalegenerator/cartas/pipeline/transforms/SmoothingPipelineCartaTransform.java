@@ -24,7 +24,7 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
         HashMap<R, Integer> counts = new HashMap<>();
         int totalCount = 0;
         int highestCount = 0;
-        double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.78;
+        double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.79;
 
         for (int dx = -radiusInt; dx <= radiusInt; dx++) {
             for (int dz = -radiusInt; dz <= radiusInt; dz++) {
@@ -34,10 +34,13 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
                 if (value == null) continue;
 
                 int currentCount = 1;
-                if (counts.containsKey(value)) currentCount = counts.get(value) + 1;
-                counts.put(value, currentCount);
+                Integer count = counts.get(value);
+                if (count != null) {
+                    currentCount = count + 1;
+                    if (currentCount >= totalCountEstimate * threshold) return value;
+                }
 
-                if (currentCount >= totalCountEstimate * threshold) return value;
+                counts.put(value, currentCount);
 
                 if (currentCount > highestCount) highestCount = currentCount;
                 totalCount++;
