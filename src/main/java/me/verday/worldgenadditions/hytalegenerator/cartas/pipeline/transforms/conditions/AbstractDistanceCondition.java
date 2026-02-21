@@ -58,7 +58,7 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
                 for (int dx = -range; dx <= range; dx++) {
                     for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
                         int distance = dx * dx + dz * dz;
-                        if (distance > distanceEstimate * distanceEstimate || distance > foundDistance) continue;
+                        if (distance > maxDistance * maxDistance || distance > foundDistance) continue;
                         if (child.process(context.withOffset(dx, dz))) foundDistance = distance;
                     }
                 }
