@@ -37,12 +37,18 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             .add()
             .append(new KeyedCodec<>("DistanceWarp", DensityAsset.CODEC, false), (t, k) -> t.distanceWarp = k, t -> t.distanceWarp)
             .add()
+            .append(new KeyedCodec<>("DistanceWarpMin", Codec.DOUBLE, false), (t, k) -> t.distanceWarpMin = k, t -> t.distanceWarpMin)
+            .add()
+            .append(new KeyedCodec<>("DistanceWarpMax", Codec.DOUBLE, false), (t, k) -> t.distanceWarpMax = k, t -> t.distanceWarpMax)
+            .add()
             .build();
 
     private String seed;
     private PositionProviderAsset positions;
     private DistanceFunctionAsset distanceFunction;
     private DensityAsset distanceWarp;
+    private double distanceWarpMin = 0.0;
+    private double distanceWarpMax = 1.0;
     private CellValueAsset[] cellValues = new CellValueAsset[0];
     private double maxDistance;
 
@@ -60,7 +66,7 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
             }
         }
 
-        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, distanceWarp != null ? distanceWarp.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : null, maxDistance);
+        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, distanceWarp != null ? distanceWarp.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : null, distanceWarpMin, distanceWarpMax, maxDistance);
     }
 
     @Override

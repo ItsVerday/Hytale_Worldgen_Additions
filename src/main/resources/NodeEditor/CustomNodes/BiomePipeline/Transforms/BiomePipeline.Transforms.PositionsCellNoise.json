@@ -37,6 +37,24 @@
                 "Default": 32,
                 "Width": 50
             }
+        },
+        {
+            "Id": "DistanceWarpMin",
+            "Type": "Float",
+            "Options": {
+                "Label": "DistanceWarpMin",
+                "Default": 0,
+                "Width": 50
+            }
+        },
+        {
+            "Id": "DistanceWarpMax",
+            "Type": "Float",
+            "Options": {
+                "Label": "DistanceWarpMax",
+                "Default": 1,
+                "Width": 50
+            }
         }
     ],
     "Inputs": [
@@ -82,6 +100,8 @@
         "ExportAs": "ExportAs",
         "Seed": "Seed",
         "MaxDistance": "MaxDistance",
+        "DistanceWarpMin": "DistanceWarpMin",
+        "DistanceWarpMax": "DistanceWarpMax",
         "Positions": {
             "Node": "BiomePipelineTransformVariants",
             "Pin": "Positions"
