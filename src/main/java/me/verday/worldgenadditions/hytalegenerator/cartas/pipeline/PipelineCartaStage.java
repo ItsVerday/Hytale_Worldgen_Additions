@@ -1,7 +1,6 @@
 package me.verday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.math.vector.Vector2i;
-import me.verday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import me.verday.worldgenadditions.util.ModuloVector2iCache;
 import me.verday.worldgenadditions.util.WorkerIndexerData;
 
@@ -10,9 +9,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class PipelineCartaStage<R> {
-    private PipelineCarta<R> carta = null;
     private PipelineCartaStage<R> previousStage = null;
-    private int stageIndex;
 
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
@@ -26,30 +23,27 @@ public class PipelineCartaStage<R> {
         this.cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(6));
     }
 
-    public void setCarta(PipelineCarta<R> carta) {
-        this.carta = carta;
-    }
-
-    public void setStageIndex(int stageIndex) {
-        this.stageIndex = stageIndex;
-    }
-
-    public PipelineCartaStage<R> getPrevious() {
-        if (previousStage == null) previousStage = carta.getPreviousStage(stageIndex);
-        return previousStage;
+    public void setPreviousStage(PipelineCartaStage<R> previousStage) {
+        this.previousStage = previousStage;
     }
 
     @Nullable
     public R process(@Nonnull PipelineCartaTransform.Context<R> context) {
+        context = context.withStage(this);
         ModuloVector2iCache<R> workerCache = cache.get(context.workerId);
         Vector2i position = context.getIntPosition();
         if (!workerCache.containsKey(position)) {
             R value = root.process(context);
-            if (context.fallthrough && value == null) value = context.queryValue();
+            if (context.fallthrough && value == null) value = processPrevious(context);
             workerCache.put(position, value);
         }
 
         return workerCache.get(position);
+    }
+
+    @Nullable
+    public R processPrevious(@Nonnull PipelineCartaTransform.Context<R> context) {
+        return previousStage.process(context);
     }
 
     public List<R> allPossibleValues() {

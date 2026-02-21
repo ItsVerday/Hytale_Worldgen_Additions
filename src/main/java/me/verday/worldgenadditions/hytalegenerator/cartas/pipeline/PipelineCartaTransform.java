@@ -44,11 +44,6 @@ public abstract class PipelineCartaTransform<R> {
             return new Context<>(new Vector2d(position.x + x, position.y + z), workerId, stage, fallthrough);
         }
 
-        public R queryValue() {
-            PipelineCartaStage<R> previous = stage.getPrevious();
-            return previous.process(withStage(previous));
-        }
-
         public Vector2i getIntPosition() {
             return new Vector2i((int) position.x, (int) position.y);
         }

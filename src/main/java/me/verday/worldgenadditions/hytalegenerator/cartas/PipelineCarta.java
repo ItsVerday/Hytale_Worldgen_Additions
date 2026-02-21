@@ -12,34 +12,27 @@ import java.util.List;
 
 public class PipelineCarta<R> extends BiCarta<R> {
     private final List<PipelineCartaStage<R>> stages;
-    private PipelineCartaStage<R> lastStage = null;
+    private final PipelineCartaStage<R> lastStage;
     private List<R> allPossibleValues = null;
 
     public PipelineCarta(List<PipelineCartaStage<R>> stages) {
         this.stages = stages;
 
-        int index = 0;
+        PipelineCartaStage<R> previousStage = null;
         for (PipelineCartaStage<R> stage: stages) {
-            stage.setCarta(this);
-            stage.setStageIndex(index++);
+            if (!stage.isSkipped()) {
+                stage.setPreviousStage(previousStage);
+                previousStage = stage;
+            }
         }
+
+        lastStage = previousStage;
     }
 
     @Override
     public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        if (lastStage == null) lastStage = getPreviousStage(stages.size());
         PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2d(x, z), id, lastStage, true);
         return lastStage.process(ctx);
-    }
-
-    public PipelineCartaStage<R> getPreviousStage(int stageIndex) {
-        PipelineCartaStage<R> stage;
-        do {
-            stageIndex--;
-            stage = stages.get(stageIndex);
-        } while (stage.isSkipped());
-
-        return stage;
     }
 
     @Override

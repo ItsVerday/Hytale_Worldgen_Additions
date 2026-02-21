@@ -15,6 +15,6 @@ public class ValueCondition<R> extends ConditionalPipelineCartaTransform.Conditi
 
     @Override
     public boolean process(PipelineCartaTransform.Context<R> context) {
-        return context.queryValue().equals(value);
+        return value.equals(context.stage.processPrevious(context));
     }
 }
