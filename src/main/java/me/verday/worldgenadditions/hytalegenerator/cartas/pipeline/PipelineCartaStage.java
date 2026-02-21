@@ -8,7 +8,6 @@ import me.verday.worldgenadditions.util.WorkerIndexerData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 public class PipelineCartaStage<R> {
     private PipelineCarta<R> carta = null;

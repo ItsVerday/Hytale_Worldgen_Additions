@@ -8,7 +8,6 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
-import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
 import me.verday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 
 public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaStageAsset>> {
