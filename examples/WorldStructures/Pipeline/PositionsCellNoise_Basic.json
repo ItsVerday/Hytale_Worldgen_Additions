@@ -1,0 +1,315 @@
+{
+	"$NodeId":	"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d",
+	"$Comment":	"An example of the PositionsCellNoise node, which allows for \"cells\" of biome values.",
+	"Type":	"Pipeline",
+	"DefaultBiome":	"White",
+	"DefaultTransitionDistance":	32,
+	"MaxBiomeEdgeDistance":	32,
+	"Stages":	[{
+		"$NodeId":	"BiomePipeline.Stage-09dbe561-7776-4aeb-b031-5b2fc6bcc57c",
+		"Skip":	false,
+		"Root":	{
+			"$NodeId":	"BiomePipeline.Transforms.PositionsCellNoise-e587f119-00a5-4594-a2b8-6a59ba2b89bf",
+			"$Comment":	"Takes in a PositonsProvider, and generates cells of biomes around those Positions.",
+			"Type":	"PositionsCellNoise",
+			"Skip":	false,
+			"Seed":	"Cells",
+			"MaxDistance":	64,
+			"DistanceWarpMin":	0,
+			"DistanceWarpMax":	0,
+			"Positions":	{
+				"$NodeId":	"Mesh2DPositions-35bd2a2f-ea9f-42a9-bf15-40b1ed324ced",
+				"$Comment":	"These are the center positions of the biome cells.",
+				"Type":	"Mesh2D",
+				"Skip":	false,
+				"PointsY":	0,
+				"PointGenerator":	{
+					"$NodeId":	"MeshPointGenerator-c21a3fa6-8e38-4287-8e0a-0402c3feb4ee",
+					"Type":	"Mesh",
+					"Jitter":	0.4,
+					"ScaleX":	32,
+					"ScaleY":	32,
+					"ScaleZ":	32,
+					"Seed":	"Cell_Points"
+				}
+			},
+			"DistanceFunction":	{
+				"$NodeId":	"PCNDistanceFunction-aa4f0f8e-ac12-490e-8961-6d7e9cac7628",
+				"$Comment":	"Distance Function, can also be Manhattan.",
+				"Type":	"Euclidean"
+			},
+			"CellValues":	[{
+				"$NodeId":	"BiomePipeline.PCNCellValues.CellValue-d2d2d1ec-9f7b-4cec-bcc7-1f535bc8110c",
+				"$Comment":	"A possible cell value. The attached biome will be used to fill cells with this value.",
+				"Weight":	1,
+				"OriginValue":	false,
+				"Biome":	{
+					"$NodeId":	"BiomePipeline.Transforms.Constant-83a47cea-2881-4d4b-ac96-47703af36d03",
+					"Type":	"Constant",
+					"Skip":	false,
+					"Value":	"Black"
+				}
+			}, {
+				"$NodeId":	"BiomePipeline.PCNCellValues.CellValue-c6ac8926-9205-48cb-a714-cb4db2ed12fa",
+				"$Comment":	"Cells values have a weight, the relative probability of each cell value being picked. Notice how these cells are rarer.",
+				"Weight":	0.5,
+				"OriginValue":	false,
+				"Biome":	{
+					"$NodeId":	"BiomePipeline.Transforms.Constant-7ce55048-7a78-4414-994a-2dc0a14f575b",
+					"Type":	"Constant",
+					"Skip":	false,
+					"Value":	"White"
+				}
+			}, {
+				"$NodeId":	"BiomePipeline.PCNCellValues.CellValue-5b645093-556c-4b8a-804e-65234adec1b6",
+				"Weight":	1,
+				"OriginValue":	false,
+				"Biome":	{
+					"$NodeId":	"BiomePipeline.Transforms.Constant-d605ef2b-25f3-4bdb-8083-3051108b6781",
+					"Type":	"Constant",
+					"Skip":	false,
+					"Value":	"Gray"
+				}
+			}, {
+				"$NodeId":	"BiomePipeline.PCNCellValues.CellValue-24c4388c-809d-4251-beb1-d075b9c26877",
+				"Weight":	1,
+				"OriginValue":	false,
+				"Biome":	{
+					"$NodeId":	"BiomePipeline.Transforms.Constant-f6b03b0c-3b4e-4eb0-8341-5744273de1ba",
+					"Type":	"Constant",
+					"Skip":	false,
+					"Value":	"Light_Gray"
+				}
+			}]
+		}
+	}],
+	"Framework":	[{
+		"$Generic":	true,
+		"Type":	"Positions",
+		"Entries":	[{
+			"Name":	"Spawns",
+			"Positions":	{
+				"Type":	"List",
+				"ExportAs":	"Spawns",
+				"Positions":	[{
+					"X":	0,
+					"Y":	200,
+					"Z":	0
+				}]
+			}
+		}]
+	}, {
+		"$Generic":	true,
+		"Type":	"DecimalConstants",
+		"Entries":	[{
+			"Name":	"Base",
+			"Value":	100
+		}, {
+			"Name":	"Water",
+			"Value":	100
+		}, {
+			"Name":	"Bedrock",
+			"Value":	0
+		}]
+	}],
+	"SpawnPositions":	{
+		"$NodeId":	"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74",
+		"Type":	"Imported",
+		"Name":	"Spawns",
+		"Skip":	false
+	},
+	"DebugBiomes":	[{
+		"$NodeId":	"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07",
+		"Name":	"White",
+		"Material":	{
+			"$NodeId":	"Material-350354fe-74ec-4418-8c27-119aeadce80e",
+			"Solid":	"Cloth_Block_Wool_White",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-5dee2268-9e5a-45e5-b37c-edbd97e21cc8",
+		"Name":	"Black",
+		"Material":	{
+			"$NodeId":	"Material-aa0f8bc0-4935-4ad0-af0d-1652ec150874",
+			"Solid":	"Cloth_Block_Wool_Black",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-f5bf5a17-dfe3-47ce-bb82-3730f7622153",
+		"Name":	"Gray",
+		"Material":	{
+			"$NodeId":	"Material-cd485596-cb4f-4738-9109-f57f523fa7f3",
+			"Solid":	"Cloth_Block_Wool_Gray",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-0e889517-63c6-4f5e-b5c5-610735366bbb",
+		"Name":	"Light_Gray",
+		"Material":	{
+			"$NodeId":	"Material-206deeba-f1e0-4123-8974-10c69edc0096",
+			"Solid":	"Cloth_Block_Wool_Gray_Light",
+			"SolidBottomUp":	false
+		}
+	}],
+	"$NodeEditorMetadata":	{
+		"$Nodes":	{
+			"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d":	{
+				"$Position":	{
+					"$x":	526,
+					"$y":	7
+				},
+				"$Title":	"[ROOT] Biome"
+			},
+			"BiomePipeline.Stage-09dbe561-7776-4aeb-b031-5b2fc6bcc57c":	{
+				"$Position":	{
+					"$x":	1153,
+					"$y":	7
+				}
+			},
+			"BiomePipeline.Transforms.PositionsCellNoise-e587f119-00a5-4594-a2b8-6a59ba2b89bf":	{
+				"$Position":	{
+					"$x":	1632,
+					"$y":	7
+				}
+			},
+			"Mesh2DPositions-35bd2a2f-ea9f-42a9-bf15-40b1ed324ced":	{
+				"$Position":	{
+					"$x":	2259,
+					"$y":	7
+				}
+			},
+			"MeshPointGenerator-c21a3fa6-8e38-4287-8e0a-0402c3feb4ee":	{
+				"$Position":	{
+					"$x":	2922,
+					"$y":	7
+				}
+			},
+			"PCNDistanceFunction-aa4f0f8e-ac12-490e-8961-6d7e9cac7628":	{
+				"$Position":	{
+					"$x":	2260,
+					"$y":	220
+				}
+			},
+			"BiomePipeline.PCNCellValues.CellValue-d2d2d1ec-9f7b-4cec-bcc7-1f535bc8110c":	{
+				"$Position":	{
+					"$x":	2260,
+					"$y":	370
+				}
+			},
+			"BiomePipeline.Transforms.Constant-83a47cea-2881-4d4b-ac96-47703af36d03":	{
+				"$Position":	{
+					"$x":	2847,
+					"$y":	366
+				}
+			},
+			"BiomePipeline.PCNCellValues.CellValue-c6ac8926-9205-48cb-a714-cb4db2ed12fa":	{
+				"$Position":	{
+					"$x":	2262,
+					"$y":	552
+				}
+			},
+			"BiomePipeline.Transforms.Constant-7ce55048-7a78-4414-994a-2dc0a14f575b":	{
+				"$Position":	{
+					"$x":	3072,
+					"$y":	552
+				}
+			},
+			"BiomePipeline.PCNCellValues.CellValue-5b645093-556c-4b8a-804e-65234adec1b6":	{
+				"$Position":	{
+					"$x":	2263,
+					"$y":	734
+				}
+			},
+			"BiomePipeline.Transforms.Constant-d605ef2b-25f3-4bdb-8083-3051108b6781":	{
+				"$Position":	{
+					"$x":	2717,
+					"$y":	734
+				}
+			},
+			"BiomePipeline.PCNCellValues.CellValue-24c4388c-809d-4251-beb1-d075b9c26877":	{
+				"$Position":	{
+					"$x":	2265,
+					"$y":	916
+				}
+			},
+			"BiomePipeline.Transforms.Constant-f6b03b0c-3b4e-4eb0-8341-5744273de1ba":	{
+				"$Position":	{
+					"$x":	2718,
+					"$y":	916
+				}
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74":	{
+				"$Position":	{
+					"$x":	533,
+					"$y":	-146
+				}
+			},
+			"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07":	{
+				"$Position":	{
+					"$x":	-530,
+					"$y":	461
+				}
+			},
+			"Material-350354fe-74ec-4418-8c27-119aeadce80e":	{
+				"$Position":	{
+					"$x":	36,
+					"$y":	461
+				}
+			},
+			"BiomePipeline.DebugBiome-5dee2268-9e5a-45e5-b37c-edbd97e21cc8":	{
+				"$Position":	{
+					"$x":	-530,
+					"$y":	608
+				}
+			},
+			"Material-aa0f8bc0-4935-4ad0-af0d-1652ec150874":	{
+				"$Position":	{
+					"$x":	36,
+					"$y":	608
+				}
+			},
+			"BiomePipeline.DebugBiome-f5bf5a17-dfe3-47ce-bb82-3730f7622153":	{
+				"$Position":	{
+					"$x":	-527,
+					"$y":	753
+				}
+			},
+			"Material-cd485596-cb4f-4738-9109-f57f523fa7f3":	{
+				"$Position":	{
+					"$x":	39,
+					"$y":	753
+				}
+			},
+			"BiomePipeline.DebugBiome-0e889517-63c6-4f5e-b5c5-610735366bbb":	{
+				"$Position":	{
+					"$x":	-525,
+					"$y":	898
+				}
+			},
+			"Material-206deeba-f1e0-4123-8974-10c69edc0096":	{
+				"$Position":	{
+					"$x":	41,
+					"$y":	898
+				}
+			}
+		},
+		"$FloatingNodes":	[],
+		"$Links":	{
+		},
+		"$Groups":	[],
+		"$Comments":	[],
+		"$WorkspaceID":	"HytaleGenerator - BiomePipeline"
+	}
+}

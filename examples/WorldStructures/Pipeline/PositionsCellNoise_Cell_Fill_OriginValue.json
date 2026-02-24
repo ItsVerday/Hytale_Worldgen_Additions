@@ -1,0 +1,349 @@
+{
+	"$NodeId":	"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d",
+	"$Comment":	"Cell Values have an \"Origin Value\" flag, causing them to be filled with only one biome, sampled at the cell center.",
+	"Type":	"Pipeline",
+	"DefaultBiome":	"White",
+	"DefaultTransitionDistance":	32,
+	"MaxBiomeEdgeDistance":	32,
+	"Stages":	[{
+		"$NodeId":	"BiomePipeline.Stage-09dbe561-7776-4aeb-b031-5b2fc6bcc57c",
+		"Skip":	false,
+		"Root":	{
+			"$NodeId":	"BiomePipeline.Transforms.PositionsCellNoise-e587f119-00a5-4594-a2b8-6a59ba2b89bf",
+			"Type":	"PositionsCellNoise",
+			"Skip":	false,
+			"Seed":	"Cells",
+			"MaxDistance":	32,
+			"DistanceWarpMin":	0,
+			"DistanceWarpMax":	0,
+			"Positions":	{
+				"$NodeId":	"Mesh2DPositions-35bd2a2f-ea9f-42a9-bf15-40b1ed324ced",
+				"Type":	"Mesh2D",
+				"Skip":	false,
+				"PointsY":	0,
+				"PointGenerator":	{
+					"$NodeId":	"MeshPointGenerator-c21a3fa6-8e38-4287-8e0a-0402c3feb4ee",
+					"Type":	"Mesh",
+					"Jitter":	0.4,
+					"ScaleX":	16,
+					"ScaleY":	16,
+					"ScaleZ":	16,
+					"Seed":	"Cell_Points"
+				}
+			},
+			"DistanceFunction":	{
+				"$NodeId":	"PCNDistanceFunction-aa4f0f8e-ac12-490e-8961-6d7e9cac7628",
+				"Type":	"Euclidean"
+			},
+			"CellValues":	[{
+				"$NodeId":	"BiomePipeline.PCNCellValues.CellValue-d2d2d1ec-9f7b-4cec-bcc7-1f535bc8110c",
+				"$Comment":	"Notice how the cells are solid biomes, despite having a non-constant biome attached to them.",
+				"Weight":	1,
+				"OriginValue":	true,
+				"Biome":	{
+					"$NodeId":	"BiomePipeline.Transforms.FieldFunction-c559f280-8f2a-4ba5-84b2-224477835bed",
+					"Type":	"FieldFunction",
+					"Skip":	false,
+					"FieldFunction":	{
+						"$NodeId":	"SimplexNoise2DDensityNode-7fe63dea-9805-4ae0-b423-739cba73c0c0",
+						"Type":	"SimplexNoise2D",
+						"Skip":	false,
+						"Lacunarity":	4,
+						"Persistence":	0.25,
+						"Octaves":	1,
+						"Scale":	128,
+						"Seed":	"Cell_Fill_Noise"
+					},
+					"Delimiters":	[{
+						"$NodeId":	"BiomePipeline.FieldFunctionTransform.Delimiter-eed4d8f6-8d65-4188-9077-535a60546c4f",
+						"From":	-1,
+						"To":	-0.4,
+						"Biome":	{
+							"$NodeId":	"BiomePipeline.Transforms.Constant-2015d869-3963-4fd6-8777-7ca986d3352b",
+							"Type":	"Constant",
+							"Skip":	false,
+							"Value":	"White"
+						}
+					}, {
+						"$NodeId":	"BiomePipeline.FieldFunctionTransform.Delimiter-436691bb-b578-4e26-9072-209990a82fde",
+						"From":	-0.4,
+						"To":	0,
+						"Biome":	{
+							"$NodeId":	"BiomePipeline.Transforms.Constant-e57d7c5d-84bd-4783-8de1-850802aff987",
+							"Type":	"Constant",
+							"Skip":	false,
+							"Value":	"Light_Gray"
+						}
+					}, {
+						"$NodeId":	"BiomePipeline.FieldFunctionTransform.Delimiter-83a221e5-9ee2-4f5e-9dea-68a575823161",
+						"From":	0,
+						"To":	0.4,
+						"Biome":	{
+							"$NodeId":	"BiomePipeline.Transforms.Constant-5c6be1bc-c409-4c84-8bd8-a8a1ec79ac54",
+							"Type":	"Constant",
+							"Skip":	false,
+							"Value":	"Gray"
+						}
+					}, {
+						"$NodeId":	"BiomePipeline.FieldFunctionTransform.Delimiter-2d7ea68c-dc54-4cf6-a820-9886798a8181",
+						"From":	0.4,
+						"To":	1,
+						"Biome":	{
+							"$NodeId":	"BiomePipeline.Transforms.Constant-b04e752e-c76f-4aca-be49-4dc1f4869acd",
+							"Type":	"Constant",
+							"Skip":	false,
+							"Value":	"Black"
+						}
+					}]
+				}
+			}]
+		}
+	}],
+	"Framework":	[{
+		"$Generic":	true,
+		"Type":	"DecimalConstants",
+		"Entries":	[{
+			"Name":	"Base",
+			"Value":	100
+		}, {
+			"Name":	"Water",
+			"Value":	100
+		}, {
+			"Name":	"Bedrock",
+			"Value":	0
+		}]
+	}, {
+		"$Generic":	true,
+		"Type":	"Positions",
+		"Entries":	[{
+			"Name":	"Spawns",
+			"Positions":	{
+				"Type":	"List",
+				"ExportAs":	"Spawns",
+				"Positions":	[{
+					"X":	0,
+					"Y":	200,
+					"Z":	0
+				}]
+			}
+		}]
+	}],
+	"SpawnPositions":	{
+		"$NodeId":	"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74",
+		"Type":	"Imported",
+		"Name":	"Spawns",
+		"Skip":	false
+	},
+	"DebugBiomes":	[{
+		"$NodeId":	"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07",
+		"Name":	"White",
+		"Material":	{
+			"$NodeId":	"Material-350354fe-74ec-4418-8c27-119aeadce80e",
+			"Solid":	"Cloth_Block_Wool_White",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-5dee2268-9e5a-45e5-b37c-edbd97e21cc8",
+		"Name":	"Black",
+		"Material":	{
+			"$NodeId":	"Material-aa0f8bc0-4935-4ad0-af0d-1652ec150874",
+			"Solid":	"Cloth_Block_Wool_Black",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-f5bf5a17-dfe3-47ce-bb82-3730f7622153",
+		"Name":	"Gray",
+		"Material":	{
+			"$NodeId":	"Material-cd485596-cb4f-4738-9109-f57f523fa7f3",
+			"Solid":	"Cloth_Block_Wool_Gray",
+			"SolidBottomUp":	false
+		}
+	}, {
+		"$NodeId":	"BiomePipeline.DebugBiome-0e889517-63c6-4f5e-b5c5-610735366bbb",
+		"Name":	"Light_Gray",
+		"Material":	{
+			"$NodeId":	"Material-206deeba-f1e0-4123-8974-10c69edc0096",
+			"Solid":	"Cloth_Block_Wool_Gray_Light",
+			"SolidBottomUp":	false
+		}
+	}],
+	"$NodeEditorMetadata":	{
+		"$Nodes":	{
+			"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d":	{
+				"$Position":	{
+					"$x":	577,
+					"$y":	14
+				},
+				"$Title":	"[ROOT] Biome"
+			},
+			"BiomePipeline.Stage-09dbe561-7776-4aeb-b031-5b2fc6bcc57c":	{
+				"$Position":	{
+					"$x":	1376,
+					"$y":	41
+				}
+			},
+			"BiomePipeline.Transforms.PositionsCellNoise-e587f119-00a5-4594-a2b8-6a59ba2b89bf":	{
+				"$Position":	{
+					"$x":	1855,
+					"$y":	41
+				}
+			},
+			"Mesh2DPositions-35bd2a2f-ea9f-42a9-bf15-40b1ed324ced":	{
+				"$Position":	{
+					"$x":	2482,
+					"$y":	41
+				}
+			},
+			"MeshPointGenerator-c21a3fa6-8e38-4287-8e0a-0402c3feb4ee":	{
+				"$Position":	{
+					"$x":	3140,
+					"$y":	41
+				}
+			},
+			"PCNDistanceFunction-aa4f0f8e-ac12-490e-8961-6d7e9cac7628":	{
+				"$Position":	{
+					"$x":	2486,
+					"$y":	222
+				}
+			},
+			"BiomePipeline.PCNCellValues.CellValue-d2d2d1ec-9f7b-4cec-bcc7-1f535bc8110c":	{
+				"$Position":	{
+					"$x":	2490,
+					"$y":	340
+				}
+			},
+			"BiomePipeline.Transforms.FieldFunction-c559f280-8f2a-4ba5-84b2-224477835bed":	{
+				"$Position":	{
+					"$x":	3156,
+					"$y":	365
+				}
+			},
+			"SimplexNoise2DDensityNode-7fe63dea-9805-4ae0-b423-739cba73c0c0":	{
+				"$Position":	{
+					"$x":	3731,
+					"$y":	362
+				}
+			},
+			"BiomePipeline.FieldFunctionTransform.Delimiter-eed4d8f6-8d65-4188-9077-535a60546c4f":	{
+				"$Position":	{
+					"$x":	3735,
+					"$y":	684
+				}
+			},
+			"BiomePipeline.Transforms.Constant-2015d869-3963-4fd6-8777-7ca986d3352b":	{
+				"$Position":	{
+					"$x":	4286,
+					"$y":	684
+				}
+			},
+			"BiomePipeline.FieldFunctionTransform.Delimiter-436691bb-b578-4e26-9072-209990a82fde":	{
+				"$Position":	{
+					"$x":	3736,
+					"$y":	866
+				}
+			},
+			"BiomePipeline.Transforms.Constant-e57d7c5d-84bd-4783-8de1-850802aff987":	{
+				"$Position":	{
+					"$x":	4287,
+					"$y":	867
+				}
+			},
+			"BiomePipeline.FieldFunctionTransform.Delimiter-83a221e5-9ee2-4f5e-9dea-68a575823161":	{
+				"$Position":	{
+					"$x":	3740,
+					"$y":	1049
+				}
+			},
+			"BiomePipeline.Transforms.Constant-5c6be1bc-c409-4c84-8bd8-a8a1ec79ac54":	{
+				"$Position":	{
+					"$x":	4291,
+					"$y":	1050
+				}
+			},
+			"BiomePipeline.FieldFunctionTransform.Delimiter-2d7ea68c-dc54-4cf6-a820-9886798a8181":	{
+				"$Position":	{
+					"$x":	3742,
+					"$y":	1230
+				}
+			},
+			"BiomePipeline.Transforms.Constant-b04e752e-c76f-4aca-be49-4dc1f4869acd":	{
+				"$Position":	{
+					"$x":	4293,
+					"$y":	1231
+				}
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74":	{
+				"$Position":	{
+					"$x":	584,
+					"$y":	-139
+				}
+			},
+			"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07":	{
+				"$Position":	{
+					"$x":	-479,
+					"$y":	468
+				}
+			},
+			"Material-350354fe-74ec-4418-8c27-119aeadce80e":	{
+				"$Position":	{
+					"$x":	87,
+					"$y":	468
+				}
+			},
+			"BiomePipeline.DebugBiome-5dee2268-9e5a-45e5-b37c-edbd97e21cc8":	{
+				"$Position":	{
+					"$x":	-479,
+					"$y":	615
+				}
+			},
+			"Material-aa0f8bc0-4935-4ad0-af0d-1652ec150874":	{
+				"$Position":	{
+					"$x":	87,
+					"$y":	615
+				}
+			},
+			"BiomePipeline.DebugBiome-f5bf5a17-dfe3-47ce-bb82-3730f7622153":	{
+				"$Position":	{
+					"$x":	-476,
+					"$y":	760
+				}
+			},
+			"Material-cd485596-cb4f-4738-9109-f57f523fa7f3":	{
+				"$Position":	{
+					"$x":	90,
+					"$y":	760
+				}
+			},
+			"BiomePipeline.DebugBiome-0e889517-63c6-4f5e-b5c5-610735366bbb":	{
+				"$Position":	{
+					"$x":	-474,
+					"$y":	905
+				}
+			},
+			"Material-206deeba-f1e0-4123-8974-10c69edc0096":	{
+				"$Position":	{
+					"$x":	92,
+					"$y":	905
+				}
+			}
+		},
+		"$FloatingNodes":	[],
+		"$Links":	{
+		},
+		"$Groups":	[],
+		"$Comments":	[],
+		"$WorkspaceID":	"HytaleGenerator - BiomePipeline"
+	}
+}

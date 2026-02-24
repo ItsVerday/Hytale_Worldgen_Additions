@@ -1,0 +1,101 @@
+{
+	"$NodeId":	"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d",
+	"$Comment":	"The root node. DefaultBiome is the starting biome for the pipeline stages.",
+	"Type":	"Pipeline",
+	"DefaultBiome":	"Default",
+	"DefaultTransitionDistance":	32,
+	"MaxBiomeEdgeDistance":	32,
+	"Stages":	[],
+	"Framework":	[{
+		"$Generic":	true,
+		"Type":	"Positions",
+		"Entries":	[{
+			"Name":	"Spawns",
+			"Positions":	{
+				"Type":	"List",
+				"ExportAs":	"Spawns",
+				"Positions":	[{
+					"X":	0,
+					"Y":	200,
+					"Z":	0
+				}]
+			}
+		}]
+	}, {
+		"$Generic":	true,
+		"Type":	"DecimalConstants",
+		"Entries":	[{
+			"Name":	"Base",
+			"Value":	100
+		}, {
+			"Name":	"Water",
+			"Value":	100
+		}, {
+			"Name":	"Bedrock",
+			"Value":	0
+		}]
+	}],
+	"SpawnPositions":	{
+		"$NodeId":	"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74",
+		"Type":	"Imported",
+		"Name":	"Spawns",
+		"Skip":	false
+	},
+	"DebugBiomes":	[{
+		"$NodeId":	"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07",
+		"$Comment":	"A \"debug\" biome with just a solid block fill. Useful for visualizing intermediate values!",
+		"Name":	"Default",
+		"Material":	{
+			"$NodeId":	"Material-350354fe-74ec-4418-8c27-119aeadce80e",
+			"Solid":	"Cloth_Block_Wool_White",
+			"SolidBottomUp":	false
+		}
+	}],
+	"$NodeEditorMetadata":	{
+		"$Nodes":	{
+			"BiomePipeline-2d3e6ba9-a160-469d-8b4d-1cddc1bf0e4d":	{
+				"$Position":	{
+					"$x":	417,
+					"$y":	28
+				},
+				"$Title":	"[ROOT] Biome"
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"Generic":	{
+				"$Position":	{
+					"$x":	0,
+					"$y":	0
+				}
+			},
+			"ImportedPositions-d3f59c11-b792-4011-980e-3e473e450e74":	{
+				"$Position":	{
+					"$x":	572,
+					"$y":	-140
+				}
+			},
+			"BiomePipeline.DebugBiome-c7120bea-bb5e-4591-aaf8-c8e2a4f9fd07":	{
+				"$Position":	{
+					"$x":	-653,
+					"$y":	476
+				}
+			},
+			"Material-350354fe-74ec-4418-8c27-119aeadce80e":	{
+				"$Position":	{
+					"$x":	-44,
+					"$y":	505
+				}
+			}
+		},
+		"$FloatingNodes":	[],
+		"$Links":	{
+		},
+		"$Groups":	[],
+		"$Comments":	[],
+		"$WorkspaceID":	"HytaleGenerator - BiomePipeline"
+	}
+}
