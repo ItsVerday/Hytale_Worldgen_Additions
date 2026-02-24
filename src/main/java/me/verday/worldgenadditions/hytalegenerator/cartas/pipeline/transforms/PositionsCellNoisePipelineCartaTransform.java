@@ -53,8 +53,6 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
         Vector3d max = new Vector3d(context.position.x + maxDistance + distanceWarpMax, 384, context.position.y + maxDistance + distanceWarpMax);
         double[] distance = new double[] {Double.MAX_VALUE};
         boolean[] hasClosestPoint = new boolean[1];
-        Density.Context densityContext = new Density.Context();
-        densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
         Vector2d closestPoint = new Vector2d();
         Vector3d localPoint = new Vector3d();
 
@@ -66,10 +64,10 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
 
             if (distanceWarpField != null) {
                 newDistance = Math.sqrt(newDistance);
-                Density.Context densityChildContext = new Density.Context(densityContext);
-                densityChildContext.position.add(providedPoint);
-                densityChildContext.densityAnchor = new Vector3d(localPoint);
-                newDistance += Normalizer.normalize(-1, 1, distanceWarpMin, distanceWarpMax, distanceWarpField.process(densityChildContext));
+                Density.Context densityContext = new Density.Context();
+                densityContext.position.assign(providedPoint.x + context.position.x, 0, providedPoint.z + context.position.y);
+                densityContext.densityAnchor = new Vector3d(localPoint);
+                newDistance += Normalizer.normalize(-1, 1, distanceWarpMin, distanceWarpMax, distanceWarpField.process(densityContext));
                 newDistance = newDistance * newDistance;
             }
 
