@@ -14,7 +14,7 @@ public class ThresholdCurveAsset extends CurveAsset {
             .add()
             .append(new KeyedCodec<>("High", Codec.DOUBLE, true), (asset, high) -> asset.high = high, asset -> asset.high)
             .add()
-            .append(new KeyedCodec<>("Curoff", Codec.DOUBLE, true), (asset, cutoff) -> asset.cutoff = cutoff, asset -> asset.cutoff)
+            .append(new KeyedCodec<>("Cutoff", Codec.DOUBLE, true), (asset, cutoff) -> asset.cutoff = cutoff, asset -> asset.cutoff)
             .add()
             .build();
 
