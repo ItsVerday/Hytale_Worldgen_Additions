@@ -20,7 +20,7 @@ public class PipelineCartaStage<R> {
         this.root = root;
         this.skip = skip;
 
-        this.cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(6));
+        this.cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     public void setPreviousStage(PipelineCartaStage<R> previousStage) {

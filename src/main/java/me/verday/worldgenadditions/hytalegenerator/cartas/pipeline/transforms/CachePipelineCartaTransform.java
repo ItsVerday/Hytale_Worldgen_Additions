@@ -14,7 +14,7 @@ public class CachePipelineCartaTransform<R> extends AbstractContextModificationP
 
     public CachePipelineCartaTransform(PipelineCartaTransform<R> child) {
         super(child);
-        cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(6));
+        cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     @NullableDecl

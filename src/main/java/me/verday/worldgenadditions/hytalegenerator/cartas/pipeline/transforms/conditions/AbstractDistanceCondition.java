@@ -18,7 +18,7 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
-        this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(6));
+        this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.Context<R> context);
