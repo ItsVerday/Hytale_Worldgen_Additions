@@ -10,13 +10,14 @@ import java.util.Objects;
 
 public class ModuloVector2iCache<V> {
     private final int moduloBits;
-    private final ArrayList<V> valueCache;
-    private final ArrayList<Vector2i> realPositionCache;
+    private final Object[] valueCache;
+    private final Vector2i[] realPositionCache;
 
     public ModuloVector2iCache(int moduloBits) {
         this.moduloBits = moduloBits;
-        valueCache = new ArrayList<>(Collections.nCopies(1 << (moduloBits * 2), null));
-        realPositionCache = new ArrayList<>(Collections.nCopies(1 << (moduloBits * 2), null));
+        int cacheSize = 1 << (moduloBits * 2);
+        valueCache = new Object[cacheSize];
+        realPositionCache = new Vector2i[cacheSize];
     }
 
     private static int modulo(int num, int bits) {
@@ -30,21 +31,21 @@ public class ModuloVector2iCache<V> {
     @Nullable
     public V get(@Nonnull Vector2i position) {
         int index = indexForPosition(position);
-        Vector2i realPosition = realPositionCache.get(index);
+        Vector2i realPosition = realPositionCache[index];
         if (!position.equals(realPosition)) return null;
 
-        return valueCache.get(index);
+        return (V) valueCache[index];
     }
 
     public boolean containsKey(@Nonnull Vector2i position) {
         int index = indexForPosition(position);
-        Vector2i realPosition = realPositionCache.get(index);
+        Vector2i realPosition = realPositionCache[index];
         return position.equals(realPosition);
     }
 
     public void put(@Nonnull Vector2i position, @Nonnull V value) {
         int index = indexForPosition(position);
-        valueCache.set(index, value);
-        realPositionCache.set(index, position);
+        valueCache[index] = value;
+        realPositionCache[index] = position;
     }
 }
