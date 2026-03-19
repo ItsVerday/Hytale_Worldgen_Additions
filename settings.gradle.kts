@@ -33,6 +33,7 @@ hytale {
     }
 
     dependencies {
+        // compileOnly("modtale:renode:0.1.0@jar")
         implementation("modtale:renode:0.1.0@jar")
     }
 

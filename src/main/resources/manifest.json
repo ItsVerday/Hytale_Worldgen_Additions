@@ -11,7 +11,9 @@
     "DisabledByDefault": false,
     "IncludesAssetPack": false,
     "Dependencies": {},
-    "OptionalDependencies": {},
+    "OptionalDependencies": {
+        "Verday:Renode": "0.1.0"
+    },
     "ServerVersion": "2026.02.19-1a311a592",
     "Main": "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
 }

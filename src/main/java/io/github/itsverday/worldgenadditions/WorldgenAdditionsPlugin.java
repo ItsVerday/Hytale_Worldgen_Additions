@@ -3,8 +3,11 @@ package io.github.itsverday.worldgenadditions;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.curves.CurveAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.WorldStructureAsset;
+import com.hypixel.hytale.common.plugin.PluginIdentifier;
+import com.hypixel.hytale.common.semver.SemverRange;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.BoundaryDensityAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.FWidthDensityAsset;
@@ -17,6 +20,7 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructu
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.conditions.*;
 
 import javax.annotation.Nonnull;
+import java.util.logging.Logger;
 
 public class WorldgenAdditionsPlugin extends JavaPlugin {
     public WorldgenAdditionsPlugin(@Nonnull JavaPluginInit init) {
@@ -62,5 +66,10 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
         getCodecRegistry(CurveAsset.CODEC)
                 .register("Threshold", ThresholdCurveAsset.class, ThresholdCurveAsset.CODEC)
                 .register("Steps", StepsCurveAsset.class, StepsCurveAsset.CODEC);
+
+        // Register Renode nodes
+        if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.1.0"))) {
+            RenodeIntegration.registerAllNodes();
+        }
     }
 }
