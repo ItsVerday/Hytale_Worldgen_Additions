@@ -28,6 +28,21 @@ public class RenodeIntegration {
             .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
             .withCategory(VanillaNodes.CATEGORY_DENSITY);
 
+    public static final NodeBuilder NODE_DENSITY_F_WIDTH = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("FWidth", "FWidth Density"))
+            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
+            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
+            .addContent(Renode.floatContent("SampleDistance", "SampleDistance").withDefaultValue(1.0).withWidth(50))
+            .addVariantOutput("Inputs", "Inputs", true, VanillaNodes.VARIANT_DENSITY)
+            .withCategory(VanillaNodes.CATEGORY_DENSITY);
+
+    public static final NodeBuilder NODE_DENSITY_BOUNDARY = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("Boundary", "Boundary Density"))
+            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
+            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
+            .addContent(Renode.floatContent("Cutoff", "Cutoff").withDefaultValue(0.0).withWidth(50))
+            .addContent(Renode.floatContent("Width", "Width").withDefaultValue(1.0).withWidth(50))
+            .addContent(Renode.floatContent("Bias", "Bias").withDefaultValue(0.5).withWidth(50))
+            .withCategory(VanillaNodes.CATEGORY_DENSITY);
+
     private static NodeBuilder addNode(NodeBuilder node) {
         nodes.add(node);
         return node;
