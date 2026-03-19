@@ -13,17 +13,33 @@ hytale {
     useVersion("latest")
 
     repositories {
-        // Any external repositories besides: MavenLocal, MavenCentral, HytaleMaven, and CurseMaven
+        exclusiveContent {
+            forRepository {
+                ivy {
+                    name = "Modtale"
+                    url = uri("https://api.modtale.net/api/v1")
+                    patternLayout {
+                        artifact("projects/[module]/versions/[revision]/download")
+                    }
+                    metadataSources {
+                        artifact()
+                    }
+                }
+            }
+            filter {
+                includeGroup("modtale")
+            }
+        }
     }
 
     dependencies {
-        // Any external dependency you also want to include
+        implementation("modtale:renode:0.1.0@jar")
     }
 
     manifest {
         Group = "Verday"
         Name = "Worldgen_Additions"
-        Main = "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
+        Main = "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
         ServerVersion = "2026.02.19-1a311a592"
     }
 }

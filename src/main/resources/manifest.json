@@ -13,5 +13,5 @@
     "Dependencies": {},
     "OptionalDependencies": {},
     "ServerVersion": "2026.02.19-1a311a592",
-    "Main": "me.verday.worldgenadditions.WorldgenAdditionsPlugin"
+    "Main": "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
 }
