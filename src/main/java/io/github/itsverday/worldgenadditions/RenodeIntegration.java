@@ -16,32 +16,49 @@ public class RenodeIntegration {
     private static final List<NodeCategory> categories = new ArrayList<>();
     private static final List<AbstractNodeRoot> roots = new ArrayList<>();
 
-    public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_2D = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("StaticNoise2D", "StaticNoise2D Density"))
-            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
-            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
-            .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
-            .withCategory(VanillaNodes.CATEGORY_DENSITY);
-
-    public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_3D = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("StaticNoise3D", "StaticNoise3D Density"))
-            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
-            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
-            .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
-            .withCategory(VanillaNodes.CATEGORY_DENSITY);
-
-    public static final NodeBuilder NODE_DENSITY_F_WIDTH = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("FWidth", "FWidth Density"))
-            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
-            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
-            .addContent(Renode.floatContent("SampleDistance", "SampleDistance").withDefaultValue(1.0).withWidth(50))
-            .addVariantOutput("Inputs", "Inputs", true, VanillaNodes.VARIANT_DENSITY)
-            .withCategory(VanillaNodes.CATEGORY_DENSITY);
-
-    public static final NodeBuilder NODE_DENSITY_BOUNDARY = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("Boundary", "Boundary Density"))
-            .addContent(Renode.smallStringContent("ExportAs", "ExportAs").withDefaultValue("").withWidth(250))
-            .addContent(Renode.checkboxContent("Skip", "Skip").withDefaultValue(false))
+    //region Density
+    public static final NodeBuilder NODE_DENSITY_BOUNDARY = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("Boundary", "BoundaryDensityNode", "Boundary Density"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(VanillaNodes.CONTENT_SKIP)
             .addContent(Renode.floatContent("Cutoff", "Cutoff").withDefaultValue(0.0).withWidth(50))
             .addContent(Renode.floatContent("Width", "Width").withDefaultValue(1.0).withWidth(50))
             .addContent(Renode.floatContent("Bias", "Bias").withDefaultValue(0.5).withWidth(50))
-            .withCategory(VanillaNodes.CATEGORY_DENSITY);
+            .addCategory(VanillaNodes.CATEGORY_DENSITY);
+    public static final NodeBuilder NODE_DENSITY_F_WIDTH = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("FWidth", "FWidthDensityNode", "FWidth Density"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(VanillaNodes.CONTENT_SKIP)
+            .addContent(Renode.floatContent("SampleDistance", "SampleDistance").withDefaultValue(1.0).withWidth(50))
+            .addVariantOutput("Inputs", "Inputs", true, VanillaNodes.VARIANT_DENSITY)
+            .addCategory(VanillaNodes.CATEGORY_DENSITY);
+    public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_2D = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("StaticNoise2D", "StaticNoise2DDensityNode","StaticNoise2D Density"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(VanillaNodes.CONTENT_SKIP)
+            .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
+            .addCategory(VanillaNodes.CATEGORY_DENSITY);
+    public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_3D = addNode(VanillaNodes.VARIANT_DENSITY.variantNode("StaticNoise3D", "StaticNoise3DDensityNode","StaticNoise3D Density"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(VanillaNodes.CONTENT_SKIP)
+            .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
+            .addCategory(VanillaNodes.CATEGORY_DENSITY);
+    //endregion
+
+    //region Curves
+    public static final NodeBuilder NODE_CURVE_STEPS = addNode(VanillaNodes.VARIANT_CURVES.variantNode("Steps", "StepsCurve", "Steps Curve"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("FromMin", "FromMin").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("FromMax", "FromMax").withDefaultValue(1.0).withWidth(100))
+            .addContent(Renode.floatContent("ToMin", "ToMin").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("ToMax", "ToMax").withDefaultValue(1.0).withWidth(100))
+            .addContent(Renode.floatContent("CurveExponent", "CurveExponent").withDefaultValue(1.0).withWidth(100))
+            .addContent(Renode.integerContent("StepCount", "StepCount").withDefaultValue(1).withWidth(100))
+            .addContent(Renode.floatContent("WallWidth", "WallWidth").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("StepSlope", "StepSlope").withDefaultValue(0.0).withWidth(100));
+    public static final NodeBuilder NODE_CURVE_THRESHOLD = addNode(VanillaNodes.VARIANT_CURVES.variantNode("Threshold", "ThresholdCurve", "Threshold Curve"))
+            .addContent(VanillaNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("Low", "Low").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("High", "High").withDefaultValue(1.0).withWidth(100))
+            .addContent(Renode.floatContent("Cutoff", "Cutoff").withDefaultValue(0.0).withWidth(100));
+    //endregion
 
     private static NodeBuilder addNode(NodeBuilder node) {
         nodes.add(node);
