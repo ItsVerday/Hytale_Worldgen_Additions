@@ -33,8 +33,8 @@ hytale {
     }
 
     dependencies {
-        // compileOnly("modtale:renode:0.2.0@jar")
-        implementation("modtale:renode:0.2.0@jar")
+        // compileOnly("modtale:renode:0.3.0@jar")
+        implementation("modtale:renode:0.3.0@jar")
     }
 
     manifest {
