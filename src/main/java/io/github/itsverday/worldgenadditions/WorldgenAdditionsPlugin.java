@@ -20,7 +20,6 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructu
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.conditions.*;
 
 import javax.annotation.Nonnull;
-import java.util.logging.Logger;
 
 public class WorldgenAdditionsPlugin extends JavaPlugin {
     public WorldgenAdditionsPlugin(@Nonnull JavaPluginInit init) {
