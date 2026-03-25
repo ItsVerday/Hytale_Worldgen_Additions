@@ -32,7 +32,8 @@ public class ModuloVector2iCache<V> {
     public V get(@Nonnull Vector2i position) {
         int index = indexForPosition(position);
         Vector2i realPosition = realPositionCache[index];
-        if (!position.equals(realPosition)) return null;
+        if (realPosition == null) return null;
+        if (position.x != realPosition.x || position.y != realPosition.y) return null;
 
         return (V) valueCache[index];
     }
@@ -40,7 +41,9 @@ public class ModuloVector2iCache<V> {
     public boolean containsKey(@Nonnull Vector2i position) {
         int index = indexForPosition(position);
         Vector2i realPosition = realPositionCache[index];
-        return position.equals(realPosition);
+        if (realPosition == null) return false;
+
+        return position.x == realPosition.x && position.y == realPosition.y;
     }
 
     public void put(@Nonnull Vector2i position, @Nonnull V value) {
