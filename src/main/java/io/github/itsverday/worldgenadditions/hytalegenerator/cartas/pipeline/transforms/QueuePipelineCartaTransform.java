@@ -18,14 +18,17 @@ public class QueuePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
-        Context<R> childCtx = new Context<>(context);
-        childCtx.fallthrough = false;
+    public R process(@NonNullDecl ContextStack<R> stack) {
+        stack.pushWithFallthrough(false);
         for (PipelineCartaTransform<R> child: children) {
-            R result = child.process(childCtx);
-            if (result != null) return result;
+            R result = child.process(stack);
+            if (result != null) {
+                stack.pop();
+                return result;
+            }
         }
 
+        stack.pop();
         return null;
     }
 

@@ -28,22 +28,23 @@ public class PipelineCartaStage<R> {
     }
 
     @Nullable
-    public R process(@Nonnull PipelineCartaTransform.Context<R> context) {
-        context = context.withStage(this);
-        ModuloVector2iCache<R> workerCache = cache.get(context.workerId);
-        Vector2i position = context.getIntPosition();
+    public R process(@Nonnull PipelineCartaTransform.ContextStack<R> stack) {
+        stack.pushWithStage(this);
+        ModuloVector2iCache<R> workerCache = cache.get(stack.getWorkerId());
+        Vector2i position = stack.getIntPosition();
         if (!workerCache.containsKey(position)) {
-            R value = root.process(context);
-            if (context.fallthrough && value == null) value = processPrevious(context);
+            R value = root.process(stack);
+            if (stack.isFallthrough() && value == null) value = processPrevious(stack);
             workerCache.put(position, value);
         }
 
+        stack.pop();
         return workerCache.get(position);
     }
 
     @Nullable
-    public R processPrevious(@Nonnull PipelineCartaTransform.Context<R> context) {
-        return previousStage.process(context);
+    public R processPrevious(@Nonnull PipelineCartaTransform.ContextStack<R> stack) {
+        return previousStage.process(stack);
     }
 
     public List<R> allPossibleValues() {

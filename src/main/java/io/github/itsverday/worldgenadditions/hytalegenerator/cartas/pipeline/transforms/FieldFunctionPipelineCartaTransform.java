@@ -1,6 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
+import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -29,14 +30,15 @@ public class FieldFunctionPipelineCartaTransform<R> extends PipelineCartaTransfo
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl ContextStack<R> stack) {
         Density.Context childContext = new Density.Context();
-        childContext.position = new Vector3d(context.position.x, 0, context.position.y);
+        Vector2d position = stack.getPosition();
+        childContext.position = new Vector3d(position.x, 0, position.y);
         double densityValue = density.process(childContext);
 
         for (FieldDelimiter<R> delimiter: delimiters) {
             if (delimiter.isInside(densityValue)) {
-                return delimiter.value.process(context);
+                return delimiter.value.process(stack);
             }
         }
 

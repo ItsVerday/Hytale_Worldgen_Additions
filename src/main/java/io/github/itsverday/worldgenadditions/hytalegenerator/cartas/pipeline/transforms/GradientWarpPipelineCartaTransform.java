@@ -1,6 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
+import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -24,9 +25,10 @@ public class GradientWarpPipelineCartaTransform<R> extends AbstractContextModifi
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl ContextStack<R> stack) {
         Density.Context densityContext = new Density.Context();
-        densityContext.position = new Vector3d(context.position.x, 0, context.position.y);
+        Vector2d position = stack.getPosition();
+        densityContext.position = new Vector3d(position.x, 0, position.y);
 
         double valueAtOrigin = warpField.process(densityContext);
         Density.Context densityChildContext = new Density.Context(densityContext);
@@ -37,6 +39,9 @@ public class GradientWarpPipelineCartaTransform<R> extends AbstractContextModifi
         double offsetX = deltaX * warpFactor / sampleDistance;
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
-        return processChild(context.withOffset(offsetX, offsetZ));
+        stack.pushWithOffset(offsetX, offsetZ);
+        R value = processChild(stack);
+        stack.pop();
+        return value;
     }
 }
