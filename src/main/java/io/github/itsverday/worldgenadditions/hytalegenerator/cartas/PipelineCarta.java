@@ -1,7 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas;
 
-import com.hypixel.hytale.builtin.hytalegenerator.framework.interfaces.functions.BiCarta;
-import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
+import com.hypixel.hytale.builtin.hytalegenerator.workerindexer.WorkerIndexer;
+import com.hypixel.hytale.builtin.hytalegenerator.worldstructure.BiCarta;
 import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;

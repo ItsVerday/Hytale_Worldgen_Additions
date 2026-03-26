@@ -1,7 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.builtin.hytalegenerator.framework.math.Normalizer;
+import com.hypixel.hytale.builtin.hytalegenerator.math.Normalizer;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;

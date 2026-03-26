@@ -1,6 +1,6 @@
 package io.github.itsverday.worldgenadditions.util;
 
-import com.hypixel.hytale.builtin.hytalegenerator.threadindexer.WorkerIndexer;
+import com.hypixel.hytale.builtin.hytalegenerator.workerindexer.WorkerIndexer;
 
 import java.util.ArrayList;
 import java.util.Collections;
