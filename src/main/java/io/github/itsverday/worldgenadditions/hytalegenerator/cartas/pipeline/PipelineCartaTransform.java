@@ -47,13 +47,13 @@ public abstract class PipelineCartaTransform<R> {
         }
 
         public void push(@Nonnull Vector2d position, @Nonnull PipelineCartaStage<R> stage, boolean fallthrough) {
-            if (stackIndex >= stack.size()) {
-                Context<R> context = new Context<>(position, stage, fallthrough);
-                stack.add(context);
+            if (stackIndex + 1 == stack.size()) {
+                stack.add(new Context<>(position, stage, fallthrough));
                 stackIndex++;
+                return;
             }
 
-            Context<R> context = stack.get(stackIndex++);
+            Context<R> context = stack.get(++stackIndex);
             context.set(position, stage, fallthrough);
         }
 
