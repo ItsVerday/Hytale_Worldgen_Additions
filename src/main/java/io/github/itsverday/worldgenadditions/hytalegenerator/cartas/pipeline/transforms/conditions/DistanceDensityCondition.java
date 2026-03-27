@@ -1,8 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.builtin.hytalegenerator.framework.math.Normalizer;
-import com.hypixel.hytale.math.vector.Vector2d;
+import com.hypixel.hytale.builtin.hytalegenerator.math.Normalizer;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
@@ -23,10 +22,9 @@ public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
     }
 
     @Override
-    public double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack) {
+    public double getDistanceToQuery(PipelineCartaTransform.Context<R> context) {
         Density.Context childContext = new Density.Context();
-        Vector2d position = stack.getPosition();
-        childContext.position = new Vector3d(position.x, 0, position.y);
+        childContext.position = new Vector3d(context.position.x, 0, context.position.y);
         double densityValue = density.process(childContext);
         if (densityValue < -1) densityValue = -1;
         if (densityValue > 1) densityValue = 1;

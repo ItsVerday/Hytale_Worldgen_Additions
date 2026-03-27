@@ -33,14 +33,14 @@ hytale {
     }
 
     dependencies {
-        // compileOnly("modtale:renode:0.3.0@jar")
-        implementation("modtale:renode:0.3.0@jar")
+        // compileOnly("modtale:renode:0.4.0@jar")
+        implementation("modtale:renode:0.4.0@jar")
     }
 
     manifest {
         Group = "Verday"
         Name = "Worldgen_Additions"
         Main = "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
-        ServerVersion = "2026.02.19-1a311a592"
+        ServerVersion = "2026.03.26-89796e57b"
     }
 }
