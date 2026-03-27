@@ -14,6 +14,6 @@
     "OptionalDependencies": {
         "Verday:Renode": "0.1.0"
     },
-    "ServerVersion": "2026.02.19-1a311a592",
+    "ServerVersion": "2026.03.26-89796e57b",
     "Main": "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
 }
