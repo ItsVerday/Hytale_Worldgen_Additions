@@ -14,17 +14,26 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
     private final boolean fastMode;
 
     private final WorkerIndexerData<ModuloVector2iCache<Integer>> distanceCache;
+    private final WorkerIndexerData<ModuloVector2iCache<Boolean>> childCache;
 
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
         this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
+        this.childCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack);
 
     private boolean processChildWithOffset(@Nonnull PipelineCartaTransform.ContextStack<R> stack, double dx, double dz) {
+        ModuloVector2iCache<Boolean> thisChildCache = childCache.get(stack.getWorkerId());
         stack.pushWithOffset(dx, dz);
+        Vector2i position = stack.getIntPosition();
+        if (thisChildCache.containsKey(position)) {
+            stack.pop();
+            return thisChildCache.get(position);
+        }
+
         boolean value = child.process(stack);
         stack.pop();
         return value;
