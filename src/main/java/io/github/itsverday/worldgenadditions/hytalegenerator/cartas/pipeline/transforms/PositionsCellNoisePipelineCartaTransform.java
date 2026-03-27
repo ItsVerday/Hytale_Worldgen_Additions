@@ -69,7 +69,6 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
                 Density.Context densityContext = new Density.Context();
                 densityContext.position.assign(providedPoint.x + position.x, 0, providedPoint.z + position.y);
                 densityContext.densityAnchor = new Vector3d(localPoint);
-                densityContext.densityAnchor = new Vector3d(localPoint);
                 newDistance += Normalizer.normalize(-1, 1, distanceWarpMin, distanceWarpMax, distanceWarpField.process(densityContext));
                 newDistance = newDistance * newDistance;
             }
