@@ -67,7 +67,7 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Steps", StepsCurveAsset.class, StepsCurveAsset.CODEC);
 
         // Register Renode nodes
-        if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.3.0"))) {
+        if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.4.0"))) {
             RenodeIntegration.registerAllNodes();
         }
     }
