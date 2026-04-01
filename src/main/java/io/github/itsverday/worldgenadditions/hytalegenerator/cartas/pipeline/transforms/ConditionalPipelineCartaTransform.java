@@ -23,11 +23,11 @@ public class ConditionalPipelineCartaTransform<R> extends PipelineCartaTransform
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
-        if (condition != null && condition.process(context)) {
-            if (ifTrue != null) return ifTrue.process(context);
+    public R process(@NonNullDecl ContextStack<R> stack) {
+        if (condition != null && condition.process(stack)) {
+            if (ifTrue != null) return ifTrue.process(stack);
         } else {
-            if (ifFalse != null) return ifFalse.process(context);
+            if (ifFalse != null) return ifFalse.process(stack);
         }
 
         return null;
@@ -42,6 +42,6 @@ public class ConditionalPipelineCartaTransform<R> extends PipelineCartaTransform
     }
 
     public abstract static class Condition<R> {
-        public abstract boolean process(Context<R> context);
+        public abstract boolean process(ContextStack<R> stack);
     }
 }

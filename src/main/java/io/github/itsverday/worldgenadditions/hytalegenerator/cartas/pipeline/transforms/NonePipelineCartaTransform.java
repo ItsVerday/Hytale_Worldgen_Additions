@@ -9,7 +9,7 @@ import java.util.List;
 public class NonePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl ContextStack<R> stack) {
         return null;
     }
 

@@ -31,8 +31,8 @@ public class PipelineCarta<R> extends BiCarta<R> {
 
     @Override
     public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        PipelineCartaTransform.Context<R> ctx = new PipelineCartaTransform.Context<>(new Vector2d(x, z), id, lastStage, true);
-        return lastStage.process(ctx);
+        PipelineCartaTransform.ContextStack<R> stack = new PipelineCartaTransform.ContextStack<>(new Vector2d(x, z), id, lastStage, true);
+        return lastStage.process(stack);
     }
 
     @Override

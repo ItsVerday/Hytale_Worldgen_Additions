@@ -11,7 +11,7 @@ public class NotCondition<R> extends ConditionalPipelineCartaTransform.Condition
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.Context<R> context) {
-        return !condition.process(context);
+    public boolean process(PipelineCartaTransform.ContextStack<R> stack) {
+        return !condition.process(stack);
     }
 }

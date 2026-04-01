@@ -14,9 +14,9 @@ public abstract class AbstractContextModificationPipelineCartaTransform<R> exten
         this.child = child;
     }
 
-    protected R processChild(@Nonnull Context<R> childContext) {
-        if (child != null) return child.process(childContext);
-        return childContext.stage.processPrevious(childContext);
+    protected R processChild(@Nonnull ContextStack<R> stack) {
+        if (child != null) return child.process(stack);
+        return stack.getStage().processPrevious(stack);
     }
 
     @Override

@@ -48,25 +48,26 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl ContextStack<R> stack) {
         // Implementation modified from PositionsDensity
-        Vector3d min = new Vector3d(context.position.x - maxDistance - distanceWarpMax, 0, context.position.y - maxDistance - distanceWarpMax);
-        Vector3d max = new Vector3d(context.position.x + maxDistance + distanceWarpMax, 384, context.position.y + maxDistance + distanceWarpMax);
+        Vector2d position = stack.getPosition();
+        Vector3d min = new Vector3d(position.x - maxDistance - distanceWarpMax, 0, position.y - maxDistance - distanceWarpMax);
+        Vector3d max = new Vector3d(position.x + maxDistance + distanceWarpMax, 384, position.y + maxDistance + distanceWarpMax);
         double[] distance = new double[] {Double.MAX_VALUE};
         boolean[] hasClosestPoint = new boolean[1];
         Vector2d closestPoint = new Vector2d();
         Vector3d localPoint = new Vector3d();
 
         Pipe.One<Vector3d> positionsPipe = (providedPoint, control) -> {
-            localPoint.x = providedPoint.x - context.position.x;
+            localPoint.x = providedPoint.x - position.x;
             localPoint.y = 0;
-            localPoint.z = providedPoint.z - context.position.y;
+            localPoint.z = providedPoint.z - position.y;
             double newDistance = distanceFunction.getDistance(localPoint);
 
             if (distanceWarpField != null) {
                 newDistance = Math.sqrt(newDistance);
                 Density.Context densityContext = new Density.Context();
-                densityContext.position.assign(providedPoint.x + context.position.x, 0, providedPoint.z + context.position.y);
+                densityContext.position.assign(providedPoint.x + position.x, 0, providedPoint.z + position.y);
                 densityContext.densityAnchor = new Vector3d(localPoint);
                 newDistance += Normalizer.normalize(-1, 1, distanceWarpMin, distanceWarpMax, distanceWarpField.process(densityContext));
                 newDistance = newDistance * newDistance;
@@ -97,9 +98,14 @@ public class PositionsCellNoisePipelineCartaTransform<R> extends PipelineCartaTr
             }
 
             if (cellValueHere != null) {
-                Context<R> childContext = new Context<>(context);
-                if (cellValueHere.originValue) childContext.position = closestPoint;
-                return cellValueHere.value.process(childContext);
+                if (cellValueHere.originValue) {
+                    stack.pushWithPosition(closestPoint);
+                    R value = cellValueHere.value.process(stack);
+                    stack.pop();
+                    return value;
+                } else {
+                    return cellValueHere.value.process(stack);
+                }
             }
         }
 

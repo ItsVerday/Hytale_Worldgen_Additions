@@ -1,5 +1,6 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
+import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -16,9 +17,12 @@ public class RescalePipelineCartaTransform<R> extends AbstractContextModificatio
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
-        Context<R> childContext = new Context<>(context);
-        childContext.position.scale(scalingFactor);
-        return processChild(childContext);
+    public R process(@NonNullDecl ContextStack<R> stack) {
+        Vector2d position = new Vector2d(stack.getPosition());
+        position.scale(scalingFactor);
+        stack.pushWithPosition(position);
+        R value = processChild(stack);
+        stack.pop();
+        return value;
     }
 }

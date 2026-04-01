@@ -18,7 +18,7 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
 
     @NullableDecl
     @Override
-    public R process(@NonNullDecl Context<R> context) {
+    public R process(@NonNullDecl ContextStack<R> stack) {
         int radiusInt = (int) Math.ceil(radius);
 
         HashMap<R, Integer> counts = new HashMap<>();
@@ -30,7 +30,10 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
             for (int dz = -radiusInt; dz <= radiusInt; dz++) {
                 if (dx * dx + dz * dz > radius * radius) continue;
 
-                R value = processChild(context.withOffset(dx, dz));
+                stack.pushWithOffset(dx, dz);
+                R value = processChild(stack);
+                stack.pop();
+
                 if (value == null) continue;
 
                 int currentCount = 1;
@@ -52,6 +55,6 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
             if (count == highestCount && count >= totalCount * threshold) return value;
         }
 
-        return processChild(context);
+        return processChild(stack);
     }
 }

@@ -4,8 +4,6 @@ import com.hypixel.hytale.math.vector.Vector2i;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class ModuloVector2iCache<V> {

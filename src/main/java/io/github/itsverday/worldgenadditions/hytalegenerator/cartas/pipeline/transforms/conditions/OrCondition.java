@@ -13,9 +13,9 @@ public class OrCondition<R> extends ConditionalPipelineCartaTransform.Condition<
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.Context<R> context) {
+    public boolean process(PipelineCartaTransform.ContextStack<R> stack) {
         for (ConditionalPipelineCartaTransform.Condition<R> condition: conditions) {
-            if (condition.process(context)) return true;
+            if (condition.process(stack)) return true;
         }
 
         return false;

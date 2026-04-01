@@ -5,7 +5,7 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tra
 
 public class NoneCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
     @Override
-    public boolean process(PipelineCartaTransform.Context<R> context) {
+    public boolean process(PipelineCartaTransform.ContextStack<R> stack) {
         return false;
     }
 }
