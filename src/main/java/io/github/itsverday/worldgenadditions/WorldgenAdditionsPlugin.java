@@ -9,10 +9,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.plugin.PluginManager;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.BoundaryDensityAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.FWidthDensityAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.StaticNoise2DDensityAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.StaticNoise3DDensityAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.*;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.ThresholdCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.PipelineWorldStructureAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
@@ -59,7 +56,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("FWidth", FWidthDensityAsset.class, FWidthDensityAsset.CODEC)
                 .register("Boundary", BoundaryDensityAsset.class, BoundaryDensityAsset.CODEC)
                 .register("StaticNoise2D", StaticNoise2DDensityAsset.class, StaticNoise2DDensityAsset.CODEC)
-                .register("StaticNoise3D", StaticNoise3DDensityAsset.class, StaticNoise3DDensityAsset.CODEC);
+                .register("StaticNoise3D", StaticNoise3DDensityAsset.class, StaticNoise3DDensityAsset.CODEC)
+                .register("Erosion", ErosionDensityAsset.class, ErosionDensityAsset.CODEC);
 
         // Curves
         getCodecRegistry(CurveAsset.CODEC)
