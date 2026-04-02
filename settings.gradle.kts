@@ -13,6 +13,7 @@ hytale {
     useVersion("latest")
 
     repositories {
+        mavenLocal()
         exclusiveContent {
             forRepository {
                 ivy {
@@ -33,8 +34,10 @@ hytale {
     }
 
     dependencies {
-        // compileOnly("modtale:renode:0.4.0@jar")
-        implementation("modtale:renode:0.4.0@jar")
+        // compileOnly("modtale:renode:0.5.0@jar")
+        // implementation("modtale:renode:0.5.0@jar")
+        // compileOnly("io.github.itsverday:Renode:0.5.0")
+        implementation("io.github.itsverday:Renode:0.5.0")
     }
 
     manifest {

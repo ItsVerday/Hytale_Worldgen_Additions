@@ -5,7 +5,6 @@ import io.github.itsverday.renode.builder.NodeCategory;
 import io.github.itsverday.renode.builder.NodeVariantClass;
 import io.github.itsverday.renode.builder.Renode;
 import io.github.itsverday.renode.builder.root.AbstractNodeRoot;
-import io.github.itsverday.renode.definition.schema.NodeSchemaStringValueDefinition;
 import io.github.itsverday.renode.vanilla.HytaleGeneratorNodes;
 
 import java.util.ArrayList;
@@ -49,14 +48,10 @@ public class RenodeIntegration {
             .addVariantOutput("Framework", "Framework", true, VARIANT_FRAMEWORK) // Framework
             .addVariantOutput("SpawnPositions", "SpawnPositions", false, HytaleGeneratorNodes.VARIANT_POSITIONS)
             .addNodeOutput("DebugBiomes", "DebugBiomes", true, () -> RenodeIntegration.NODE_BIOME_PIPELINE_DEBUG_BIOME) // Debug Biomes
-            .addCategory(CATEGORY_BIOME_PIPELINE);
+            .addCategory(CATEGORY_BIOME_PIPELINE)
+            .addSchemaString("Type", "Pipeline");
 
     public static final AbstractNodeRoot ROOT_PIPELINE_WORLD_STRUCTURE = addRoot(Renode.root(NODE_BIOME_PIPELINE, "Biome Pipeline"));
-
-    static {
-        // No way to easily customize schema in Renode (for now), so we have to manually edit it.
-        NODE_BIOME_PIPELINE.getSchema().addValue("Type", new NodeSchemaStringValueDefinition("Pipeline"));
-    }
 
     public static final NodeBuilder NODE_BIOME_PIPELINE_STAGE = addNode(Renode.node("BiomePipeline.Stage", "Stage"))
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
