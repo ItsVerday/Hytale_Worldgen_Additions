@@ -34,6 +34,8 @@ public class ErosionDensity extends Density {
     private final double cellScale;
     private final double normalization;
 
+    private final PhacelleResult phacelle = new PhacelleResult();
+
     public ErosionDensity(@Nonnull Density input, long seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
         assert inputSampleDistance > 0.0;
 
@@ -107,7 +109,7 @@ public class ErosionDensity extends Density {
                 safeGullyDz /= gullyDLength;
             }
 
-            PhacelleResult phacelle = phacelleNoise(position2d.x * frequency, position2d.y * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
+            phacelleNoise(phacelle, position2d.x * frequency, position2d.y * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
             phacelle.sideX *= -frequency;
             phacelle.sideY *= -frequency;
             double sloping = Math.abs(phacelle.phaseY);
@@ -134,20 +136,13 @@ public class ErosionDensity extends Density {
     }
 
     private static class PhacelleResult {
-        public double phaseX;
-        public double phaseY;
-        public double sideX;
-        public double sideY;
-
-        public PhacelleResult(double phaseX, double phaseY, double sideX, double sideY) {
-            this.phaseX = phaseX;
-            this.phaseY = phaseY;
-            this.sideX = sideX;
-            this.sideY = sideY;
-        }
+        public double phaseX = 0;
+        public double phaseY = 0;
+        public double sideX = 0;
+        public double sideY = 0;
     }
 
-    private PhacelleResult phacelleNoise(double x, double y, double normX, double normY, double frequency, double offset, double normalization) {
+    private void phacelleNoise(PhacelleResult result, double x, double y, double normX, double normY, double frequency, double offset, double normalization) {
         double sideX = -normY * frequency * Math.TAU;
         double sideY = normX * frequency * Math.TAU;
         offset *= Math.TAU;
@@ -160,8 +155,8 @@ public class ErosionDensity extends Density {
         double phaseY = 0;
 
         double weightSum = 0.0;
-        for (int i = -1; i <= 2; i++) {
-            for (int j = -1; j <= 2; j++) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
                 double xFromCellPoint = xFract - i - HashUtil.random(seed, Double.doubleToLongBits(xFloor + i), Double.doubleToLongBits(yFloor + j));
                 double yFromCellPoint = yFract - j - HashUtil.random(seed + 1, Double.doubleToLongBits(xFloor + i), Double.doubleToLongBits(yFloor + j));
 
@@ -179,7 +174,10 @@ public class ErosionDensity extends Density {
         double interpolatedY = phaseY / weightSum;
         double magnitude = Math.hypot(interpolatedX, interpolatedY);
         magnitude = Math.max(1.0 - normalization, magnitude);
-        return new PhacelleResult(interpolatedX / magnitude, interpolatedY / magnitude, sideX, sideY);
+        result.phaseX = interpolatedX / magnitude;
+        result.phaseY = interpolatedY / magnitude;
+        result.sideX = sideX;
+        result.sideY = sideY;
     }
 
     private double mix(double a, double b, double weight) {
