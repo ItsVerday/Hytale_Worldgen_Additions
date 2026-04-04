@@ -14,49 +14,47 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
     private final ConditionalPipelineCartaTransform.Condition<R> child;
     private final boolean fastMode;
 
-    private final WorkerIndexerData<ModuloVector2iCache<Integer>> distanceCache;
-    private final WorkerIndexerData<ModuloVector2iCache<Boolean>> childCache;
+    private final ModuloVector2iCache<Integer> distanceCache;
+    private final ModuloVector2iCache<Boolean> childCache;
 
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
-        this.distanceCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
-        this.childCache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
+        this.distanceCache = new ModuloVector2iCache<>(8);
+        this.childCache = new ModuloVector2iCache<>(8);
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack);
 
     private boolean processChildWithOffset(@Nonnull PipelineCartaTransform.ContextStack<R> stack, double dx, double dz) {
-        ModuloVector2iCache<Boolean> thisChildCache = childCache.get(stack.getWorkerId());
         Vector2d position = stack.getPosition();
         int x = (int) (position.x + dx);
         int y = (int) (position.y + dz);
-        if (thisChildCache.containsKey(x, y)) return thisChildCache.get(x, y);
+        if (childCache.containsKey(x, y)) return childCache.get(x, y);
 
         stack.pushWithOffset(dx, dz);
         boolean value = child.process(stack);
         stack.pop();
-        thisChildCache.put(x, y, value);
+        childCache.put(x, y, value);
         return value;
     }
 
     private boolean withinDistance(@Nonnull PipelineCartaTransform.ContextStack<R> stack, double maxDistance) {
-        ModuloVector2iCache<Integer> thisValueDistanceCache = distanceCache.get(stack.getWorkerId());
         Vector2i position = stack.getIntPosition();
         int x = position.x;
         int y = position.y;
-        if (thisValueDistanceCache.containsKey(x, y)) return thisValueDistanceCache.get(x, y) <= maxDistance * maxDistance;
+        if (distanceCache.containsKey(x, y)) return distanceCache.get(x, y) <= maxDistance * maxDistance;
 
         // Check if we are at a matching value
         if (child.process(stack)) {
-            thisValueDistanceCache.put(x, y, 0);
+            distanceCache.put(x, y, 0);
             return true;
         }
 
         // Quickly find an upper bound on distance to matching value in cardinal directions, if possible
         for (int d = 1; d <= maxDistance; d++) {
             if (processChildWithOffset(stack, d, 0) || processChildWithOffset(stack, -d, 0) || processChildWithOffset(stack, 0, d) || processChildWithOffset(stack, 0, -d)) {
-                thisValueDistanceCache.put(x, y, d * d);
+                distanceCache.put(x, y, d * d);
                 return d <= maxDistance;
             }
         }
@@ -64,7 +62,7 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
         // Check diagonals in the same way
         for (int d = 1; d * d * 2 <= maxDistance * maxDistance; d++) {
             if (processChildWithOffset(stack, d, d) || processChildWithOffset(stack, d, -d) || processChildWithOffset(stack, -d, d) || processChildWithOffset(stack, -d, -d)) {
-                thisValueDistanceCache.put(x, y, d * d * 2);
+                distanceCache.put(x, y, d * d * 2);
                 return d * d * 2 <= maxDistance * maxDistance;
             }
         }
@@ -83,13 +81,13 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
                 }
 
                 if (foundDistance < Integer.MAX_VALUE && range * range >= 2 * foundDistance) {
-                    thisValueDistanceCache.put(x, y, foundDistance);
+                    distanceCache.put(x, y, foundDistance);
                     return foundDistance <= maxDistance * maxDistance;
                 }
             }
         }
 
-        thisValueDistanceCache.put(x, y, Integer.MAX_VALUE);
+        distanceCache.put(x, y, Integer.MAX_VALUE);
         return false;
     }
 

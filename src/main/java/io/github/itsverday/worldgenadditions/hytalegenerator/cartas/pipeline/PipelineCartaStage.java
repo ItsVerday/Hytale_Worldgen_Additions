@@ -14,13 +14,13 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final WorkerIndexerData<ModuloVector2iCache<R>> cache;
+    private final ModuloVector2iCache<R> cache;
 
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
         this.skip = skip;
 
-        this.cache = new WorkerIndexerData<>(() -> new ModuloVector2iCache<>(8));
+        this.cache = new ModuloVector2iCache<>(8);
     }
 
     public void setPreviousStage(PipelineCartaStage<R> previousStage) {
@@ -30,18 +30,17 @@ public class PipelineCartaStage<R> {
     @Nullable
     public R process(@Nonnull PipelineCartaTransform.ContextStack<R> stack) {
         stack.pushWithStage(this);
-        ModuloVector2iCache<R> workerCache = cache.get(stack.getWorkerId());
         Vector2i position = stack.getIntPosition();
         int x = position.x;
         int y = position.y;
-        if (!workerCache.containsKey(x, y)) {
+        if (!cache.containsKey(x, y)) {
             R value = root.process(stack);
             if (stack.isFallthrough() && value == null) value = processPrevious(stack);
-            workerCache.put(x, y, value);
+            cache.put(x, y, value);
         }
 
         stack.pop();
-        return workerCache.get(x, y);
+        return cache.get(x, y);
     }
 
     @Nullable
