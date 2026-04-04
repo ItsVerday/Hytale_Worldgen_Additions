@@ -193,6 +193,15 @@ public class RenodeIntegration {
             .addContent(Renode.floatContent("SampleDistance", "SampleDistance").withDefaultValue(1.0).withWidth(50))
             .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_DENSITY)
             .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
+    public static final NodeBuilder NODE_DENSITY_HEIGHTMAP = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("Heightmap", "HeightmapDensityNode", "Heightmap Density"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addContent(Renode.smallStringContent("BaseHeightName", "BaseHeightName").withDefaultValue("Base").withWidth(250))
+            .addContent(Renode.floatContent("VerticalScale", "VerticalScale").withDefaultValue(1.0).withWidth(50))
+            .addContent(Renode.floatContent("YOverride", "YOverride").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.checkboxContent("Invert", "Invert").withDefaultValue(false))
+            .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_2D = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("StaticNoise2D", "StaticNoise2DDensityNode","StaticNoise2D Density"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
