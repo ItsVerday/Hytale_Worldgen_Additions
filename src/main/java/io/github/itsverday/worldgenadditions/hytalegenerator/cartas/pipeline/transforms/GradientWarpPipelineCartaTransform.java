@@ -10,22 +10,21 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class GradientWarpPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
+public class GradientWarpPipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
     @Nonnull
     private final Density warpField;
     private final double sampleDistance;
     private final double warpFactor;
 
-    public GradientWarpPipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
+    public GradientWarpPipelineCartaTransform(@Nullable PipelineCartaTransform child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
         super(child);
         this.warpField = warpField;
         this.sampleDistance = sampleDistance;
         this.warpFactor = warpFactor;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         Density.Context densityContext = new Density.Context();
         Vector2d position = stack.getPosition();
         densityContext.position = new Vector3d(position.x, 0, position.y);
@@ -40,7 +39,7 @@ public class GradientWarpPipelineCartaTransform<R> extends AbstractContextModifi
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
         stack.pushWithOffset(offsetX, offsetZ);
-        R value = processChild(stack);
+        int value = processChild(stack);
         stack.pop();
         return value;
     }

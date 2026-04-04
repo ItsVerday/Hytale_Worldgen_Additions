@@ -54,19 +54,19 @@ public class PositionsCellNoisePipelineCartaTransformAsset extends PipelineCarta
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform<>();
-        if (positions == null || distanceFunction == null) return new NonePipelineCartaTransform<>();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform();
+        if (positions == null || distanceFunction == null) return new NonePipelineCartaTransform();
 
         SeedBox childSeed = arg.parentSeed.child(seed);
-        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue<Integer>> finalCellValues = new ArrayList<>();
+        ArrayList<PositionsCellNoisePipelineCartaTransform.CellValue> finalCellValues = new ArrayList<>();
         if (cellValues != null) {
             for (CellValueAsset cellValue: cellValues) {
-                finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue<>(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform<>(), cellValue.originValue));
+                finalCellValues.add(new PositionsCellNoisePipelineCartaTransform.CellValue(cellValue.weight, cellValue.transform != null ? cellValue.transform.build(arg) : new NonePipelineCartaTransform(), cellValue.originValue));
             }
         }
 
-        return new PositionsCellNoisePipelineCartaTransform<>(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, distanceWarp != null ? distanceWarp.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : null, distanceWarpMin, distanceWarpMax, maxDistance);
+        return new PositionsCellNoisePipelineCartaTransform(childSeed.createSupplier().get(), positions.build(new PositionProviderAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), distanceFunction.build(arg.parentSeed, maxDistance), finalCellValues, distanceWarp != null ? distanceWarp.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : null, distanceWarpMin, distanceWarpMax, maxDistance);
     }
 
     @Override

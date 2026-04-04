@@ -6,22 +6,21 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.HashMap;
 
-public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
+public class SmoothingPipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
     private final double radius;
     private final double threshold;
 
-    public SmoothingPipelineCartaTransform(PipelineCartaTransform<R> child, double radius, double threshold) {
+    public SmoothingPipelineCartaTransform(PipelineCartaTransform child, double radius, double threshold) {
         super(child);
         this.radius = radius;
         this.threshold = threshold;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         int radiusInt = (int) Math.ceil(radius);
 
-        HashMap<R, Integer> counts = new HashMap<>();
+        HashMap<Integer, Integer> counts = new HashMap<>();
         int totalCount = 0;
         int highestCount = 0;
         double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.79;
@@ -31,10 +30,10 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
                 if (dx * dx + dz * dz > radius * radius) continue;
 
                 stack.pushWithOffset(dx, dz);
-                R value = processChild(stack);
+                int value = processChild(stack);
                 stack.pop();
 
-                if (value == null) continue;
+                if (value == -1) continue;
 
                 int currentCount = 1;
                 Integer count = counts.get(value);
@@ -50,7 +49,7 @@ public class SmoothingPipelineCartaTransform<R> extends AbstractContextModificat
             }
         }
 
-        for (R value: counts.keySet()) {
+        for (Integer value: counts.keySet()) {
             int count = counts.get(value);
             if (count == highestCount && count >= totalCount * threshold) return value;
         }

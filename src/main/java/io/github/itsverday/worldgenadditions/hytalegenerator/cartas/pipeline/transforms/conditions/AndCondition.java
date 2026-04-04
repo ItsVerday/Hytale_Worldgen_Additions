@@ -5,16 +5,16 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tra
 
 import java.util.List;
 
-public class AndCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
-    private final List<ConditionalPipelineCartaTransform.Condition<R>> conditions;
+public class AndCondition extends ConditionalPipelineCartaTransform.Condition {
+    private final List<ConditionalPipelineCartaTransform.Condition> conditions;
 
-    public AndCondition(List<ConditionalPipelineCartaTransform.Condition<R>> conditions) {
+    public AndCondition(List<ConditionalPipelineCartaTransform.Condition> conditions) {
         this.conditions = conditions;
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack<R> stack) {
-        for (ConditionalPipelineCartaTransform.Condition<R> condition: conditions) {
+    public boolean process(PipelineCartaTransform.ContextStack stack) {
+        for (ConditionalPipelineCartaTransform.Condition condition: conditions) {
             if (!condition.process(stack)) return false;
         }
 

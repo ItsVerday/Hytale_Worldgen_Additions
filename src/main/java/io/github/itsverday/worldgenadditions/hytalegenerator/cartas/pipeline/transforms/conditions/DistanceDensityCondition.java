@@ -9,13 +9,13 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tra
 
 import javax.annotation.Nonnull;
 
-public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
+public class DistanceDensityCondition extends AbstractDistanceCondition {
     private final double distanceMinimum;
     private final double distanceMaximum;
     @Nonnull
     private final Density density;
 
-    public DistanceDensityCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distanceMinimum, double distanceMaximum, @Nonnull Density density, boolean fastMode) {
+    public DistanceDensityCondition(@Nonnull ConditionalPipelineCartaTransform.Condition child, double distanceMinimum, double distanceMaximum, @Nonnull Density density, boolean fastMode) {
         super(child, fastMode);
         this.distanceMinimum = distanceMinimum;
         this.distanceMaximum = distanceMaximum;
@@ -23,7 +23,7 @@ public class DistanceDensityCondition<R> extends AbstractDistanceCondition<R> {
     }
 
     @Override
-    public double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack) {
+    public double getDistanceToQuery(PipelineCartaTransform.ContextStack stack) {
         Density.Context childContext = new Density.Context();
         Vector2d position = stack.getPosition();
         childContext.position = new Vector3d(position.x, 0, position.y);

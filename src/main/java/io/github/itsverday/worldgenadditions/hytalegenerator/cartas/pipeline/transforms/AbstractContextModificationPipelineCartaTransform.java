@@ -6,21 +6,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class AbstractContextModificationPipelineCartaTransform<R> extends PipelineCartaTransform<R> {
+public abstract class AbstractContextModificationPipelineCartaTransform extends PipelineCartaTransform {
     @Nullable
-    private final PipelineCartaTransform<R> child;
+    private final PipelineCartaTransform child;
 
-    public AbstractContextModificationPipelineCartaTransform(@Nullable PipelineCartaTransform<R> child) {
+    public AbstractContextModificationPipelineCartaTransform(@Nullable PipelineCartaTransform child) {
         this.child = child;
     }
 
-    protected R processChild(@Nonnull ContextStack<R> stack) {
+    protected int processChild(@Nonnull ContextStack stack) {
         if (child != null) return child.process(stack);
         return stack.getStage().processPrevious(stack);
     }
 
     @Override
-    public List<R> allPossibleValues() {
+    public List<Integer> allPossibleValues() {
         if (child != null) return child.allPossibleValues();
         return List.of();
     }

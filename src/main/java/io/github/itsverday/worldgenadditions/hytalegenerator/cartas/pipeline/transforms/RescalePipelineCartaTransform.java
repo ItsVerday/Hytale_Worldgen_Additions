@@ -7,21 +7,20 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nullable;
 
-public class RescalePipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
+public class RescalePipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
     private final double scalingFactor;
 
-    public RescalePipelineCartaTransform(@Nullable PipelineCartaTransform<R> child, double scalingFactor) {
+    public RescalePipelineCartaTransform(@Nullable PipelineCartaTransform child, double scalingFactor) {
         super(child);
         this.scalingFactor = scalingFactor;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         Vector2d position = new Vector2d(stack.getPosition());
         position.scale(scalingFactor);
         stack.pushWithPosition(position);
-        R value = processChild(stack);
+        int value = processChild(stack);
         stack.pop();
         return value;
     }

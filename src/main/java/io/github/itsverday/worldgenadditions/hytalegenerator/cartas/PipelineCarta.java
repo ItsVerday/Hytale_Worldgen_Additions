@@ -10,16 +10,16 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineCarta<R> extends BiCarta<R> {
-    private final List<PipelineCartaStage<R>> stages;
-    private final PipelineCartaStage<R> lastStage;
-    private List<R> allPossibleValues = null;
+public class PipelineCarta extends BiCarta<Integer> {
+    private final List<PipelineCartaStage> stages;
+    private final PipelineCartaStage lastStage;
+    private List<Integer> allPossibleValues = null;
 
-    public PipelineCarta(List<PipelineCartaStage<R>> stages) {
+    public PipelineCarta(List<PipelineCartaStage> stages) {
         this.stages = stages;
 
-        PipelineCartaStage<R> previousStage = null;
-        for (PipelineCartaStage<R> stage: stages) {
+        PipelineCartaStage previousStage = null;
+        for (PipelineCartaStage stage: stages) {
             if (!stage.isSkipped()) {
                 stage.setPreviousStage(previousStage);
                 previousStage = stage;
@@ -30,17 +30,17 @@ public class PipelineCarta<R> extends BiCarta<R> {
     }
 
     @Override
-    public R apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        PipelineCartaTransform.ContextStack<R> stack = new PipelineCartaTransform.ContextStack<>(new Vector2d(x, z), id, lastStage, true);
+    public Integer apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
+        PipelineCartaTransform.ContextStack stack = new PipelineCartaTransform.ContextStack(new Vector2d(x, z), id, lastStage, true);
         return lastStage.process(stack);
     }
 
     @Override
-    public List<R> allPossibleValues() {
+    public List<Integer> allPossibleValues() {
         if (allPossibleValues == null) {
             allPossibleValues = new ArrayList<>();
-            for (PipelineCartaStage<R> stage: stages) {
-                for (R possibility: stage.allPossibleValues()) {
+            for (PipelineCartaStage stage: stages) {
+                for (Integer possibility: stage.allPossibleValues()) {
                     if (!allPossibleValues.contains(possibility)) {
                         allPossibleValues.add(possibility);
                     }

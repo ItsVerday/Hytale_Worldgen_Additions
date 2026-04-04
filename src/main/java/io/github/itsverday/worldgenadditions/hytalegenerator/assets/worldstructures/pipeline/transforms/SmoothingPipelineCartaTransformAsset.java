@@ -25,15 +25,15 @@ public class SmoothingPipelineCartaTransformAsset extends PipelineCartaTransform
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform<>();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform();
 
-        PipelineCartaTransform<Integer> child = null;
+        PipelineCartaTransform child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
         }
 
         if (radius == 0.0 && child != null) return child;
-        return new SmoothingPipelineCartaTransform<>(child, radius, threshold);
+        return new SmoothingPipelineCartaTransform(child, radius, threshold);
     }
 }

@@ -8,25 +8,26 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.Optional;
 
-public class CachePipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
-    private final ModuloXZIntCache<Optional<R>> cache;
+public class CachePipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
+    private final ModuloXZIntCache<Integer> cache;
 
-    public CachePipelineCartaTransform(PipelineCartaTransform<R> child) {
+    public CachePipelineCartaTransform(PipelineCartaTransform child) {
         super(child);
         cache = new ModuloXZIntCache<>(8);
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         Vector2i position = stack.getIntPosition();
         int x = position.x;
         int y = position.y;
         if (!cache.containsKey(x, y)) {
-            R value = processChild(stack);
-            cache.put(x, y, Optional.ofNullable(value));
+            int value = processChild(stack);
+            cache.put(x, y, value);
         }
 
-        return cache.get(x, y).orElse(null);
+        Integer value = cache.get(x, y);
+        if (value == null) value = -1;
+        return value;
     }
 }

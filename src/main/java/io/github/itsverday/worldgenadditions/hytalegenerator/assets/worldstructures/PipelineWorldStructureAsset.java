@@ -70,14 +70,14 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             transformArgument.biomesById.put(debugBiomeAsset.getBiomeName(), debugBiomeAsset.build(argument.materialCache));
         }
 
-        ArrayList<PipelineCartaStage<Integer>> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage<>(new ConstantPipelineCartaTransform<>(transformArgument.cacheBiomeId(defaultBiomeId)), false));
+        ArrayList<PipelineCartaStage> finalStages = new ArrayList<>();
+        finalStages.add(new PipelineCartaStage(new ConstantPipelineCartaTransform(transformArgument.cacheBiomeId(defaultBiomeId)), false));
 
         for (PipelineCartaStageAsset stage: stages) {
             finalStages.add(stage.build(transformArgument));
         }
 
-        PipelineCarta<Integer> biomeCarta = new PipelineCarta<>(finalStages);
+        PipelineCarta biomeCarta = new PipelineCarta(finalStages);
         int defaultRadius = Math.max(1, this.biomeTransitionDistance / 2);
         PositionProvider spawnPositions = spawnPositionsAsset.build(new PositionProviderAsset.Argument(argument.parentSeed, referenceBundle, argument.workerId));
         return new WorldStructure(biomeCarta, transformArgument.biomeRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);

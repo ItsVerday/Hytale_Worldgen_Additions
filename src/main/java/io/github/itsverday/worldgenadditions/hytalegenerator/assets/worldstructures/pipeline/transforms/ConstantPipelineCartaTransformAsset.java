@@ -19,8 +19,8 @@ public class ConstantPipelineCartaTransformAsset extends PipelineCartaTransformA
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform<>();
-        return new ConstantPipelineCartaTransform<>(arg.cacheBiomeId(biomeId));
+    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform();
+        return new ConstantPipelineCartaTransform(arg.cacheBiomeId(biomeId));
     }
 }

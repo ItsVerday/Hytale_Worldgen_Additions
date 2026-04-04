@@ -13,14 +13,14 @@ public class CachePipelineCartaTransformAsset extends PipelineCartaTransformAsse
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform<>();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform();
 
-        PipelineCartaTransform<Integer> child = null;
+        PipelineCartaTransform child = null;
         if (inputs().length > 0) {
             child = inputs()[0].build(arg);
         }
 
-        return new CachePipelineCartaTransform<>(child);
+        return new CachePipelineCartaTransform(child);
     }
 }

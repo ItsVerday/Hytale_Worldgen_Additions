@@ -5,16 +5,15 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tra
 
 import javax.annotation.Nonnull;
 
-public class ValueCondition<R> extends ConditionalPipelineCartaTransform.Condition<R> {
-    @Nonnull
-    private final R value;
+public class ValueCondition extends ConditionalPipelineCartaTransform.Condition {
+    private final int value;
 
-    public ValueCondition(@Nonnull R value) {
+    public ValueCondition(int value) {
         this.value = value;
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack<R> stack) {
-        return value.equals(stack.getStage().processPrevious(stack));
+    public boolean process(PipelineCartaTransform.ContextStack stack) {
+        return value == stack.getStage().processPrevious(stack);
     }
 }

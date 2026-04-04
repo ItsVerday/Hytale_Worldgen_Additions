@@ -6,15 +6,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.List;
 
-public class NonePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
-    @NullableDecl
+public class NonePipelineCartaTransform extends PipelineCartaTransform {
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
-        return null;
+    public int process(@NonNullDecl ContextStack stack) {
+        return -1;
     }
 
     @Override
-    public List<R> allPossibleValues() {
+    public List<Integer> allPossibleValues() {
         return List.of();
     }
 }

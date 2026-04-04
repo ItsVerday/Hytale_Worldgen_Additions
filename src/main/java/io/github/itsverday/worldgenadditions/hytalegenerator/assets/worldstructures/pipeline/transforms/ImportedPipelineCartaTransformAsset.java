@@ -19,13 +19,13 @@ public class ImportedPipelineCartaTransformAsset extends PipelineCartaTransformA
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform<Integer> build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform<>();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
+        if (isSkipped()) return new NonePipelineCartaTransform();
 
         Exported exported = getExportedAsset(importedNodeName);
         if (exported == null) {
             LoggerUtil.getLogger().warning("Couldn't find PipelineCartaTransform asset exported with name: '" + importedNodeName + "'. Using empty Node instead.");
-            return new NonePipelineCartaTransform<>();
+            return new NonePipelineCartaTransform();
         }
 
         return exported.asset.build(arg);

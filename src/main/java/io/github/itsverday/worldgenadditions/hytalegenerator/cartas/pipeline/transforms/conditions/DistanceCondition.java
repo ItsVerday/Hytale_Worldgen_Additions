@@ -5,16 +5,16 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tra
 
 import javax.annotation.Nonnull;
 
-public class DistanceCondition<R> extends AbstractDistanceCondition<R> {
+public class DistanceCondition extends AbstractDistanceCondition {
     private final double distance;
 
-    public DistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, double distance, boolean fastMode) {
+    public DistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition child, double distance, boolean fastMode) {
         super(child, fastMode);
         this.distance = distance;
     }
 
     @Override
-    public double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack) {
+    public double getDistanceToQuery(PipelineCartaTransform.ContextStack stack) {
         return distance;
     }
 }

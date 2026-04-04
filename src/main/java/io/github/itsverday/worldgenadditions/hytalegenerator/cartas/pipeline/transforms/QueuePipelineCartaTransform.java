@@ -8,36 +8,35 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueuePipelineCartaTransform<R> extends PipelineCartaTransform<R> {
+public class QueuePipelineCartaTransform extends PipelineCartaTransform {
     @Nonnull
-    private final List<PipelineCartaTransform<R>> children;
+    private final List<PipelineCartaTransform> children;
 
-    public QueuePipelineCartaTransform(@NonNullDecl List<PipelineCartaTransform<R>> children) {
+    public QueuePipelineCartaTransform(@NonNullDecl List<PipelineCartaTransform> children) {
         this.children = children;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         stack.pushWithFallthrough(false);
-        for (PipelineCartaTransform<R> child: children) {
-            R result = child.process(stack);
-            if (result != null) {
+        for (PipelineCartaTransform child: children) {
+            int result = child.process(stack);
+            if (result != -1) {
                 stack.pop();
                 return result;
             }
         }
 
         stack.pop();
-        return null;
+        return -1;
     }
 
     @Override
-    public List<R> allPossibleValues() {
-        ArrayList<R> values = new ArrayList<>();
+    public List<Integer> allPossibleValues() {
+        ArrayList<Integer> values = new ArrayList<>();
 
-        for (PipelineCartaTransform<R> child: children) {
-            for (R possibility: child.allPossibleValues()) {
+        for (PipelineCartaTransform child: children) {
+            for (Integer possibility: child.allPossibleValues()) {
                 if (!values.contains(possibility)) {
                     values.add(possibility);
                 }

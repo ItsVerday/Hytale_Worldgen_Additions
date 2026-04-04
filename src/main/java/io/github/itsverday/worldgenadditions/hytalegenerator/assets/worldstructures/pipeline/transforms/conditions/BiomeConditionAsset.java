@@ -19,8 +19,8 @@ public class BiomeConditionAsset extends ConditionalPipelineCartaTransformAsset.
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition<Integer> build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        return new ValueCondition<>(arg.cacheBiomeId(biomeId));
+    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+        return new ValueCondition(arg.cacheBiomeId(biomeId));
     }
 
     @Override

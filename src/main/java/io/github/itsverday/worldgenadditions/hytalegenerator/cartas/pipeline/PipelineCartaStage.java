@@ -7,47 +7,47 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class PipelineCartaStage<R> {
-    private PipelineCartaStage<R> previousStage = null;
+public class PipelineCartaStage {
+    private PipelineCartaStage previousStage = null;
 
-    private final PipelineCartaTransform<R> root;
+    private final PipelineCartaTransform root;
     private final boolean skip;
 
-    private final ModuloXZIntCache<R> cache;
+    private final ModuloXZIntCache<Integer> cache;
 
-    public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
+    public PipelineCartaStage(PipelineCartaTransform root, boolean skip) {
         this.root = root;
         this.skip = skip;
 
         this.cache = new ModuloXZIntCache<>(8);
     }
 
-    public void setPreviousStage(PipelineCartaStage<R> previousStage) {
+    public void setPreviousStage(PipelineCartaStage previousStage) {
         this.previousStage = previousStage;
     }
 
-    @Nullable
-    public R process(@Nonnull PipelineCartaTransform.ContextStack<R> stack) {
+    public int process(@Nonnull PipelineCartaTransform.ContextStack stack) {
         stack.pushWithStage(this);
         Vector2i position = stack.getIntPosition();
         int x = position.x;
         int y = position.y;
         if (!cache.containsKey(x, y)) {
-            R value = root.process(stack);
-            if (stack.isFallthrough() && value == null) value = processPrevious(stack);
+            int value = root.process(stack);
+            if (stack.isFallthrough() && value == -1) value = processPrevious(stack);
             cache.put(x, y, value);
         }
 
         stack.pop();
-        return cache.get(x, y);
+        Integer value = cache.get(x, y);
+        if (value == null) value = -1;
+        return value;
     }
 
-    @Nullable
-    public R processPrevious(@Nonnull PipelineCartaTransform.ContextStack<R> stack) {
+    public int processPrevious(@Nonnull PipelineCartaTransform.ContextStack stack) {
         return previousStage.process(stack);
     }
 
-    public List<R> allPossibleValues() {
+    public List<Integer> allPossibleValues() {
         return root.allPossibleValues();
     }
 

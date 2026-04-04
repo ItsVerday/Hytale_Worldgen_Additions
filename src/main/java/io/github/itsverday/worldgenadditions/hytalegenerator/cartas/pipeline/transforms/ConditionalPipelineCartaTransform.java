@@ -8,40 +8,39 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConditionalPipelineCartaTransform<R> extends PipelineCartaTransform<R> {
-    private final Condition<R> condition;
+public class ConditionalPipelineCartaTransform extends PipelineCartaTransform {
+    private final Condition condition;
     @Nullable
-    private final PipelineCartaTransform<R> ifTrue;
+    private final PipelineCartaTransform ifTrue;
     @Nullable
-    private final PipelineCartaTransform<R> ifFalse;
+    private final PipelineCartaTransform ifFalse;
 
-    public ConditionalPipelineCartaTransform(Condition<R> condition, @Nullable PipelineCartaTransform<R> ifTrue, @Nullable PipelineCartaTransform<R> ifFalse) {
+    public ConditionalPipelineCartaTransform(Condition condition, @Nullable PipelineCartaTransform ifTrue, @Nullable PipelineCartaTransform ifFalse) {
         this.condition = condition;
         this.ifTrue = ifTrue;
         this.ifFalse = ifFalse;
     }
 
-    @NullableDecl
     @Override
-    public R process(@NonNullDecl ContextStack<R> stack) {
+    public int process(@NonNullDecl ContextStack stack) {
         if (condition != null && condition.process(stack)) {
             if (ifTrue != null) return ifTrue.process(stack);
         } else {
             if (ifFalse != null) return ifFalse.process(stack);
         }
 
-        return null;
+        return -1;
     }
 
     @Override
-    public List<R> allPossibleValues() {
-        ArrayList<R> values = new ArrayList<>();
+    public List<Integer> allPossibleValues() {
+        ArrayList<Integer> values = new ArrayList<>();
         if (ifTrue != null) values.addAll(ifTrue.allPossibleValues());
         if (ifFalse != null) values.addAll(ifFalse.allPossibleValues());
         return values;
     }
 
-    public abstract static class Condition<R> {
-        public abstract boolean process(ContextStack<R> stack);
+    public abstract static class Condition {
+        public abstract boolean process(ContextStack stack);
     }
 }
