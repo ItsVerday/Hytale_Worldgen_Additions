@@ -11,7 +11,6 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.GradientWarpPipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -32,13 +31,13 @@ public class GradientWarpPipelineCartaTransformAsset extends PipelineCartaTransf
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
+        if (isSkipped()) return previous;
 
         Density warpFieldDensity = warpField != null ? new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), 256) : new ConstantValueDensity(0.0);
-        PipelineCartaTransform child = null;
+        PipelineCartaTransform child = previous;
         if (inputs().length > 0) {
-            child = inputs()[0].build(arg);
+            child = inputs()[0].build(arg, previous);
         }
 
         return new GradientWarpPipelineCartaTransform(child, warpFieldDensity, sampleDistance, warpFactor);

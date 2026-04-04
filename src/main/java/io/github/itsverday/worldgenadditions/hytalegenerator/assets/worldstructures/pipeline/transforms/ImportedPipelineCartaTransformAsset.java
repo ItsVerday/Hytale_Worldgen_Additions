@@ -6,7 +6,6 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class ImportedPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
@@ -19,15 +18,15 @@ public class ImportedPipelineCartaTransformAsset extends PipelineCartaTransformA
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
+        if (isSkipped()) return previous;
 
         Exported exported = getExportedAsset(importedNodeName);
         if (exported == null) {
             LoggerUtil.getLogger().warning("Couldn't find PipelineCartaTransform asset exported with name: '" + importedNodeName + "'. Using empty Node instead.");
-            return new NonePipelineCartaTransform();
+            return previous;
         }
 
-        return exported.asset.build(arg);
+        return exported.asset.build(arg, previous);
     }
 }

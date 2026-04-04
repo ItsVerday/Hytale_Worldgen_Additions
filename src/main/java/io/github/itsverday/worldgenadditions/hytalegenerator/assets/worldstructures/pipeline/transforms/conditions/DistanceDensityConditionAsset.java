@@ -7,6 +7,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.DistanceDensityCondition;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
@@ -36,10 +37,10 @@ public class DistanceDensityConditionAsset extends ConditionalPipelineCartaTrans
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg, PipelineCartaTransform previous) {
         if (condition == null) return new NoneCondition();
 
-        return new DistanceDensityCondition(condition.build(arg), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), fast);
+        return new DistanceDensityCondition(condition.build(arg, previous), distanceMin, distanceMax, densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), fast);
     }
 
     @Override

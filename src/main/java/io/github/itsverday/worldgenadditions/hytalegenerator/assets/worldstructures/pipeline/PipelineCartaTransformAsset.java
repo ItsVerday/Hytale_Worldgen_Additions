@@ -62,7 +62,7 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
     }
 
     @Nonnull
-    public abstract PipelineCartaTransform build(@Nonnull Argument arg);
+    public abstract PipelineCartaTransform build(@Nonnull Argument arg, PipelineCartaTransform previous);
 
     @Override
     public void cleanUp() {
@@ -80,19 +80,6 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
 
     public PipelineCartaTransformAsset[] inputs() {
         return inputs;
-    }
-
-    @Nonnull
-    public List<PipelineCartaTransform> buildInputs(@Nonnull Argument argument, boolean excludeSkipped) {
-        ArrayList<PipelineCartaTransform> nodes = new ArrayList<>();
-
-        for (PipelineCartaTransformAsset asset: inputs) {
-            if (!excludeSkipped || !asset.isSkipped()) {
-                nodes.add(asset.build(argument));
-            }
-        }
-
-        return nodes;
     }
 
     public boolean isSkipped() {

@@ -4,13 +4,14 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.Pip
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public class SmoothingPipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
     private final double radius;
     private final double threshold;
 
-    public SmoothingPipelineCartaTransform(PipelineCartaTransform child, double radius, double threshold) {
+    public SmoothingPipelineCartaTransform(@Nonnull PipelineCartaTransform child, double radius, double threshold) {
         super(child);
         this.radius = radius;
         this.threshold = threshold;

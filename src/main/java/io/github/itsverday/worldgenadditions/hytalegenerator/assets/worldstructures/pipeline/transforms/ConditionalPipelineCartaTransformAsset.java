@@ -12,8 +12,8 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
@@ -37,9 +37,9 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
-        return new ConditionalPipelineCartaTransform(condition != null ? condition.build(arg) : null, ifTrue != null ? ifTrue.build(arg) : null, ifFalse != null ? ifFalse.build(arg) : null);
+    public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
+        if (isSkipped()) return previous;
+        return new ConditionalPipelineCartaTransform(previous, condition != null ? condition.build(arg, new CachePipelineCartaTransform(previous)) : null, ifTrue != null ? ifTrue.build(arg, previous) : previous, ifFalse != null ? ifFalse.build(arg, previous) : previous);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
         }
 
         @Nonnull
-        public abstract ConditionalPipelineCartaTransform.Condition build(@Nonnull Argument arg);
+        public abstract ConditionalPipelineCartaTransform.Condition build(@Nonnull Argument arg, PipelineCartaTransform previous);
 
         public String getId() {
             return this.id;

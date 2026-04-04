@@ -16,7 +16,6 @@ import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.FieldFunctionPipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
@@ -37,19 +36,19 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
+        if (isSkipped()) return previous;
 
         Density functionTree = densityAsset != null ? densityAsset.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)) : new ConstantValueDensity(0.0);
         ArrayList<FieldFunctionPipelineCartaTransform.FieldDelimiter> delimiters = new ArrayList<>(delimiterAssets.length);
 
         for (DelimiterAsset delimiterAsset: delimiterAssets) {
-            PipelineCartaTransform node = delimiterAsset.transform != null ? delimiterAsset.transform.build(arg) : new NonePipelineCartaTransform();
+            PipelineCartaTransform node = delimiterAsset.transform != null ? delimiterAsset.transform.build(arg, previous) : previous;
             FieldFunctionPipelineCartaTransform.FieldDelimiter delimiter = new FieldFunctionPipelineCartaTransform.FieldDelimiter(node, delimiterAsset.from, delimiterAsset.to);
             delimiters.add(delimiter);
         }
 
-        return new FieldFunctionPipelineCartaTransform(functionTree, delimiters);
+        return new FieldFunctionPipelineCartaTransform(previous, functionTree, delimiters);
     }
 
     @Override

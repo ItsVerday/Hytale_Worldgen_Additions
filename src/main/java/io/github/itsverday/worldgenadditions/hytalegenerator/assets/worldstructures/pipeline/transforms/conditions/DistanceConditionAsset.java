@@ -6,6 +6,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.DistanceCondition;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
@@ -28,10 +29,10 @@ public class DistanceConditionAsset extends ConditionalPipelineCartaTransformAss
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
+    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg, PipelineCartaTransform previous) {
         if (condition == null) return new NoneCondition();
 
-        return new DistanceCondition(condition.build(arg), distance, fast);
+        return new DistanceCondition(condition.build(arg, previous), distance, fast);
     }
 
     @Override

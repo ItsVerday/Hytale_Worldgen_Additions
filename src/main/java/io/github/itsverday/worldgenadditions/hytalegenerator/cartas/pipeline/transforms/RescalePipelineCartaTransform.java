@@ -5,12 +5,13 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.Pip
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RescalePipelineCartaTransform extends AbstractContextModificationPipelineCartaTransform {
     private final double scalingFactor;
 
-    public RescalePipelineCartaTransform(@Nullable PipelineCartaTransform child, double scalingFactor) {
+    public RescalePipelineCartaTransform(@Nonnull PipelineCartaTransform child, double scalingFactor) {
         super(child);
         this.scalingFactor = scalingFactor;
     }

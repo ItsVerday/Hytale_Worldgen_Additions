@@ -18,13 +18,11 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructu
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaStageAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaStage;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConstantPipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.*;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
-import java.util.ArrayList;
 
 public class PipelineWorldStructureAsset extends WorldStructureAsset {
     public static final BuilderCodec<PipelineWorldStructureAsset> CODEC = BuilderCodec.builder(PipelineWorldStructureAsset.class, PipelineWorldStructureAsset::new, WorldStructureAsset.ABSTRACT_CODEC)
@@ -70,14 +68,13 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
             transformArgument.biomesById.put(debugBiomeAsset.getBiomeName(), debugBiomeAsset.build(argument.materialCache));
         }
 
-        ArrayList<PipelineCartaStage> finalStages = new ArrayList<>();
-        finalStages.add(new PipelineCartaStage(new ConstantPipelineCartaTransform(transformArgument.cacheBiomeId(defaultBiomeId)), false));
+        PipelineCartaTransform transform = new ConstantPipelineCartaTransform(transformArgument.cacheBiomeId(defaultBiomeId));
 
         for (PipelineCartaStageAsset stage: stages) {
-            finalStages.add(stage.build(transformArgument));
+            transform = stage.build(transformArgument, transform);
         }
 
-        PipelineCarta biomeCarta = new PipelineCarta(finalStages);
+        PipelineCarta biomeCarta = new PipelineCarta(transform);
         int defaultRadius = Math.max(1, this.biomeTransitionDistance / 2);
         PositionProvider spawnPositions = spawnPositionsAsset.build(new PositionProviderAsset.Argument(argument.parentSeed, referenceBundle, argument.workerId));
         return new WorldStructure(biomeCarta, transformArgument.biomeRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);

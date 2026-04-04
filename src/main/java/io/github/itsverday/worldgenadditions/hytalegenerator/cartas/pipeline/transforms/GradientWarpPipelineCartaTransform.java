@@ -16,7 +16,7 @@ public class GradientWarpPipelineCartaTransform extends AbstractContextModificat
     private final double sampleDistance;
     private final double warpFactor;
 
-    public GradientWarpPipelineCartaTransform(@Nullable PipelineCartaTransform child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
+    public GradientWarpPipelineCartaTransform(@Nonnull PipelineCartaTransform child, @Nonnull Density warpField, double sampleDistance, double warpFactor) {
         super(child);
         this.warpField = warpField;
         this.sampleDistance = sampleDistance;

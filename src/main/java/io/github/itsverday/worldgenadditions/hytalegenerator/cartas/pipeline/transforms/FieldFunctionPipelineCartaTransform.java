@@ -13,11 +13,14 @@ import java.util.List;
 
 public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform {
     @Nonnull
+    private final PipelineCartaTransform previous;
+    @Nonnull
     private final Density density;
     @Nonnull
     private final List<FieldDelimiter> delimiters;
 
-    public FieldFunctionPipelineCartaTransform(@Nonnull Density density, @Nonnull List<FieldDelimiter> delimiters) {
+    public FieldFunctionPipelineCartaTransform(@NonNullDecl PipelineCartaTransform previous, @Nonnull Density density, @Nonnull List<FieldDelimiter> delimiters) {
+        this.previous = previous;
         this.density = density;
         this.delimiters = delimiters;
 
@@ -41,7 +44,7 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
             }
         }
 
-        return -1;
+        return previous.process(stack);
     }
 
     @Override

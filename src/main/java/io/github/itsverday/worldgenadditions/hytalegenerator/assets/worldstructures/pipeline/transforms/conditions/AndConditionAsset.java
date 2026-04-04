@@ -5,12 +5,13 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.AndCondition;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.NoneCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AndConditionAsset extends ConditionalPipelineCartaTransformAsset.ConditionAsset {
     public static final BuilderCodec<AndConditionAsset> CODEC = BuilderCodec.builder(AndConditionAsset.class, AndConditionAsset::new, ConditionalPipelineCartaTransformAsset.ConditionAsset.ABSTRACT_CODEC)
@@ -22,12 +23,12 @@ public class AndConditionAsset extends ConditionalPipelineCartaTransformAsset.Co
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        if (conditions == null) return new NoneCondition();
+    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg, PipelineCartaTransform previous) {
+        if (conditions == null) return new AndCondition(List.of());
 
         ArrayList<ConditionalPipelineCartaTransform.Condition> newConditions = new ArrayList<>();
         for (ConditionalPipelineCartaTransformAsset.ConditionAsset condition: conditions) {
-            newConditions.add(condition.build(arg));
+            newConditions.add(condition.build(arg, previous));
         }
 
         return new AndCondition(newConditions);

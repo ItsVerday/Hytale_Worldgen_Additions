@@ -5,6 +5,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.ConditionalPipelineCartaTransformAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions.ValueCondition;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -19,8 +20,8 @@ public class BiomeConditionAsset extends ConditionalPipelineCartaTransformAsset.
 
     @NonNullDecl
     @Override
-    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg) {
-        return new ValueCondition(arg.cacheBiomeId(biomeId));
+    public ConditionalPipelineCartaTransform.Condition build(@NonNullDecl PipelineCartaTransformAsset.Argument arg, PipelineCartaTransform previous) {
+        return new ValueCondition(arg.cacheBiomeId(biomeId), previous);
     }
 
     @Override

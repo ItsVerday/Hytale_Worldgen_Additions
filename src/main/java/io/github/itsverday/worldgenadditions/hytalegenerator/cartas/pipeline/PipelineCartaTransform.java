@@ -18,8 +18,8 @@ public abstract class PipelineCartaTransform {
         private int stackIndex;
         private final WorkerIndexer.Id workerId;
 
-        public ContextStack(@Nonnull Vector2d position, @Nonnull WorkerIndexer.Id workerId, @Nonnull PipelineCartaStage stage, boolean fallthrough) {
-            stack = new ArrayList<>(List.of(new Context(position, stage, fallthrough)));
+        public ContextStack(@Nonnull Vector2d position, @Nonnull WorkerIndexer.Id workerId) {
+            stack = new ArrayList<>(List.of(new Context(position)));
             stackIndex = 0;
             this.workerId = workerId;
         }
@@ -37,27 +37,15 @@ public abstract class PipelineCartaTransform {
             return new Vector2i((int) position.x, (int) position.y);
         }
 
-        public PipelineCartaStage getStage() {
-            return stack.get(stackIndex).getStage();
-        }
-
-        public boolean isFallthrough() {
-            return stack.get(stackIndex).isFallthrough();
-        }
-
-        public void push(@Nonnull Vector2d position, @Nonnull PipelineCartaStage stage, boolean fallthrough) {
+        public void push(@Nonnull Vector2d position) {
             if (stackIndex + 1 == stack.size()) {
-                stack.add(new Context(position, stage, fallthrough));
+                stack.add(new Context(position));
                 stackIndex++;
                 return;
             }
 
             Context context = stack.get(++stackIndex);
-            context.set(position, stage, fallthrough);
-        }
-
-        public void pushWithStage(@Nonnull PipelineCartaStage stage) {
-            push(getPosition(), stage, isFallthrough());
+            context.set(position);
         }
 
         public void pushWithOffset(double x, double z) {
@@ -66,11 +54,7 @@ public abstract class PipelineCartaTransform {
         }
 
         public void pushWithPosition(@Nonnull Vector2d position) {
-            push(position, getStage(), isFallthrough());
-        }
-
-        public void pushWithFallthrough(boolean fallthrough) {
-            push(getPosition(), getStage(), fallthrough);
+            push(position);
         }
 
         public void pop() {
@@ -81,14 +65,9 @@ public abstract class PipelineCartaTransform {
     private static class Context {
         @Nonnull
         private Vector2d position;
-        @Nonnull
-        private PipelineCartaStage stage;
-        private boolean fallthrough;
 
-        public Context(@Nonnull Vector2d position, @Nonnull PipelineCartaStage stage, boolean fallthrough) {
+        public Context(@Nonnull Vector2d position) {
             this.position = position;
-            this.stage = stage;
-            this.fallthrough = fallthrough;
         }
 
         @Nonnull
@@ -96,19 +75,8 @@ public abstract class PipelineCartaTransform {
             return position;
         }
 
-        @Nonnull
-        public PipelineCartaStage getStage() {
-            return stage;
-        }
-
-        public boolean isFallthrough() {
-            return fallthrough;
-        }
-
-        public void set(@Nonnull Vector2d position, @Nonnull PipelineCartaStage stage, boolean fallthrough) {
+        public void set(@Nonnull Vector2d position) {
             this.position = position;
-            this.stage = stage;
-            this.fallthrough = fallthrough;
         }
     }
 }

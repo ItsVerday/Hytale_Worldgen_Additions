@@ -6,7 +6,6 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConstantPipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.NonePipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class ConstantPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
@@ -19,8 +18,8 @@ public class ConstantPipelineCartaTransformAsset extends PipelineCartaTransformA
 
     @NonNullDecl
     @Override
-    public PipelineCartaTransform build(@NonNullDecl Argument arg) {
-        if (isSkipped()) return new NonePipelineCartaTransform();
+    public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
+        if (isSkipped()) return previous;
         return new ConstantPipelineCartaTransform(arg.cacheBiomeId(biomeId));
     }
 }

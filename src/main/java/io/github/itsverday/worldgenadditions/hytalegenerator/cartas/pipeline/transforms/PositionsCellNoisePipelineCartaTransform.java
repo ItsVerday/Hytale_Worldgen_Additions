@@ -11,13 +11,16 @@ import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTransform {
+    @Nonnull
+    private final PipelineCartaTransform previous;
+
     private final long seed;
     private final PositionProvider positions;
     private final DistanceFunction distanceFunction;
@@ -30,7 +33,8 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
 
     private final double maxDistance;
 
-    public PositionsCellNoisePipelineCartaTransform(long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue> cellValues, @Nullable Density distanceWarpField, double distanceWarpMin, double distanceWarpMax, double maxDistance) {
+    public PositionsCellNoisePipelineCartaTransform(@NonNullDecl PipelineCartaTransform previous, long seed, PositionProvider positions, DistanceFunction distanceFunction, List<CellValue> cellValues, @Nullable Density distanceWarpField, double distanceWarpMin, double distanceWarpMax, double maxDistance) {
+        this.previous = previous;
         this.seed = seed;
         this.positions = positions;
         this.distanceFunction = distanceFunction;
@@ -108,7 +112,7 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
             }
         }
 
-        return -1;
+        return previous.process(stack);
     }
 
     @Override
