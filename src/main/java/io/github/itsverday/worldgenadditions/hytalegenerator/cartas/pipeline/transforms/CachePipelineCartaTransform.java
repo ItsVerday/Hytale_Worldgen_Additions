@@ -3,7 +3,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 import com.hypixel.hytale.math.vector.Vector2i;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.util.ModuloVector2iCache;
-import io.github.itsverday.worldgenadditions.util.WorkerIndexerData;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 

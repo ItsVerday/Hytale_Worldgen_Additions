@@ -2,7 +2,6 @@ package io.github.itsverday.worldgenadditions.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 public class ModuloVector2iCache<V> {
     private final int moduloBits;

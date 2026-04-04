@@ -2,7 +2,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.math.vector.Vector2i;
 import io.github.itsverday.worldgenadditions.util.ModuloVector2iCache;
-import io.github.itsverday.worldgenadditions.util.WorkerIndexerData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
