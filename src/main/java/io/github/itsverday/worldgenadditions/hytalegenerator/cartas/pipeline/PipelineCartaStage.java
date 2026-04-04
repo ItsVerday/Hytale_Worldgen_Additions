@@ -32,14 +32,16 @@ public class PipelineCartaStage<R> {
         stack.pushWithStage(this);
         ModuloVector2iCache<R> workerCache = cache.get(stack.getWorkerId());
         Vector2i position = stack.getIntPosition();
-        if (!workerCache.containsKey(position)) {
+        int x = position.x;
+        int y = position.y;
+        if (!workerCache.containsKey(x, y)) {
             R value = root.process(stack);
             if (stack.isFallthrough() && value == null) value = processPrevious(stack);
-            workerCache.put(position, value);
+            workerCache.put(x, y, value);
         }
 
         stack.pop();
-        return workerCache.get(position);
+        return workerCache.get(x, y);
     }
 
     @Nullable

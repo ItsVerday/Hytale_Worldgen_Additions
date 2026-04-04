@@ -22,11 +22,13 @@ public class CachePipelineCartaTransform<R> extends AbstractContextModificationP
     public R process(@NonNullDecl ContextStack<R> stack) {
         ModuloVector2iCache<Optional<R>> workerCache = cache.get(stack.getWorkerId());
         Vector2i position = stack.getIntPosition();
-        if (!workerCache.containsKey(position)) {
+        int x = position.x;
+        int y = position.y;
+        if (!workerCache.containsKey(x, y)) {
             R value = processChild(stack);
-            workerCache.put(position, Optional.ofNullable(value));
+            workerCache.put(x, y, Optional.ofNullable(value));
         }
 
-        return workerCache.get(position).orElse(null);
+        return workerCache.get(x, y).orElse(null);
     }
 }
