@@ -2,7 +2,7 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 
 import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector2i;
-import io.github.itsverday.worldgenadditions.util.ModuloVector2iCache;
+import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 
@@ -13,14 +13,14 @@ public abstract class AbstractDistanceCondition<R> extends ConditionalPipelineCa
     private final ConditionalPipelineCartaTransform.Condition<R> child;
     private final boolean fastMode;
 
-    private final ModuloVector2iCache<Integer> distanceCache;
-    private final ModuloVector2iCache<Boolean> childCache;
+    private final ModuloXZIntCache<Integer> distanceCache;
+    private final ModuloXZIntCache<Boolean> childCache;
 
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition<R> child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
-        this.distanceCache = new ModuloVector2iCache<>(8);
-        this.childCache = new ModuloVector2iCache<>(8);
+        this.distanceCache = new ModuloXZIntCache<>(8);
+        this.childCache = new ModuloXZIntCache<>(8);
     }
 
     public abstract double getDistanceToQuery(PipelineCartaTransform.ContextStack<R> stack);

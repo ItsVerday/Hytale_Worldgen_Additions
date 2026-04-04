@@ -3,13 +3,13 @@ package io.github.itsverday.worldgenadditions.util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ModuloVector2iCache<V> {
+public class ModuloXZIntCache<V> {
     private final int moduloBits;
     private final Object[] valueCache;
     private final int[] realXCache;
     private final int[] realYCache;
 
-    public ModuloVector2iCache(int moduloBits) {
+    public ModuloXZIntCache(int moduloBits) {
         this.moduloBits = moduloBits;
         int cacheSize = 1 << (moduloBits * 2);
         valueCache = new Object[cacheSize];

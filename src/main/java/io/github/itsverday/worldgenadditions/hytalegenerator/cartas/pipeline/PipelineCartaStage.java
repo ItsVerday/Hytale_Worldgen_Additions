@@ -1,7 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.math.vector.Vector2i;
-import io.github.itsverday.worldgenadditions.util.ModuloVector2iCache;
+import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,13 +13,13 @@ public class PipelineCartaStage<R> {
     private final PipelineCartaTransform<R> root;
     private final boolean skip;
 
-    private final ModuloVector2iCache<R> cache;
+    private final ModuloXZIntCache<R> cache;
 
     public PipelineCartaStage(PipelineCartaTransform<R> root, boolean skip) {
         this.root = root;
         this.skip = skip;
 
-        this.cache = new ModuloVector2iCache<>(8);
+        this.cache = new ModuloXZIntCache<>(8);
     }
 
     public void setPreviousStage(PipelineCartaStage<R> previousStage) {

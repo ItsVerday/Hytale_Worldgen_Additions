@@ -2,18 +2,18 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 
 import com.hypixel.hytale.math.vector.Vector2i;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.util.ModuloVector2iCache;
+import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.Optional;
 
 public class CachePipelineCartaTransform<R> extends AbstractContextModificationPipelineCartaTransform<R> {
-    private final ModuloVector2iCache<Optional<R>> cache;
+    private final ModuloXZIntCache<Optional<R>> cache;
 
     public CachePipelineCartaTransform(PipelineCartaTransform<R> child) {
         super(child);
-        cache = new ModuloVector2iCache<>(8);
+        cache = new ModuloXZIntCache<>(8);
     }
 
     @NullableDecl
