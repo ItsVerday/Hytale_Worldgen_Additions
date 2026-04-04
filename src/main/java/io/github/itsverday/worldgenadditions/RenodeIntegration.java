@@ -206,6 +206,13 @@ public class RenodeIntegration {
     //endregion
 
     //region Curves
+    public static final NodeBuilder NODE_CURVE_SMOOTHSTEP = addNode(HytaleGeneratorNodes.VARIANT_CURVES.variantNode("Smoothstep", "SmoothstepCurve", "Smoothstep Curve"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("EdgeMin", "EdgeMin").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("EdgeMax", "EdgeMax").withDefaultValue(1.0).withWidth(100))
+            .addContent(Renode.floatContent("Low", "Low").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("High", "High").withDefaultValue(1.0).withWidth(100))
+            .addCategory(HytaleGeneratorNodes.CATEGORY_CURVES);
     public static final NodeBuilder NODE_CURVE_STEPS = addNode(HytaleGeneratorNodes.VARIANT_CURVES.variantNode("Steps", "StepsCurve", "Steps Curve"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(Renode.floatContent("FromMin", "FromMin").withDefaultValue(0.0).withWidth(100))
@@ -215,12 +222,14 @@ public class RenodeIntegration {
             .addContent(Renode.floatContent("CurveExponent", "CurveExponent").withDefaultValue(1.0).withWidth(100))
             .addContent(Renode.integerContent("StepCount", "StepCount").withDefaultValue(1).withWidth(100))
             .addContent(Renode.floatContent("WallWidth", "WallWidth").withDefaultValue(0.0).withWidth(100))
-            .addContent(Renode.floatContent("StepSlope", "StepSlope").withDefaultValue(0.0).withWidth(100));
+            .addContent(Renode.floatContent("StepSlope", "StepSlope").withDefaultValue(0.0).withWidth(100))
+            .addCategory(HytaleGeneratorNodes.CATEGORY_CURVES);
     public static final NodeBuilder NODE_CURVE_THRESHOLD = addNode(HytaleGeneratorNodes.VARIANT_CURVES.variantNode("Threshold", "ThresholdCurve", "Threshold Curve"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(Renode.floatContent("Low", "Low").withDefaultValue(0.0).withWidth(100))
             .addContent(Renode.floatContent("High", "High").withDefaultValue(1.0).withWidth(100))
-            .addContent(Renode.floatContent("Cutoff", "Cutoff").withDefaultValue(0.0).withWidth(100));
+            .addContent(Renode.floatContent("Cutoff", "Cutoff").withDefaultValue(0.0).withWidth(100))
+            .addCategory(HytaleGeneratorNodes.CATEGORY_CURVES);
     //endregion
 
     private static NodeBuilder addNode(NodeBuilder node) {
