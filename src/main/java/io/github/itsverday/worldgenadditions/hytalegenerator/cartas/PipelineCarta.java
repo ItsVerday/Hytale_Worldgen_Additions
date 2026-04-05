@@ -11,14 +11,21 @@ import java.util.List;
 public class PipelineCarta extends BiCarta<Integer> {
     private final PipelineCartaTransform transform;
 
+    private final Vector2d rPosition;
+    private final PipelineCartaTransform.Context rContext;
+
+
     public PipelineCarta(PipelineCartaTransform transform) {
         this.transform = transform;
+        rPosition = new Vector2d();
+        rContext = new PipelineCartaTransform.Context();
     }
 
     @Override
     public Integer apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        PipelineCartaTransform.Context context = new PipelineCartaTransform.Context(new Vector2d(x, z), id);
-        return transform.process(context);
+        rPosition.assign(x, z);
+        rContext.assign(rPosition, id);
+        return transform.process(rContext);
     }
 
     @Override

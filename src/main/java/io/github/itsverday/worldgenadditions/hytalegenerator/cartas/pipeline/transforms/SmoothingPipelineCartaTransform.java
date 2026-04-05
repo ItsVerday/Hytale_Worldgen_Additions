@@ -3,6 +3,7 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -22,6 +23,7 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
 
     private final Vector2d rChildPosition;
     private final Context rChildContext;
+    private final HashMap<Integer, Integer> rCounts = new HashMap<>();
 
     public SmoothingPipelineCartaTransform(@Nonnull PipelineCartaTransform previous, @Nonnull PipelineCartaTransform child, double radius, double threshold) {
         this.previous = previous;
@@ -37,11 +39,11 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
     public int process(@NonNullDecl Context context) {
         int radiusInt = (int) Math.ceil(radius);
 
-        HashMap<Integer, Integer> counts = new HashMap<>();
         int totalCount = 0;
         int highestCount = 0;
         double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.79;
 
+        rCounts.clear();
         for (int dx = -radiusInt; dx <= radiusInt; dx++) {
             for (int dz = -radiusInt; dz <= radiusInt; dz++) {
                 if (dx * dx + dz * dz > radius * radius) continue;
@@ -53,21 +55,21 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
                 int value = child.process(rChildContext);
 
                 int currentCount = 1;
-                Integer count = counts.get(value);
+                Integer count = rCounts.get(value);
                 if (count != null) {
                     currentCount = count + 1;
                     if (currentCount >= totalCountEstimate * threshold) return value;
                 }
 
-                counts.put(value, currentCount);
+                rCounts.put(value, currentCount);
 
                 if (currentCount > highestCount) highestCount = currentCount;
                 totalCount++;
             }
         }
 
-        for (Integer value: counts.keySet()) {
-            int count = counts.get(value);
+        for (Integer value: rCounts.keySet()) {
+            int count = rCounts.get(value);
             if (count == highestCount && count >= totalCount * threshold) return value;
         }
 
