@@ -10,10 +10,10 @@ import java.util.List;
 
 public class PipelineCarta extends BiCarta<Integer> {
     private final PipelineCartaTransform transform;
+    private List<Integer> allPossibleValuesCached = null;
 
     private final Vector2d rPosition;
     private final PipelineCartaTransform.Context rContext;
-
 
     public PipelineCarta(PipelineCartaTransform transform) {
         this.transform = transform;
@@ -30,6 +30,7 @@ public class PipelineCarta extends BiCarta<Integer> {
 
     @Override
     public List<Integer> allPossibleValues() {
-        return transform.allPossibleValues();
+        if (allPossibleValuesCached == null) allPossibleValuesCached = transform.allPossibleValues();
+        return allPossibleValuesCached;
     }
 }
