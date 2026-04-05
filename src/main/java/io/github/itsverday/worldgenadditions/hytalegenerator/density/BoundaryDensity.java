@@ -12,6 +12,9 @@ public class BoundaryDensity extends Density {
     private final double width;
     private final double bias;
 
+    private final Context rChildContext;
+    private final Vector3d rPosition;
+
     public BoundaryDensity(@Nonnull Density input, double cutoff, double width, double bias) {
         assert width >= 0.0;
         assert bias >= 0.0 && bias <= 1.0;
@@ -20,34 +23,39 @@ public class BoundaryDensity extends Density {
         this.cutoff = cutoff;
         this.width = Math.abs(width);
         this.bias = bias;
+
+        rChildContext = new Context();
+        rPosition = new Vector3d();
     }
 
     @Override
     public double process(@NonNullDecl Context context) {
         final double sampleDistance = 1.0;
 
-        double valueAtOrigin = input.process(context);
+        rPosition.assign(context.position);
+        rChildContext.assign(context);
+        rChildContext.position = rPosition;
+
+        double valueAtOrigin = input.process(rChildContext);
         if (width == 0.0) {
             if (valueAtOrigin >= cutoff) return 1.0;
-
             return 0.0;
         }
 
         double newX = context.position.x + sampleDistance;
         double newY = context.position.y + sampleDistance;
         double newZ = context.position.z + sampleDistance;
-        Context childContext = new Context(context);
 
-        childContext.position = new Vector3d(newX, context.position.y, context.position.z);
-        double deltaX = input.process(childContext) - valueAtOrigin;
+        rChildContext.position.assign(newX, context.position.y, context.position.z);
+        double deltaX = input.process(rChildContext) - valueAtOrigin;
         double dx = deltaX / sampleDistance;
 
-        childContext.position = new Vector3d(context.position.x, newY, context.position.z);
-        double deltaY = input.process(childContext) - valueAtOrigin;
+        rChildContext.position.assign(context.position.x, newY, context.position.z);
+        double deltaY = input.process(rChildContext) - valueAtOrigin;
         double dy = deltaY / sampleDistance;
 
-        childContext.position = new Vector3d(context.position.x, context.position.y, newZ);
-        double deltaZ = input.process(childContext) - valueAtOrigin;
+        rChildContext.position.assign(context.position.x, context.position.y, newZ);
+        double deltaZ = input.process(rChildContext) - valueAtOrigin;
         double dz = deltaZ / sampleDistance;
 
         double fwidth = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);

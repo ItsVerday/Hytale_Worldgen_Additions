@@ -33,7 +33,13 @@ public class ErosionDensity extends Density {
     private final double cellScale;
     private final double normalization;
 
-    private final PhacelleResult phacelle = new PhacelleResult();
+    private final Context rChildContext;
+    private final Vector3d rPosition;
+
+    private double phacellePhaseX;
+    private double phacellePhaseY;
+    private double phacelleSideX;
+    private double phacelleSideY;
 
     public ErosionDensity(@Nonnull Density input, long seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
         assert inputSampleDistance > 0.0;
@@ -59,24 +65,30 @@ public class ErosionDensity extends Density {
         this.assumedSlopeBlending = assumedSlopeBlending;
         this.cellScale = cellScale;
         this.normalization = normalization;
+
+        rChildContext = new Context();
+        rPosition = new Vector3d();
     }
 
     @Override
     public double process(@NonNullDecl Context context) {
         Vector2d position2d = new Vector2d(context.position.x, context.position.z);
 
-        double valueAtOrigin = input.process(context);
+        rPosition.assign(context.position);
+        rChildContext.assign(context);
+        rChildContext.position = rPosition;
+
+        double valueAtOrigin = input.process(rChildContext);
         double newX = context.position.x + inputSampleDistance;
         double newZ = context.position.z + inputSampleDistance;
-        Context childContext = new Context(context);
 
-        childContext.position = new Vector3d(newX, context.position.y, context.position.z);
-        double deltaX = input.process(childContext) - valueAtOrigin;
+        rChildContext.position.assign(newX, context.position.y, context.position.z);
+        double deltaX = input.process(rChildContext) - valueAtOrigin;
         double dx = deltaX / inputSampleDistance;
         dx *= scale;
 
-        childContext.position = new Vector3d(context.position.x, context.position.y, newZ);
-        double deltaZ = input.process(childContext) - valueAtOrigin;
+        rChildContext.position.assign(context.position.x, context.position.y, newZ);
+        double deltaZ = input.process(rChildContext) - valueAtOrigin;
         double dz = deltaZ / inputSampleDistance;
         dz *= scale;
 
@@ -108,20 +120,20 @@ public class ErosionDensity extends Density {
                 safeGullyDz /= gullyDLength;
             }
 
-            phacelleNoise(phacelle, position2d.x * frequency, position2d.y * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
-            phacelle.sideX *= -frequency;
-            phacelle.sideY *= -frequency;
-            double sloping = Math.abs(phacelle.phaseY);
-            double sign = Math.signum(phacelle.phaseY);
-            gullyDx += sign * phacelle.sideX * strength * gullyWeight;
-            gullyDz += sign * phacelle.sideY * strength * gullyWeight;
+            phacelleNoise(position2d.x * frequency, position2d.y * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
+            phacelleSideX *= -frequency;
+            phacelleSideY *= -frequency;
+            double sloping = Math.abs(phacellePhaseY);
+            double sign = Math.signum(phacellePhaseY);
+            gullyDx += sign * phacelleSideX * strength * gullyWeight;
+            gullyDz += sign * phacelleSideY * strength * gullyWeight;
 
-            double gullies = mix(fadeTarget, phacelle.phaseX * gullyWeight, combinedMask);
+            double gullies = mix(fadeTarget, phacellePhaseX * gullyWeight, combinedMask);
             height += gullies * strength;
             magnitude += strength;
             fadeTarget = gullies;
 
-            double roundingForOctave = mix(creaseRounding, ridgeRounding, clamp01(phacelle.phaseX + 0.5)) * roundingMult;
+            double roundingForOctave = mix(creaseRounding, ridgeRounding, clamp01(phacellePhaseX + 0.5)) * roundingMult;
             double newMask = easeOut(smoothStart(sloping * gullyOnset, roundingForOctave * gullyOnset));
             combinedMask = powInverse(combinedMask, detail) * newMask;
 
@@ -134,16 +146,9 @@ public class ErosionDensity extends Density {
         return height + heightDelta * magnitude;
     }
 
-    private static class PhacelleResult {
-        public double phaseX = 0;
-        public double phaseY = 0;
-        public double sideX = 0;
-        public double sideY = 0;
-    }
-
-    private void phacelleNoise(PhacelleResult result, double x, double y, double normX, double normY, double frequency, double offset, double normalization) {
-        double sideX = -normY * frequency * Math.TAU;
-        double sideY = normX * frequency * Math.TAU;
+    private void phacelleNoise(double x, double y, double normX, double normY, double frequency, double offset, double normalization) {
+        phacelleSideX = -normY * frequency * Math.TAU;
+        phacelleSideY = normX * frequency * Math.TAU;
         offset *= Math.TAU;
 
         double xFloor = Math.floor(x);
@@ -163,7 +168,7 @@ public class ErosionDensity extends Density {
                 double weight = Math.max(Math.exp(-distanceSquared * 2.0) - 0.01111, 0.0);
                 weightSum += weight;
 
-                double waveInput = xFromCellPoint * sideX + yFromCellPoint * sideY + offset;
+                double waveInput = xFromCellPoint * phacelleSideX + yFromCellPoint * phacelleSideY + offset;
                 phaseX += Math.cos(waveInput) * weight;
                 phaseY += Math.sin(waveInput) * weight;
             }
@@ -173,10 +178,8 @@ public class ErosionDensity extends Density {
         double interpolatedY = phaseY / weightSum;
         double magnitude = Math.hypot(interpolatedX, interpolatedY);
         magnitude = Math.max(1.0 - normalization, magnitude);
-        result.phaseX = interpolatedX / magnitude;
-        result.phaseY = interpolatedY / magnitude;
-        result.sideX = sideX;
-        result.sideY = sideY;
+        phacellePhaseX = interpolatedX / magnitude;
+        phacellePhaseY = interpolatedY / magnitude;
     }
 
     private double mix(double a, double b, double weight) {

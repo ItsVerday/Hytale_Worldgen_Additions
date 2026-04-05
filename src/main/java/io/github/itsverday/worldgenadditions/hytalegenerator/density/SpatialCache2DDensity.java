@@ -12,10 +12,16 @@ public class SpatialCache2DDensity extends Density {
     private final ModuloXZDoubleCache<Double> cache;
     private final double yOverride;
 
+    private final Context rChildContext;
+    private final Vector3d rPosition;
+
     public SpatialCache2DDensity(@Nonnull Density input, int moduloBits, double yOverride) {
         this.input = input;
         cache = new ModuloXZDoubleCache<>(moduloBits);
         this.yOverride = yOverride;
+
+        rChildContext = new Context();
+        rPosition = new Vector3d();
     }
 
     @Override
@@ -24,9 +30,11 @@ public class SpatialCache2DDensity extends Density {
         double z = context.position.z;
         if (cache.containsKey(x, z)) return cache.get(x, z);
 
-        Context childContext = new Context(context);
-        childContext.position = new Vector3d(x, yOverride, z);
-        double value = input.process(childContext);
+        rPosition.assign(context.position);
+        rPosition.y = yOverride;
+        rChildContext.assign(context);
+        rChildContext.position = rPosition;
+        double value = input.process(rChildContext);
         cache.put(x, z, value);
         return value;
     }
