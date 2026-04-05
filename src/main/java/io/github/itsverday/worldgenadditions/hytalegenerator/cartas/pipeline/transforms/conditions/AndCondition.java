@@ -13,9 +13,9 @@ public class AndCondition extends ConditionalPipelineCartaTransform.Condition {
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack stack) {
+    public boolean process(PipelineCartaTransform.Context context) {
         for (ConditionalPipelineCartaTransform.Condition condition: conditions) {
-            if (!condition.process(stack)) return false;
+            if (!condition.process(context)) return false;
         }
 
         return true;

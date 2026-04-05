@@ -11,7 +11,7 @@ public class NotCondition extends ConditionalPipelineCartaTransform.Condition {
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack stack) {
-        return !condition.process(stack);
+    public boolean process(PipelineCartaTransform.Context context) {
+        return !condition.process(context);
     }
 }

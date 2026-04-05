@@ -17,8 +17,8 @@ public class PipelineCarta extends BiCarta<Integer> {
 
     @Override
     public Integer apply(int x, int z, @NonNullDecl WorkerIndexer.Id id) {
-        PipelineCartaTransform.ContextStack stack = new PipelineCartaTransform.ContextStack(new Vector2d(x, z), id);
-        return transform.process(stack);
+        PipelineCartaTransform.Context context = new PipelineCartaTransform.Context(new Vector2d(x, z), id);
+        return transform.process(context);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ValueCondition extends ConditionalPipelineCartaTransform.Condition 
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack stack) {
-        return value == previous.process(stack);
+    public boolean process(PipelineCartaTransform.Context context) {
+        return value == previous.process(context);
     }
 }

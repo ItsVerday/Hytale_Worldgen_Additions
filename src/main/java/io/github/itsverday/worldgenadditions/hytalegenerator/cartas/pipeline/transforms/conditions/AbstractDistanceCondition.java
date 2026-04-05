@@ -16,39 +16,49 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
     private final ModuloXZIntCache<Integer> distanceCache;
     private final ModuloXZIntCache<Boolean> childCache;
 
+    private final Vector2d rChildPosition;
+    private final PipelineCartaTransform.Context rChildContext;
+
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
         this.distanceCache = new ModuloXZIntCache<>(8);
         this.childCache = new ModuloXZIntCache<>(8);
+
+        rChildPosition = new Vector2d();
+        rChildContext = new PipelineCartaTransform.Context();
     }
 
-    public abstract double getDistanceToQuery(PipelineCartaTransform.ContextStack stack);
+    public abstract double getDistanceToQuery(PipelineCartaTransform.Context context);
 
-    private boolean processChildWithOffset(@Nonnull PipelineCartaTransform.ContextStack stack, int x, int z, int dx, int dz) {
-        if (childCache.containsKey(x + dx, z + dz)) return childCache.get(x + dx, z + dz);
-        stack.pushWithOffset(dx, dz);
-        boolean value = child.process(stack);
-        stack.pop();
-        childCache.put(x + dx, z + dz, value);
+    private boolean processChildWithOffset(@Nonnull PipelineCartaTransform.Context context, int dx, int dz) {
+        rChildPosition.assign(context.position);
+        rChildPosition.add(dx, dz);
+        int x = (int) rChildPosition.x;
+        int y = (int) rChildPosition.y;
+        if (childCache.containsKey(x, y)) return childCache.get(x, y);
+
+        rChildContext.assign(context);
+        rChildContext.position = rChildPosition;
+        boolean value = child.process(rChildContext);
+        childCache.put(x, y, value);
         return value;
     }
 
-    private boolean withinDistance(@Nonnull PipelineCartaTransform.ContextStack stack, double maxDistance) {
-        Vector2i position = stack.getIntPosition();
-        int x = position.x;
-        int y = position.y;
+    private boolean withinDistance(@Nonnull PipelineCartaTransform.Context context, double maxDistance) {
+        int x = (int) context.position.x;
+        int y = (int) context.position.y;
         if (distanceCache.containsKey(x, y)) return distanceCache.get(x, y) <= maxDistance * maxDistance;
 
         // Check if we are at a matching value
-        if (child.process(stack)) {
+        if (child.process(context)) {
             distanceCache.put(x, y, 0);
             return true;
         }
 
         // Quickly find an upper bound on distance to matching value in cardinal directions, if possible
         for (int d = 1; d <= maxDistance; d++) {
-            if (processChildWithOffset(stack, x, y, d, 0) || processChildWithOffset(stack, x, y, -d, 0) || processChildWithOffset(stack, x, y, 0, d) || processChildWithOffset(stack, x, y, 0, -d)) {
+            if (processChildWithOffset(context, d, 0) || processChildWithOffset(context, -d, 0) || processChildWithOffset(context, 0, d) || processChildWithOffset(context, 0, -d)) {
                 distanceCache.put(x, y, d * d);
                 return d <= maxDistance;
             }
@@ -56,7 +66,7 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
 
         // Check diagonals in the same way
         for (int d = 1; d * d * 2 <= maxDistance * maxDistance; d++) {
-            if (processChildWithOffset(stack, x, y, d, d) || processChildWithOffset(stack, x, y, d, -d) || processChildWithOffset(stack, x, y, -d, d) || processChildWithOffset(stack, x, y, -d, -d)) {
+            if (processChildWithOffset(context, d, d) || processChildWithOffset(context, d, -d) || processChildWithOffset(context, -d, d) || processChildWithOffset(context, -d, -d)) {
                 distanceCache.put(x, y, d * d * 2);
                 return d * d * 2 <= maxDistance * maxDistance;
             }
@@ -71,7 +81,7 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
                     for (int dz = -range; dz <= range; dz += Math.abs(dx) == range ? 1 : range * 2) {
                         int distance = dx * dx + dz * dz;
                         if (distance > maxDistance * maxDistance || distance > foundDistance) continue;
-                        if (processChildWithOffset(stack, x, y, dx, dz)) foundDistance = distance;
+                        if (processChildWithOffset(context, dx, dz)) foundDistance = distance;
                     }
                 }
 
@@ -87,7 +97,7 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
     }
 
     @Override
-    public boolean process(PipelineCartaTransform.ContextStack stack) {
-        return withinDistance(stack, getDistanceToQuery(stack));
+    public boolean process(PipelineCartaTransform.Context context) {
+        return withinDistance(context, getDistanceToQuery(context));
     }
 }

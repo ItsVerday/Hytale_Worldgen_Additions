@@ -14,7 +14,7 @@ public class DistanceCondition extends AbstractDistanceCondition {
     }
 
     @Override
-    public double getDistanceToQuery(PipelineCartaTransform.ContextStack stack) {
+    public double getDistanceToQuery(PipelineCartaTransform.Context context) {
         return distance;
     }
 }

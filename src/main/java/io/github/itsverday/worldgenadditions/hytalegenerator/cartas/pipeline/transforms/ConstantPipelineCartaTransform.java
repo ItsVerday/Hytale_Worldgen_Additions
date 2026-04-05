@@ -14,7 +14,7 @@ public class ConstantPipelineCartaTransform extends PipelineCartaTransform {
     }
 
     @Override
-    public int process(@NonNullDecl ContextStack stack) {
+    public int process(@NonNullDecl Context context) {
         return value;
     }
 

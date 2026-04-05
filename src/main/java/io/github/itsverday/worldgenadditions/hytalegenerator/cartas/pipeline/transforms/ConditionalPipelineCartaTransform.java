@@ -25,14 +25,14 @@ public class ConditionalPipelineCartaTransform extends PipelineCartaTransform {
     }
 
     @Override
-    public int process(@NonNullDecl ContextStack stack) {
-        if (condition != null && condition.process(stack)) {
-            if (ifTrue != null) return ifTrue.process(stack);
+    public int process(@NonNullDecl Context context) {
+        if (condition != null && condition.process(context)) {
+            if (ifTrue != null) return ifTrue.process(context);
         } else {
-            if (ifFalse != null) return ifFalse.process(stack);
+            if (ifFalse != null) return ifFalse.process(context);
         }
 
-        return previous.process(stack);
+        return previous.process(context);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class ConditionalPipelineCartaTransform extends PipelineCartaTransform {
     }
 
     public abstract static class Condition {
-        public abstract boolean process(ContextStack stack);
+        public abstract boolean process(Context context);
     }
 }

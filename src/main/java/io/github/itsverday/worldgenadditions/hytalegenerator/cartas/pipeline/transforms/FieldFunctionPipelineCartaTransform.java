@@ -19,6 +19,9 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
     @Nonnull
     private final List<FieldDelimiter> delimiters;
 
+    private final Vector3d rChildPosition;
+    private final Density.Context rChildContext;
+
     public FieldFunctionPipelineCartaTransform(@NonNullDecl PipelineCartaTransform previous, @Nonnull Density density, @Nonnull List<FieldDelimiter> delimiters) {
         this.previous = previous;
         this.density = density;
@@ -29,22 +32,24 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
                 throw new IllegalArgumentException("delimiters contain null value");
             }
         }
+
+        rChildPosition = new Vector3d();
+        rChildContext = new Density.Context();
     }
 
     @Override
-    public int process(@NonNullDecl ContextStack stack) {
-        Density.Context childContext = new Density.Context();
-        Vector2d position = stack.getPosition();
-        childContext.position = new Vector3d(position.x, 0, position.y);
-        double densityValue = density.process(childContext);
+    public int process(@NonNullDecl Context context) {
+        rChildPosition.assign(context.position.x, 0, context.position.y);
+        rChildContext.position = rChildPosition;
+        double densityValue = density.process(rChildContext);
 
         for (FieldDelimiter delimiter: delimiters) {
             if (delimiter.isInside(densityValue)) {
-                return delimiter.value.process(stack);
+                return delimiter.value.process(context);
             }
         }
 
-        return previous.process(stack);
+        return previous.process(context);
     }
 
     @Override
