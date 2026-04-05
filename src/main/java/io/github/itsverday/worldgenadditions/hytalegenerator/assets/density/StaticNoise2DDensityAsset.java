@@ -17,9 +17,12 @@ public class StaticNoise2DDensityAsset extends DensityAsset {
     )
             .append(new KeyedCodec<>("Seed", Codec.STRING, true), (asset, seed) -> asset.seedKey = seed, asset -> asset.seedKey)
             .add()
+            .append(new KeyedCodec<>("Rounding", Codec.DOUBLE, true), (asset, rounding) -> asset.rounding = rounding, asset -> asset.rounding)
+            .add()
             .build();
 
     private String seedKey = "A";
+    private double rounding = 0.0;
 
     @Nonnull
     @Override
@@ -27,6 +30,6 @@ public class StaticNoise2DDensityAsset extends DensityAsset {
         if (this.isSkipped()) return new ConstantValueDensity(0.0);
 
         SeedBox childSeed = argument.parentSeed.child(this.seedKey);
-        return new StaticNoise2DDensity(childSeed.createSupplier().get());
+        return new StaticNoise2DDensity(childSeed.createSupplier().get(), rounding);
     }
 }

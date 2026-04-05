@@ -206,11 +206,13 @@ public class RenodeIntegration {
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
             .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
+            .addContent(Renode.floatContent("Rounding", "Rounding").withDefaultValue(0.0).withWidth(100))
             .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     public static final NodeBuilder NODE_DENSITY_STATIC_NOISE_3D = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("StaticNoise3D", "StaticNoise3DDensityNode","StaticNoise3D Density"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
             .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
+            .addContent(Renode.floatContent("Rounding", "Rounding").withDefaultValue(0.0).withWidth(100))
             .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     //endregion
 

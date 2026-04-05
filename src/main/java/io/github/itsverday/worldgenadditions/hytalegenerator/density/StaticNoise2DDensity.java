@@ -6,13 +6,20 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class StaticNoise2DDensity extends Density {
     private final RngField rng;
+    private final double rounding;
 
-    public StaticNoise2DDensity(int seed) {
+    public StaticNoise2DDensity(int seed, double rounding) {
         rng = new RngField(seed);
+        this.rounding = Math.abs(rounding);
+    }
+
+    private double round(double x) {
+        if (rounding == 0) return x;
+        return Math.floor(x / rounding) * rounding;
     }
 
     @Override
     public double process(@NonNullDecl Context context) {
-        return rng.get(context.position.x, context.position.z);
+        return rng.get(round(context.position.x), round(context.position.z));
     }
 }
