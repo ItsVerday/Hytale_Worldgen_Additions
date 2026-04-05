@@ -34,6 +34,7 @@ public class SmoothingPipelineCartaTransformAsset extends PipelineCartaTransform
         }
 
         if (radius == 0.0) return child;
-        return new SmoothingPipelineCartaTransform(previous, new CachePipelineCartaTransform(child), radius, threshold);
+        if (!(child instanceof CachePipelineCartaTransform)) child = new CachePipelineCartaTransform(child);
+        return new SmoothingPipelineCartaTransform(previous, child, radius, threshold);
     }
 }

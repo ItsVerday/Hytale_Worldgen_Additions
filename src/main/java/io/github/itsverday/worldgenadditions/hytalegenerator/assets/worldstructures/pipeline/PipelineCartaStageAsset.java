@@ -8,6 +8,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
 
 public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaStageAsset>> {
     public static final AssetBuilderCodec<String, PipelineCartaStageAsset> CODEC = AssetBuilderCodec.builder(PipelineCartaStageAsset.class, PipelineCartaStageAsset::new, Codec.STRING, (asset, id) -> asset.id = id, config -> config.id, (config, data) -> config.data = data, config -> config.data)
@@ -26,7 +27,9 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
     public PipelineCartaTransform build(PipelineCartaTransformAsset.Argument arg, PipelineCartaTransform previous) {
         if (isSkipped()) return previous;
         if (root == null) return previous;
-        return root.build(arg, previous);
+        PipelineCartaTransform rootTransform = root.build(arg, previous);
+        if (!(rootTransform instanceof CachePipelineCartaTransform)) rootTransform = new CachePipelineCartaTransform(rootTransform);
+        return rootTransform;
     }
 
     @Override

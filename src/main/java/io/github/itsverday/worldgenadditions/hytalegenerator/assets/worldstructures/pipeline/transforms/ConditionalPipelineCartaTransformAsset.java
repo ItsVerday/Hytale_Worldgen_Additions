@@ -39,7 +39,8 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
     @Override
     public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
         if (isSkipped()) return previous;
-        return new ConditionalPipelineCartaTransform(previous, condition != null ? condition.build(arg, new CachePipelineCartaTransform(previous)) : null, ifTrue != null ? ifTrue.build(arg, previous) : previous, ifFalse != null ? ifFalse.build(arg, previous) : previous);
+        if (!(previous instanceof CachePipelineCartaTransform)) previous = new CachePipelineCartaTransform(previous);
+        return new ConditionalPipelineCartaTransform(previous, condition != null ? condition.build(arg, previous) : null, ifTrue != null ? ifTrue.build(arg, previous) : previous, ifFalse != null ? ifFalse.build(arg, previous) : previous);
     }
 
     @Override
