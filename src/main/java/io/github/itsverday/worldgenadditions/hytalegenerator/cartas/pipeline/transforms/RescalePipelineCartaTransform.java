@@ -3,10 +3,8 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class RescalePipelineCartaTransform extends PipelineCartaTransform {

@@ -1,11 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.math.vector.Vector2d;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
-import com.hypixel.hytale.builtin.hytalegenerator.bounds.Bounds3d;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.positions.distancefunctions.DistanceFunction;
 import com.hypixel.hytale.builtin.hytalegenerator.math.Normalizer;

@@ -2,11 +2,8 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.builtin.hytalegenerator.workerindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2d;
-import com.hypixel.hytale.math.vector.Vector2i;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PipelineCartaTransform {
