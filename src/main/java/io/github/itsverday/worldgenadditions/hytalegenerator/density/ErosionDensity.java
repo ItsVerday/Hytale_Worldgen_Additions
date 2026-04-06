@@ -1,6 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
+import com.hypixel.hytale.builtin.hytalegenerator.rng.RngField;
 import com.hypixel.hytale.math.util.HashUtil;
 import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -12,7 +13,7 @@ public class ErosionDensity extends Density {
     // The technique used in this Node is based on work by runevision and others: https://youtu.be/r4V21_uUK8Y and https://blog.runevision.com/2026/03/fast-and-gorgeous-erosion-filter.html
     @Nonnull
     private Density input;
-    private final long seed;
+    private final RngField rng;
     private final double inputSampleDistance;
 
     private final int octaves;
@@ -41,11 +42,11 @@ public class ErosionDensity extends Density {
     private double phacelleSideX;
     private double phacelleSideY;
 
-    public ErosionDensity(@Nonnull Density input, long seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
+    public ErosionDensity(@Nonnull Density input, int seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
         assert inputSampleDistance > 0.0;
 
         this.input = input;
-        this.seed = seed;
+        rng = new RngField(seed);
         this.inputSampleDistance = inputSampleDistance;
 
         this.octaves = octaves;
@@ -161,8 +162,8 @@ public class ErosionDensity extends Density {
         double weightSum = 0.0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                double xFromCellPoint = xFract - i - HashUtil.random(seed, Double.doubleToLongBits(xFloor + i), Double.doubleToLongBits(yFloor + j));
-                double yFromCellPoint = yFract - j - HashUtil.random(seed + 1, Double.doubleToLongBits(xFloor + i), Double.doubleToLongBits(yFloor + j));
+                double xFromCellPoint = xFract - i - rng.get(xFloor + i, yFloor + j);
+                double yFromCellPoint = yFract - j - rng.get(xFloor + i + 0.5, yFloor + j);
 
                 double distanceSquared = xFromCellPoint * xFromCellPoint + yFromCellPoint * yFromCellPoint;
                 double weight = Math.max(Math.exp(-distanceSquared * 2.0) - 0.01111, 0.0);
