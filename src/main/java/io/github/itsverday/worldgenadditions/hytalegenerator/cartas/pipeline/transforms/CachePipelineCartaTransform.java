@@ -1,6 +1,7 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
+import io.github.itsverday.worldgenadditions.util.ModuloXZInt2IntCache;
 import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -10,11 +11,11 @@ import java.util.List;
 public class CachePipelineCartaTransform extends PipelineCartaTransform {
     @Nonnull
     private final PipelineCartaTransform child;
-    private final ModuloXZIntCache<Integer> cache;
+    private final ModuloXZInt2IntCache cache;
 
     public CachePipelineCartaTransform(@Nonnull PipelineCartaTransform child) {
         this.child = child;
-        cache = new ModuloXZIntCache<>(8);
+        cache = new ModuloXZInt2IntCache(8);
     }
 
     @Override

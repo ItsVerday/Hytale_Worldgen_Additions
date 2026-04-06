@@ -2,6 +2,7 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.math.vector.Vector3d;
+import io.github.itsverday.worldgenadditions.util.ModuloXZDouble2DoubleCache;
 import io.github.itsverday.worldgenadditions.util.ModuloXZDoubleCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -9,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class SpatialCache2DDensity extends Density {
     private Density input;
-    private final ModuloXZDoubleCache<Double> cache;
+    private final ModuloXZDouble2DoubleCache cache;
     private final double yOverride;
 
     private final Context rChildContext;
@@ -17,7 +18,7 @@ public class SpatialCache2DDensity extends Density {
 
     public SpatialCache2DDensity(@Nonnull Density input, int moduloBits, double yOverride) {
         this.input = input;
-        cache = new ModuloXZDoubleCache<>(moduloBits);
+        cache = new ModuloXZDouble2DoubleCache(moduloBits);
         this.yOverride = yOverride;
 
         rChildContext = new Context();

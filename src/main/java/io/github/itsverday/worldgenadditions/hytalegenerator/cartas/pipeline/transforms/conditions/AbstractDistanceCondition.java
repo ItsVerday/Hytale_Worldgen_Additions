@@ -1,6 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
 import com.hypixel.hytale.math.vector.Vector2d;
+import io.github.itsverday.worldgenadditions.util.ModuloXZInt2BooleanCache;
+import io.github.itsverday.worldgenadditions.util.ModuloXZInt2IntCache;
 import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
@@ -12,8 +14,8 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
     private final ConditionalPipelineCartaTransform.Condition child;
     private final boolean fastMode;
 
-    private final ModuloXZIntCache<Integer> distanceCache;
-    private final ModuloXZIntCache<Boolean> childCache;
+    private final ModuloXZInt2IntCache distanceCache;
+    private final ModuloXZInt2BooleanCache childCache;
 
     private final Vector2d rChildPosition;
     private final PipelineCartaTransform.Context rChildContext;
@@ -21,8 +23,8 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
     public AbstractDistanceCondition(@Nonnull ConditionalPipelineCartaTransform.Condition child, boolean fastMode) {
         this.child = child;
         this.fastMode = fastMode;
-        this.distanceCache = new ModuloXZIntCache<>(8);
-        this.childCache = new ModuloXZIntCache<>(8);
+        this.distanceCache = new ModuloXZInt2IntCache(8);
+        this.childCache = new ModuloXZInt2BooleanCache(8);
 
         rChildPosition = new Vector2d();
         rChildContext = new PipelineCartaTransform.Context();
