@@ -1,8 +1,5 @@
 package io.github.itsverday.worldgenadditions.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class ModuloXZDouble2DoubleCache {
     private final int moduloBits;
     private final double[] valueCache;

@@ -2,7 +2,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.util.ModuloXZInt2IntCache;
-import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;

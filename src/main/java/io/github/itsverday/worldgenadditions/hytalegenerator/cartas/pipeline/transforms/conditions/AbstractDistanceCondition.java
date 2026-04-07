@@ -3,7 +3,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.tr
 import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.util.ModuloXZInt2BooleanCache;
 import io.github.itsverday.worldgenadditions.util.ModuloXZInt2IntCache;
-import io.github.itsverday.worldgenadditions.util.ModuloXZIntCache;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
 

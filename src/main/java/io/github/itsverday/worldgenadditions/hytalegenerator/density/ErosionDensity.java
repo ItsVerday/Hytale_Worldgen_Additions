@@ -3,7 +3,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.rng.RngField;
 import com.hypixel.hytale.math.util.FastRandom;
-import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 

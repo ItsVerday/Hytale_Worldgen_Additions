@@ -3,7 +3,6 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstruct
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
-import org.bouncycastle.util.Arrays;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.List;
