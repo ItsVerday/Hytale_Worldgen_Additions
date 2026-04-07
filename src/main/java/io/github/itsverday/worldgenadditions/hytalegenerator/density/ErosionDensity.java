@@ -2,7 +2,7 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.rng.RngField;
-import com.hypixel.hytale.math.util.HashUtil;
+import com.hypixel.hytale.math.util.FastRandom;
 import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -36,6 +36,7 @@ public class ErosionDensity extends Density {
 
     private final Context rChildContext;
     private final Vector3d rPosition;
+    private final FastRandom rFastRandom;
 
     private double phacellePhaseX;
     private double phacellePhaseY;
@@ -69,26 +70,28 @@ public class ErosionDensity extends Density {
 
         rChildContext = new Context();
         rPosition = new Vector3d();
+        rFastRandom = new FastRandom();
     }
 
     @Override
     public double process(@NonNullDecl Context context) {
-        Vector2d position2d = new Vector2d(context.position.x, context.position.z);
+        double positionX = context.position.x;
+        double positionZ = context.position.z;
 
         rPosition.assign(context.position);
         rChildContext.assign(context);
         rChildContext.position = rPosition;
 
         double valueAtOrigin = input.process(rChildContext);
-        double newX = context.position.x + inputSampleDistance;
-        double newZ = context.position.z + inputSampleDistance;
+        double newX = positionX + inputSampleDistance;
+        double newZ = positionZ + inputSampleDistance;
 
-        rChildContext.position.assign(newX, context.position.y, context.position.z);
+        rChildContext.position.assign(newX, context.position.y, positionZ);
         double deltaX = input.process(rChildContext) - valueAtOrigin;
         double dx = deltaX / inputSampleDistance;
         dx *= scale;
 
-        rChildContext.position.assign(context.position.x, context.position.y, newZ);
+        rChildContext.position.assign(positionX, context.position.y, newZ);
         double deltaZ = input.process(rChildContext) - valueAtOrigin;
         double dz = deltaZ / inputSampleDistance;
         dz *= scale;
@@ -121,7 +124,7 @@ public class ErosionDensity extends Density {
                 safeGullyDz /= gullyDLength;
             }
 
-            phacelleNoise(position2d.x * frequency, position2d.y * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
+            phacelleNoise(positionX * frequency, positionZ * frequency, safeGullyDx, safeGullyDz, cellScale, 0.25, normalization);
             phacelleSideX *= -frequency;
             phacelleSideY *= -frequency;
             double sloping = Math.abs(phacellePhaseY);
@@ -160,10 +163,12 @@ public class ErosionDensity extends Density {
         double phaseY = 0;
 
         double weightSum = 0.0;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                double xFromCellPoint = xFract - i - rng.get(xFloor + i, yFloor + j);
-                double yFromCellPoint = yFract - j - rng.get(xFloor + i + 0.5, yFloor + j);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                int localSeed = rng.get(xFloor + i, yFloor + j, frequency);
+                rFastRandom.setSeed(localSeed);
+                double xFromCellPoint = xFract - i - rFastRandom.nextDouble();
+                double yFromCellPoint = yFract - j - rFastRandom.nextDouble();
 
                 double distanceSquared = xFromCellPoint * xFromCellPoint + yFromCellPoint * yFromCellPoint;
                 double weight = Math.max(Math.exp(-distanceSquared * 2.0) - 0.01111, 0.0);
