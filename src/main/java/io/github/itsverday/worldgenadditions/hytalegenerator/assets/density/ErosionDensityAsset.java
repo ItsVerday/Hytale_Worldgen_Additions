@@ -14,6 +14,8 @@ public class ErosionDensityAsset extends DensityAsset {
     public static final BuilderCodec<ErosionDensityAsset> CODEC = BuilderCodec.builder(
                     ErosionDensityAsset.class, ErosionDensityAsset::new, DensityAsset.ABSTRACT_CODEC
             )
+            .append(new KeyedCodec<>("StrengthField", DensityAsset.CODEC, false), (asset, strengthField) -> asset.strengthField = strengthField, asset -> asset.strengthField)
+            .add()
             .append(new KeyedCodec<>("Seed", Codec.STRING, true), (asset, seed) -> asset.seedKey = seed, asset -> asset.seedKey)
             .add()
             .append(new KeyedCodec<>("SampleDistance", Codec.DOUBLE, true), (asset, inputSampleDistance) -> asset.inputSampleDistance = inputSampleDistance, asset -> asset.inputSampleDistance)
@@ -48,6 +50,8 @@ public class ErosionDensityAsset extends DensityAsset {
             .add()
             .build();
 
+    private DensityAsset strengthField = null;
+
     private String seedKey = "A";
     private double inputSampleDistance = 1.0;
 
@@ -77,8 +81,11 @@ public class ErosionDensityAsset extends DensityAsset {
         Density child = this.buildFirstInput(argument);
         if (child == null) return new ConstantValueDensity(0.0);
 
-        SeedBox childSeed = argument.parentSeed.child(this.seedKey);
-        return new ErosionDensity(child, childSeed.createSupplier().get(), inputSampleDistance, octaves, lacunarity, persistence, scale, strength, gullyWeight, detail, ridgeRounding, creaseRounding, roundingMultiplier, initialOnset, gullyOnset, assumedSlope, assumedSlopeBlending, cellScale, normalization);
+        Density strengthField = new ConstantValueDensity(1.0);
+        if (this.strengthField != null) strengthField = this.strengthField.build(argument);
+
+        SeedBox childSeed = argument.parentSeed.child(seedKey);
+        return new ErosionDensity(child, strengthField, childSeed.createSupplier().get(), inputSampleDistance, octaves, lacunarity, persistence, scale, strength, gullyWeight, detail, ridgeRounding, creaseRounding, roundingMultiplier, initialOnset, gullyOnset, assumedSlope, assumedSlopeBlending, cellScale, normalization);
     }
 
     @Override

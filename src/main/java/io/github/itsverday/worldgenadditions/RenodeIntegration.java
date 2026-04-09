@@ -186,6 +186,7 @@ public class RenodeIntegration {
             .addContent(Renode.floatContent("CellScale", "CellScale").withDefaultValue(0.7).withWidth(50))
             .addContent(Renode.floatContent("Normalization", "Normalization").withDefaultValue(0.5).withWidth(50))
             .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addVariantOutput("StrengthField", "StrengthField", false, HytaleGeneratorNodes.VARIANT_DENSITY)
             .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     public static final NodeBuilder NODE_DENSITY_F_WIDTH = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("FWidth", "FWidthDensityNode", "FWidth Density"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)

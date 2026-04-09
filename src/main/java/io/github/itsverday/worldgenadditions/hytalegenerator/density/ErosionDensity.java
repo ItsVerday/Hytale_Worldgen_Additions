@@ -12,6 +12,9 @@ public class ErosionDensity extends Density {
     // The technique used in this Node is based on work by runevision and others: https://youtu.be/r4V21_uUK8Y and https://blog.runevision.com/2026/03/fast-and-gorgeous-erosion-filter.html
     @Nonnull
     private Density input;
+    @Nonnull
+    private final Density strengthField;
+
     private final RngField rng;
     private final double inputSampleDistance;
 
@@ -42,10 +45,11 @@ public class ErosionDensity extends Density {
     private double phacelleSideX;
     private double phacelleSideY;
 
-    public ErosionDensity(@Nonnull Density input, int seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
+    public ErosionDensity(@Nonnull Density input, @Nonnull Density strengthField, int seed, double inputSampleDistance, int octaves, double lacunarity, double persistence, double scale, double strength, double gullyWeight, double detail, double ridgeRounding, double creaseRounding, double roundingMultiplier, double initialOnset, double gullyOnset, double assumedSlope, double assumedSlopeBlending, double cellScale, double normalization) {
         assert inputSampleDistance > 0.0;
 
         this.input = input;
+        this.strengthField = strengthField;
         rng = new RngField(seed);
         this.inputSampleDistance = inputSampleDistance;
 
@@ -81,6 +85,7 @@ public class ErosionDensity extends Density {
         rChildContext.assign(context);
         rChildContext.position = rPosition;
 
+        double strengthModulation = strengthField.process(rChildContext);
         double valueAtOrigin = input.process(rChildContext);
         double newX = positionX + inputSampleDistance;
         double newZ = positionZ + inputSampleDistance;
@@ -97,7 +102,7 @@ public class ErosionDensity extends Density {
 
         double height = valueAtOrigin;
         double initialHeight = height;
-        double strength = this.strength;
+        double strength = this.strength * strengthModulation;
         double fadeTarget = height;
 
         if (fadeTarget > 1.0) fadeTarget = 1.0;
