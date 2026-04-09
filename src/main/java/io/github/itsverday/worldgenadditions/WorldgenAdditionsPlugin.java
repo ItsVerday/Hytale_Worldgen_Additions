@@ -35,7 +35,6 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Constant", ConstantPipelineCartaTransformAsset.class, ConstantPipelineCartaTransformAsset.CODEC)
                 .register("FieldFunction", FieldFunctionPipelineCartaTransformAsset.class, FieldFunctionPipelineCartaTransformAsset.CODEC)
                 .register("Conditional", ConditionalPipelineCartaTransformAsset.class, ConditionalPipelineCartaTransformAsset.CODEC)
-                .register("Queue", QueuePipelineCartaTransformAsset.class, QueuePipelineCartaTransformAsset.CODEC)
                 .register("GradientWarp", GradientWarpPipelineCartaTransformAsset.class, GradientWarpPipelineCartaTransformAsset.CODEC)
                 .register("PositionsCellNoise", PositionsCellNoisePipelineCartaTransformAsset.class, PositionsCellNoisePipelineCartaTransformAsset.CODEC)
                 .register("Rescale", RescalePipelineCartaTransformAsset.class, RescalePipelineCartaTransformAsset.CODEC)

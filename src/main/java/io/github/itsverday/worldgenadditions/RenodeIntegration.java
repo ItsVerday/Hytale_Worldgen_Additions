@@ -115,10 +115,6 @@ public class RenodeIntegration {
             .addVariantOutput("Biome", "Biome", false, VARIANT_BIOME_PIPELINE_TRANSFORMS)
             .withColorOverride("28,145,166")
             .addCategory(CATEGORY_BIOME_PIPELINE);
-    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_QUEUE = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("Queue", "BiomePipeline.Transforms.Queue", "Queue Biome Transform"))
-            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
-            .addVariantOutput("Inputs", "Inputs", true, VARIANT_BIOME_PIPELINE_TRANSFORMS)
-            .addCategory(CATEGORY_BIOME_PIPELINE);
     public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_RESCALE = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("Rescale", "BiomePipeline.Transforms.Rescale", "Rescale Biome Transform"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
             .addContent(Renode.floatContent("Scale", "Scale").withDefaultValue(2.0).withWidth(50))
