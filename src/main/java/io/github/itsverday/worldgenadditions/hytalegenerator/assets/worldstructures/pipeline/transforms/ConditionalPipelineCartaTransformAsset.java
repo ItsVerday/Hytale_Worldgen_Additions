@@ -49,7 +49,7 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
         super.cleanUp();
         if (ifTrue != null) ifTrue.cleanUp();
         if (ifFalse != null) ifFalse.cleanUp();
-        condition.cleanUp();
+        if (condition != null) condition.cleanUp();
     }
 
     public abstract static class ConditionAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, ConditionAsset>> {
