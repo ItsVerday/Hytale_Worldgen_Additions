@@ -130,6 +130,16 @@ public class RenodeIntegration {
             .addContent(Renode.floatContent("Threshold", "Threshold").withDefaultValue(0.5).withWidth(50))
             .addVariantOutput("Inputs", "Input", true, VARIANT_BIOME_PIPELINE_TRANSFORMS)
             .addCategory(CATEGORY_BIOME_PIPELINE);
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_SWITCH = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("Switch", "BiomePipeline.Transforms.Switch", "Switch Biome Transform"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
+            .addNodeOutput("Cases", "Cases", true, () -> RenodeIntegration.NODE_BIOME_PIPELINE_TRANSFORM_SWITCH_CASE)
+            .addCategory(CATEGORY_BIOME_PIPELINE);
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_SWITCH_CASE = addNode(Renode.node("BiomePipeline.Switch.Case", "Switch Case"))
+            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addVariantOutput("Condition", "Condition", false, VARIANT_BIOME_PIPELINE_CONDITIONS)
+            .addVariantOutput("IfTrue", "IfTrue", false, VARIANT_BIOME_PIPELINE_TRANSFORMS)
+            .withColorOverride("28,145,166")
+            .addCategory(CATEGORY_BIOME_PIPELINE);
 
     public static final NodeBuilder NODE_BIOME_PIPELINE_CONDITION_AND  = addNode(VARIANT_BIOME_PIPELINE_CONDITIONS.variantNode("And", "BiomePipeline.Conditions.And", "And Condition"))
             .addVariantOutput("Conditions", "Conditions", true, VARIANT_BIOME_PIPELINE_CONDITIONS)
