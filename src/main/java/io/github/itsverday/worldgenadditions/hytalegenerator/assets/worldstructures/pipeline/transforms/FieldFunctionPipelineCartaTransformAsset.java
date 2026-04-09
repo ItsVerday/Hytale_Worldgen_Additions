@@ -63,9 +63,9 @@ public class FieldFunctionPipelineCartaTransformAsset extends PipelineCartaTrans
 
     public static class DelimiterAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, DelimiterAsset>> {
         public static final AssetBuilderCodec<String, DelimiterAsset> CODEC = AssetBuilderCodec.builder(DelimiterAsset.class, DelimiterAsset::new, Codec.STRING, (asset, id) -> asset.id = id, config -> config.id, (config, data) -> config.data = data, config -> config.data)
-                .append(new KeyedCodec<>("From", Codec.DOUBLE, true), (t, y) -> t.from = y, t -> t.from)
+                .append(new KeyedCodec<>("From", Codec.DOUBLE, true), (t, from) -> t.from = from, t -> t.from)
                 .add()
-                .append(new KeyedCodec<>("To", Codec.DOUBLE, true), (t, out) -> t.to = out, t -> t.to)
+                .append(new KeyedCodec<>("To", Codec.DOUBLE, true), (t, to) -> t.to = to, t -> t.to)
                 .add()
                 .append(new KeyedCodec<>("Biome", PipelineCartaTransformAsset.CODEC, false), (t, out) -> t.transform = out, t -> t.transform)
                 .add()

@@ -98,6 +98,17 @@ public class RenodeIntegration {
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
             .addContent(Renode.smallStringContent("Name", "Name").withDefaultValue("").withWidth(200))
             .addCategory(CATEGORY_BIOME_PIPELINE);
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_MULTI_FIELD_FUNCTION = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("MultiFieldFunction", "BiomePipeline.Transforms.MultiFieldFunction", "MultiFieldFunction Biome Transform"))
+            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addVariantOutput("FieldFunctions", "Densities", true, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addNodeOutput("Entries", "Entries", true, () -> RenodeIntegration.NODE_BIOME_PIPELINE_TRANSFORM_FIELD_MULTI_FUNCTION_ENTRY)
+            .addCategory(CATEGORY_BIOME_PIPELINE);
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_FIELD_MULTI_FUNCTION_ENTRY = addNode(Renode.node("BiomePipeline.MultiFieldFunctionTransform.Entry", "MFFBT Entry"))
+            .addContent(Renode.listContent("Center", "Center", "Float").withWidth(100))
+            .addContent(Renode.floatContent("MaximumDistance", "MaximumDistance").withDefaultValue(0.0).withWidth(100))
+            .addVariantOutput("Biome", "Biome", false, VARIANT_BIOME_PIPELINE_TRANSFORMS)
+            .withColorOverride("28,145,166")
+            .addCategory(CATEGORY_BIOME_PIPELINE);
     public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_POSITIONS_CELL_NOISE = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("PositionsCellNoise", "BiomePipeline.Transforms.PositionsCellNoise", "PositionsCellNoise Biome Transform"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
             .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(200))
