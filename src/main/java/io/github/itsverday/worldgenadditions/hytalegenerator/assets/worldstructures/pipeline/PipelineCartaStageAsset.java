@@ -28,7 +28,7 @@ public class PipelineCartaStageAsset implements Cleanable, JsonAssetWithMap<Stri
         if (isSkipped()) return previous;
         if (root == null) return previous;
         PipelineCartaTransform rootTransform = root.build(arg, previous);
-        if (!(rootTransform instanceof CachePipelineCartaTransform)) rootTransform = new CachePipelineCartaTransform(rootTransform);
+        if (PipelineCartaTransform.shouldCacheTransform(rootTransform)) rootTransform = new CachePipelineCartaTransform(rootTransform);
         return rootTransform;
     }
 

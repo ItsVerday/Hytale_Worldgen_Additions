@@ -2,6 +2,8 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.builtin.hytalegenerator.workerindexer.WorkerIndexer;
 import com.hypixel.hytale.math.vector.Vector2d;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
+import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConstantPipelineCartaTransform;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -9,6 +11,13 @@ import java.util.List;
 public abstract class PipelineCartaTransform {
     public abstract int process(@Nonnull Context context);
     public abstract List<Integer> allPossibleValues();
+
+    public static boolean shouldCacheTransform(PipelineCartaTransform transform) {
+        if (transform instanceof CachePipelineCartaTransform) return false;
+        if (transform instanceof ConstantPipelineCartaTransform) return false;
+
+        return true;
+    }
 
     public static class Context {
         public Vector2d position;

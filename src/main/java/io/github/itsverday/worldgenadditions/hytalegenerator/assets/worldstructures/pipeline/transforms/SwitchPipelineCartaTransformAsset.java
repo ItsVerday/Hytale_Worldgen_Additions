@@ -29,7 +29,7 @@ public class SwitchPipelineCartaTransformAsset extends PipelineCartaTransformAss
     @Override
     public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
         if (isSkipped()) return previous;
-        if (!(previous instanceof CachePipelineCartaTransform)) previous = new CachePipelineCartaTransform(previous);
+        if (PipelineCartaTransform.shouldCacheTransform(previous)) previous = new CachePipelineCartaTransform(previous);
 
         PipelineCartaTransform ifFalse = previous;
         for (CaseAsset caseAsset: List.of(cases).reversed()) {
