@@ -85,8 +85,11 @@ public class ErosionDensity extends Density {
         rChildContext.assign(context);
         rChildContext.position = rPosition;
 
-        double strengthModulation = strengthField.process(rChildContext);
         double valueAtOrigin = input.process(rChildContext);
+        double strengthModulation = strengthField.process(rChildContext);
+        double strength = this.strength * strengthModulation;
+        if (strength == 0) return valueAtOrigin;
+
         double newX = positionX + inputSampleDistance;
         double newZ = positionZ + inputSampleDistance;
 
@@ -102,7 +105,6 @@ public class ErosionDensity extends Density {
 
         double height = valueAtOrigin;
         double initialHeight = height;
-        double strength = this.strength * strengthModulation;
         double fadeTarget = height;
 
         if (fadeTarget > 1.0) fadeTarget = 1.0;
