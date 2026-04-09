@@ -29,6 +29,7 @@ public class ConditionalPipelineCartaTransformAsset extends PipelineCartaTransfo
             .add()
             .build();
 
+    @Nullable
     private ConditionAsset condition;
     @Nullable
     private PipelineCartaTransformAsset ifTrue;
