@@ -20,7 +20,6 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructu
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.PipelineCarta;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConstantPipelineCartaTransform;
-import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.*;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -77,7 +76,7 @@ public class PipelineWorldStructureAsset extends WorldStructureAsset {
         PipelineCarta biomeCarta = new PipelineCarta(transform);
         int defaultRadius = Math.max(1, this.biomeTransitionDistance / 2);
         PositionProvider spawnPositions = spawnPositionsAsset.build(new PositionProviderAsset.Argument(argument.parentSeed, referenceBundle, argument.workerId));
-        return new WorldStructure(biomeCarta, transformArgument.biomeRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);
+        return new WorldStructure(biomeCarta, transformArgument.biomeIdRegistry, defaultRadius, maxBiomeEdgeDistance, spawnPositions);
     }
 
     @NonNullDecl

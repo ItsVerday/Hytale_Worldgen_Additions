@@ -9,6 +9,7 @@ import com.hypixel.hytale.builtin.hytalegenerator.LoggerUtil;
 import com.hypixel.hytale.builtin.hytalegenerator.Registry;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.Cleanable;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.biomes.BiomeAsset;
+import com.hypixel.hytale.builtin.hytalegenerator.assets.material.MaterialAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.biome.Biome;
 import com.hypixel.hytale.builtin.hytalegenerator.material.MaterialCache;
 import com.hypixel.hytale.builtin.hytalegenerator.referencebundle.ReferenceBundle;
@@ -21,9 +22,7 @@ import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAssetWithMap<String, DefaultAssetMap<String, PipelineCartaTransformAsset>> {
@@ -102,7 +101,7 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
         public WorkerIndexer.Id workerId;
         public String defaultBiomeId;
         public final HashMap<String, Biome> biomesById;
-        public final Registry<Biome> biomeRegistry;
+        public final Registry<Biome> biomeIdRegistry;
 
         public Argument(@Nonnull MaterialCache materialCache, @Nonnull SeedBox parentSeed, @Nonnull ReferenceBundle referenceBundle, @Nonnull WorkerIndexer.Id workerId, @Nonnull String defaultBiomeId) {
             this.materialCache = materialCache;
@@ -110,7 +109,7 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             this.referenceBundle = referenceBundle;
             this.workerId = workerId;
             this.defaultBiomeId = defaultBiomeId;
-            this.biomeRegistry = new Registry<>();
+            this.biomeIdRegistry = new Registry<>();
             this.biomesById = new HashMap<>();
         }
 
@@ -120,7 +119,7 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
             this.referenceBundle = argument.referenceBundle;
             this.workerId = argument.workerId;
             this.defaultBiomeId = argument.defaultBiomeId;
-            this.biomeRegistry = argument.biomeRegistry;
+            this.biomeIdRegistry = argument.biomeIdRegistry;
             this.biomesById = argument.biomesById;
         }
 
@@ -130,11 +129,11 @@ public abstract class PipelineCartaTransformAsset implements Cleanable, JsonAsse
                 if (biomeAsset != null) {
                     biomesById.put(biomeId, biomeAsset.build(materialCache, parentSeed, referenceBundle, workerId));
                 } else {
-                    biomesById.put(biomeId, biomesById.get(defaultBiomeId));
+                    biomesById.put(biomeId, PipelineCartaDebugBiomeAsset.buildBiome(biomeId, new MaterialAsset("Cloth_Block_Wool_White", "", false), materialCache));
                 }
             }
 
-            return biomeRegistry.getIdOrRegister(biomesById.get(biomeId));
+            return biomeIdRegistry.getIdOrRegister(biomesById.get(biomeId));
         }
     }
 

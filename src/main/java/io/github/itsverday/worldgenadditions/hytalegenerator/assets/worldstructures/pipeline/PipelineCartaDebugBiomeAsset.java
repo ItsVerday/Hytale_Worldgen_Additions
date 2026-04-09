@@ -61,6 +61,10 @@ public class PipelineCartaDebugBiomeAsset implements Cleanable, JsonAssetWithMap
 
     @Nonnull
     public Biome build(@Nonnull MaterialCache materialCache) {
+        return buildBiome(biomeName, materialAsset, materialCache);
+    }
+
+    public static Biome buildBiome(String biomeName, MaterialAsset materialAsset, MaterialCache materialCache) {
         return new SimpleBiome(biomeName, flatDensity, new SolidityMaterialProvider<>(new ConstantMaterialProvider<>(materialAsset.build(materialCache)), MaterialProvider.noMaterialProvider()), EnvironmentProvider.noEnvironmentProvider(), TintProvider.noTintProvider());
     }
 }
