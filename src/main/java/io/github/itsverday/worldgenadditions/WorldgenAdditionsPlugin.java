@@ -42,7 +42,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Cache", CachePipelineCartaTransformAsset.class, CachePipelineCartaTransformAsset.CODEC)
                 .register("Imported", ImportedPipelineCartaTransformAsset.class, ImportedPipelineCartaTransformAsset.CODEC)
                 .register("Switch", SwitchPipelineCartaTransformAsset.class, SwitchPipelineCartaTransformAsset.CODEC)
-                .register("MultiFieldFunction", MultiFieldFunctionPipelineCartaTransformAsset.class, MultiFieldFunctionPipelineCartaTransformAsset.CODEC);
+                .register("MultiFieldFunction", MultiFieldFunctionPipelineCartaTransformAsset.class, MultiFieldFunctionPipelineCartaTransformAsset.CODEC)
+                .register("VectorWarp", VectorWarpPipelineCartaTransformAsset.class, VectorWarpPipelineCartaTransformAsset.CODEC);
 
         // Biome Pipeline Conditional Conditions
         getCodecRegistry(ConditionalPipelineCartaTransformAsset.ConditionAsset.CODEC)

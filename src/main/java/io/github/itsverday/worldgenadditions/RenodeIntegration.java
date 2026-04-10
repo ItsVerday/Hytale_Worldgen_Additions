@@ -4,6 +4,7 @@ import io.github.itsverday.renode.builder.NodeBuilder;
 import io.github.itsverday.renode.builder.NodeCategory;
 import io.github.itsverday.renode.builder.NodeVariantClass;
 import io.github.itsverday.renode.builder.Renode;
+import io.github.itsverday.renode.builder.content.NodeContentBuilder;
 import io.github.itsverday.renode.builder.root.AbstractNodeRoot;
 import io.github.itsverday.renode.vanilla.HytaleGeneratorNodes;
 
@@ -15,6 +16,13 @@ public class RenodeIntegration {
     private static final List<NodeVariantClass> variants = new ArrayList<>();
     private static final List<NodeCategory> categories = new ArrayList<>();
     private static final List<AbstractNodeRoot> roots = new ArrayList<>();
+
+    //region Utility Nodes
+    public static final NodeBuilder NODE_POINT_2D = addNode(Renode.node("Point2D", "Decimal 2D Vector"))
+            .addContent(Renode.floatContent("X", "X").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("Y", "Y").withDefaultValue(0.0).withWidth(100))
+            .addCategory(HytaleGeneratorNodes.CATEGORY_VECTORS);
+    //endregion
 
     //region World Structure
     public static final NodeCategory CATEGORY_WORLD_STRUCTURE = addCategory(Renode.category("World Structure", "Grey"));
@@ -99,11 +107,11 @@ public class RenodeIntegration {
             .addContent(Renode.smallStringContent("Name", "Name").withDefaultValue("").withWidth(200))
             .addCategory(CATEGORY_BIOME_PIPELINE);
     public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_MULTI_FIELD_FUNCTION = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("MultiFieldFunction", "BiomePipeline.Transforms.MultiFieldFunction", "MultiFieldFunction Biome Transform"))
-            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
             .addVariantOutput("FieldFunctions", "Densities", true, HytaleGeneratorNodes.VARIANT_DENSITY)
-            .addNodeOutput("Entries", "Entries", true, () -> RenodeIntegration.NODE_BIOME_PIPELINE_TRANSFORM_FIELD_MULTI_FUNCTION_ENTRY)
+            .addNodeOutput("Entries", "Entries", true, () -> RenodeIntegration.NODE_BIOME_PIPELINE_TRANSFORM_MULTI_FIELD_FUNCTION_ENTRY)
             .addCategory(CATEGORY_BIOME_PIPELINE);
-    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_FIELD_MULTI_FUNCTION_ENTRY = addNode(Renode.node("BiomePipeline.MultiFieldFunctionTransform.Entry", "MFFBT Entry"))
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_MULTI_FIELD_FUNCTION_ENTRY = addNode(Renode.node("BiomePipeline.MultiFieldFunctionTransform.Entry", "MFFBT Entry"))
             .addContent(Renode.listContent("Center", "Center", "Float").withWidth(100))
             .addContent(Renode.floatContent("MaximumDistance", "MaximumDistance").withDefaultValue(0.0).withWidth(100))
             .addVariantOutput("Biome", "Biome", false, VARIANT_BIOME_PIPELINE_TRANSFORMS)
@@ -146,6 +154,13 @@ public class RenodeIntegration {
             .addVariantOutput("Condition", "Condition", false, VARIANT_BIOME_PIPELINE_CONDITIONS)
             .addVariantOutput("IfTrue", "IfTrue", false, VARIANT_BIOME_PIPELINE_TRANSFORMS)
             .withColorOverride("28,145,166")
+            .addCategory(CATEGORY_BIOME_PIPELINE);
+    public static final NodeBuilder NODE_BIOME_PIPELINE_TRANSFORM_VECTOR_WARP = addNode(VARIANT_BIOME_PIPELINE_TRANSFORMS.variantNode("VectorWarp", "BiomePipeline.Transforms.VectorWarp", "VectorWarp Biome Transform"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS, HytaleGeneratorNodes.CONTENT_SKIP)
+            .addContent(Renode.floatContent("WarpFactor", "WarpFactor").withDefaultValue(1.0).withWidth(100))
+            .addVariantOutput("WarpField", "WarpField", false, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addVariantOutput("Inputs", "Input", true, VARIANT_BIOME_PIPELINE_TRANSFORMS)
+            .addNodeOutput("WarpVector", "WarpVector", false, NODE_POINT_2D)
             .addCategory(CATEGORY_BIOME_PIPELINE);
 
     public static final NodeBuilder NODE_BIOME_PIPELINE_CONDITION_AND  = addNode(VARIANT_BIOME_PIPELINE_CONDITIONS.variantNode("And", "BiomePipeline.Conditions.And", "And Condition"))
