@@ -34,12 +34,11 @@ public class GradientWarpPipelineCartaTransformAsset extends PipelineCartaTransf
     public PipelineCartaTransform build(@NonNullDecl Argument arg, PipelineCartaTransform previous) {
         if (isSkipped()) return previous;
 
-        Density warpFieldDensity = warpField != null ? new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), 256) : new ConstantValueDensity(0.0);
         PipelineCartaTransform child = previous;
-        if (inputs().length > 0) {
-            child = inputs()[0].build(arg, previous);
-        }
+        if (inputs().length > 0) child = inputs()[0].build(arg, previous);
+        if (warpFactor == 0) return child;
 
+        Density warpFieldDensity = warpField != null ? new MultiCacheDensity(warpField.build(new DensityAsset.Argument(arg.parentSeed, arg.referenceBundle, arg.workerId)), 3) : new ConstantValueDensity(0.0);
         return new GradientWarpPipelineCartaTransform(child, warpFieldDensity, sampleDistance, warpFactor);
     }
 
