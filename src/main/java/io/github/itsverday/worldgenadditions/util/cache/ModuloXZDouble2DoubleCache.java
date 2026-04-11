@@ -1,18 +1,15 @@
-package io.github.itsverday.worldgenadditions.util;
+package io.github.itsverday.worldgenadditions.util.cache;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class ModuloXZDoubleCache<V> {
+public class ModuloXZDouble2DoubleCache {
     private final int moduloBits;
-    private final Object[] valueCache;
+    private final double[] valueCache;
     private final double[] realXCache;
     private final double[] realYCache;
 
-    public ModuloXZDoubleCache(int moduloBits) {
+    public ModuloXZDouble2DoubleCache(int moduloBits) {
         this.moduloBits = moduloBits;
         int cacheSize = 1 << (moduloBits * 2);
-        valueCache = new Object[cacheSize];
+        valueCache = new double[cacheSize];
         realXCache = new double[cacheSize];
         realYCache = new double[cacheSize];
         realXCache[0] = -1.0;
@@ -27,12 +24,11 @@ public class ModuloXZDoubleCache<V> {
         return modulo((int) x, moduloBits) | (modulo((int) y, moduloBits) << moduloBits);
     }
 
-    @Nullable
-    public V get(double x, double y) {
+    public double get(double x, double y) {
         int index = indexForPosition(x, y);
-        if (x != realXCache[index]) return null;
-        if (y != realYCache[index]) return null;
-        return (V) valueCache[index];
+        if (x != realXCache[index]) return Double.NaN;
+        if (y != realYCache[index]) return Double.NaN;
+        return valueCache[index];
     }
 
     public boolean containsKey(double x, double y) {
@@ -41,7 +37,7 @@ public class ModuloXZDoubleCache<V> {
         return y == realYCache[index];
     }
 
-    public void put(double x, double y, @Nonnull V value) {
+    public void put(double x, double y, double value) {
         int index = indexForPosition(x, y);
         valueCache[index] = value;
         realXCache[index] = x;

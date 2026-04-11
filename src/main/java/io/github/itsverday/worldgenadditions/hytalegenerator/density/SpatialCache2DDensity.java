@@ -2,7 +2,7 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.math.vector.Vector3d;
-import io.github.itsverday.worldgenadditions.util.ModuloXZDouble2DoubleCache;
+import io.github.itsverday.worldgenadditions.util.cache.ModuloXZDouble2DoubleCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;

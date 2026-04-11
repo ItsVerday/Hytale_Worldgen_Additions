@@ -8,6 +8,7 @@ import com.hypixel.hytale.common.semver.SemverRange;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.plugin.PluginManager;
+import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.ManualCubicSplineCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.SmoothstepCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.*;
@@ -67,7 +68,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
         getCodecRegistry(CurveAsset.CODEC)
                 .register("Threshold", ThresholdCurveAsset.class, ThresholdCurveAsset.CODEC)
                 .register("Steps", StepsCurveAsset.class, StepsCurveAsset.CODEC)
-                .register("Smoothstep", SmoothstepCurveAsset.class, SmoothstepCurveAsset.CODEC);
+                .register("Smoothstep", SmoothstepCurveAsset.class, SmoothstepCurveAsset.CODEC)
+                .register("ManualCubicSpline", ManualCubicSplineCurveAsset.class, ManualCubicSplineCurveAsset.CODEC);
 
         // Register Renode nodes
         if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.5.0"))) {

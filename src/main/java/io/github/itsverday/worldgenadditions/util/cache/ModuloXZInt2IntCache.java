@@ -1,15 +1,15 @@
-package io.github.itsverday.worldgenadditions.util;
+package io.github.itsverday.worldgenadditions.util.cache;
 
-public class ModuloXZInt2BooleanCache {
+public class ModuloXZInt2IntCache {
     private final int moduloBits;
-    private final boolean[] valueCache;
+    private final int[] valueCache;
     private final int[] realXCache;
     private final int[] realYCache;
 
-    public ModuloXZInt2BooleanCache(int moduloBits) {
+    public ModuloXZInt2IntCache(int moduloBits) {
         this.moduloBits = moduloBits;
         int cacheSize = 1 << (moduloBits * 2);
-        valueCache = new boolean[cacheSize];
+        valueCache = new int[cacheSize];
         realXCache = new int[cacheSize];
         realYCache = new int[cacheSize];
         realXCache[0] = -1;
@@ -24,10 +24,10 @@ public class ModuloXZInt2BooleanCache {
         return modulo(x, moduloBits) | (modulo(y, moduloBits) << moduloBits);
     }
 
-    public boolean get(int x, int y) {
+    public int get(int x, int y) {
         int index = indexForPosition(x, y);
-        if (x != realXCache[index]) return false;
-        if (y != realYCache[index]) return false;
+        if (x != realXCache[index]) return 0;
+        if (y != realYCache[index]) return 0;
         return valueCache[index];
     }
 
@@ -37,7 +37,7 @@ public class ModuloXZInt2BooleanCache {
         return y == realYCache[index];
     }
 
-    public void put(int x, int y, boolean value) {
+    public void put(int x, int y, int value) {
         int index = indexForPosition(x, y);
         valueCache[index] = value;
         realXCache[index] = x;

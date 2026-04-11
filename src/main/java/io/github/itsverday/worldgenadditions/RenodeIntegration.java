@@ -250,6 +250,15 @@ public class RenodeIntegration {
     //endregion
 
     //region Curves
+    public static final NodeBuilder NODE_CURVE_MANUAL_CUBIC_SPLINE = addNode(HytaleGeneratorNodes.VARIANT_CURVES.variantNode("ManualCubicSpline", "ManualCubicSplineCurve", "ManualCubicSpline Curve"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addNodeOutput("Points", "Points", true, () -> RenodeIntegration.NODE_CURVE_MANUAL_CUBIC_SPLINE_POINT)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_CURVES);
+    public static final NodeBuilder NODE_CURVE_MANUAL_CUBIC_SPLINE_POINT = addNode(Renode.node("Curve.ManualCubicSpline.Point", "Spline Curve Point"))
+            .addContent(Renode.floatContent("In", "In").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("Out", "Out").withDefaultValue(0.0).withWidth(100))
+            .addContent(Renode.floatContent("Slope", "Slope").withDefaultValue(0.0).withWidth(100))
+            .addCategory(HytaleGeneratorNodes.CATEGORY_CURVES);
     public static final NodeBuilder NODE_CURVE_SMOOTHSTEP = addNode(HytaleGeneratorNodes.VARIANT_CURVES.variantNode("Smoothstep", "SmoothstepCurve", "Smoothstep Curve"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(Renode.floatContent("EdgeMin", "EdgeMin").withDefaultValue(0.0).withWidth(100))
