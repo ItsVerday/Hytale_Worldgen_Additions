@@ -4,7 +4,6 @@ import io.github.itsverday.renode.builder.NodeBuilder;
 import io.github.itsverday.renode.builder.NodeCategory;
 import io.github.itsverday.renode.builder.NodeVariantClass;
 import io.github.itsverday.renode.builder.Renode;
-import io.github.itsverday.renode.builder.content.NodeContentBuilder;
 import io.github.itsverday.renode.builder.root.AbstractNodeRoot;
 import io.github.itsverday.renode.vanilla.HytaleGeneratorNodes;
 
