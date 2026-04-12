@@ -51,7 +51,7 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
         if (distanceCache.containsKey(x, y)) return distanceCache.get(x, y) <= maxDistance * maxDistance;
 
         // Check if we are at a matching value
-        if (child.process(context)) {
+        if (processChildWithOffset(context, 0, 0)) {
             distanceCache.put(x, y, 0);
             return true;
         }
