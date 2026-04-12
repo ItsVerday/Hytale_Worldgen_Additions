@@ -17,6 +17,7 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
 
     private final double radius;
     private final double threshold;
+    private double totalThreshold = Double.MAX_VALUE;
 
     private final Vector2d rChildPosition;
     private final Context rChildContext;
@@ -38,7 +39,6 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
 
         int totalCount = 0;
         int highestCount = 0;
-        double totalCountEstimate = (radiusInt * 2 + 1) * (radiusInt * 2 + 1) * 0.79;
 
         rCounts.clear();
         for (int dx = -radiusInt; dx <= radiusInt; dx++) {
@@ -55,7 +55,7 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
                 Integer count = rCounts.get(value);
                 if (count != null) {
                     currentCount = count + 1;
-                    if (currentCount >= totalCountEstimate * threshold) return value;
+                    if (currentCount >= totalThreshold) return value;
                 }
 
                 rCounts.put(value, currentCount);
@@ -65,9 +65,11 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
             }
         }
 
+        if (totalThreshold == Double.MAX_VALUE) totalThreshold = totalCount * threshold;
+
         for (Integer value: rCounts.keySet()) {
             int count = rCounts.get(value);
-            if (count == highestCount && count >= totalCount * threshold) return value;
+            if (count == highestCount && count >= totalThreshold) return value;
         }
 
         return previous.process(context);
