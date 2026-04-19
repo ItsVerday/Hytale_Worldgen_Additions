@@ -256,6 +256,13 @@ public class RenodeIntegration {
             .addContent(Renode.smallStringContent("Seed", "Seed").withDefaultValue("A").withWidth(250))
             .addContent(Renode.floatContent("Rounding", "Rounding").withDefaultValue(0.0).withWidth(100))
             .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
+    public static final NodeBuilder NODE_DENSITY_VECTOR_FIELD_WARP = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("VectorFieldWarp", "VectorFieldWarpDensityNode", "VectorFieldWarp Density"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addContent(Renode.floatContent("Scale", "Scale").withDefaultValue(1.0).withWidth(100))
+            .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addVariantOutput("WarpField", "WarpField", false, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     //endregion
 
     //region Curves
