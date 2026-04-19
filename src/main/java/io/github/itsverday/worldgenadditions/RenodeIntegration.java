@@ -189,6 +189,16 @@ public class RenodeIntegration {
     //endregion
 
     //region Density
+    public static final NodeBuilder NODE_DENSITY_BASIS_CHANGE = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("BasisChange", "BasisChangeDensityNode", "BasisChange Density"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
+            .addContent(Renode.checkboxContent("Normalized", "Normalized").withDefaultValue(false))
+            .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_DENSITY)
+            .addNodeOutput("Origin", "Origin", false, HytaleGeneratorNodes.NODE_POINT_3D)
+            .addNodeOutput("XAxis", "XAxis", false, HytaleGeneratorNodes.NODE_POINT_3D)
+            .addNodeOutput("YAxis", "YAxis", false, HytaleGeneratorNodes.NODE_POINT_3D)
+            .addNodeOutput("ZAxis", "ZAxis", false, HytaleGeneratorNodes.NODE_POINT_3D)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_DENSITY);
     public static final NodeBuilder NODE_DENSITY_BOUNDARY = addNode(HytaleGeneratorNodes.VARIANT_DENSITY.variantNode("Boundary", "BoundaryDensityNode", "Boundary Density"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(HytaleGeneratorNodes.CONTENT_SKIP)

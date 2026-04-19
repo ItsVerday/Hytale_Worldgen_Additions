@@ -62,7 +62,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("StaticNoise2D", StaticNoise2DDensityAsset.class, StaticNoise2DDensityAsset.CODEC)
                 .register("StaticNoise3D", StaticNoise3DDensityAsset.class, StaticNoise3DDensityAsset.CODEC)
                 .register("Erosion", ErosionDensityAsset.class, ErosionDensityAsset.CODEC)
-                .register("Heightmap", HeightmapDensityAsset.class, HeightmapDensityAsset.CODEC);
+                .register("Heightmap", HeightmapDensityAsset.class, HeightmapDensityAsset.CODEC)
+                .register("BasisChange", BasisChangeDensityAsset.class, BasisChangeDensityAsset.CODEC);
 
         // Curves
         getCodecRegistry(CurveAsset.CODEC)
