@@ -2,6 +2,7 @@ package io.github.itsverday.worldgenadditions;
 
 import com.hypixel.hytale.builtin.hytalegenerator.assets.curves.CurveAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
+import com.hypixel.hytale.builtin.hytalegenerator.assets.vectorproviders.VectorProviderAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.WorldStructureAsset;
 import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.common.semver.SemverRange;
@@ -13,6 +14,7 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.Smooth
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.*;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.ThresholdCurveAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.SumVectorProviderAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.PipelineWorldStructureAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.*;
@@ -72,6 +74,9 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Steps", StepsCurveAsset.class, StepsCurveAsset.CODEC)
                 .register("Smoothstep", SmoothstepCurveAsset.class, SmoothstepCurveAsset.CODEC)
                 .register("ManualCubicSpline", ManualCubicSplineCurveAsset.class, ManualCubicSplineCurveAsset.CODEC);
+
+        getCodecRegistry(VectorProviderAsset.CODEC)
+                .register("Sum", SumVectorProviderAsset.class, SumVectorProviderAsset.CODEC);
 
         // Register Renode nodes
         if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.5.0"))) {
