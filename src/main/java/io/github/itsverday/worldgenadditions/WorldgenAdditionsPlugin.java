@@ -14,6 +14,7 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.Smooth
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.*;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.ThresholdCurveAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.NormalizeVectorProviderAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.SumVectorProviderAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.PipelineWorldStructureAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
@@ -76,7 +77,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("ManualCubicSpline", ManualCubicSplineCurveAsset.class, ManualCubicSplineCurveAsset.CODEC);
 
         getCodecRegistry(VectorProviderAsset.CODEC)
-                .register("Sum", SumVectorProviderAsset.class, SumVectorProviderAsset.CODEC);
+                .register("Sum", SumVectorProviderAsset.class, SumVectorProviderAsset.CODEC)
+                .register("Normalize", NormalizeVectorProviderAsset.class, NormalizeVectorProviderAsset.CODEC);
 
         // Register Renode nodes
         if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.5.0"))) {

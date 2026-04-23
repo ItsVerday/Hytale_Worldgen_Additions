@@ -302,9 +302,13 @@ public class RenodeIntegration {
     //endregion
 
     //region Vector Providers
+    public static final NodeBuilder NODE_VECTOR_PROVIDER_NORMALIZE = addNode(HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS.variantNode("Normalize", "Normalize.VectorProvider", "Normalize VectorProvider"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("Magnitude", "Magnitude").withDefaultValue(1.0).withWidth(100))
+            .addVariantOutput("Input", "Input", false, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_VECTOR_PROVIDERS);
     public static final NodeBuilder NODE_VECTOR_PROVIDER_SUM = addNode(HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS.variantNode("Sum", "Sum.VectorProvider", "Sum VectorProvider"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
-            .addContent(HytaleGeneratorNodes.CONTENT_SKIP)
             .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
             .addCategory(HytaleGeneratorNodes.CATEGORY_VECTOR_PROVIDERS);
     //endregion
