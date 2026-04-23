@@ -302,6 +302,11 @@ public class RenodeIntegration {
     //endregion
 
     //region Vector Providers
+    public static final NodeBuilder NODE_VECTOR_PROVIDER_CLAMP_MAGNITUDE = addNode(HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS.variantNode("ClampMagnitude", "ClampMagnitude.VectorProvider", "ClampMagnitude VectorProvider"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("Magnitude", "Magnitude").withDefaultValue(1.0).withWidth(100))
+            .addVariantOutput("Input", "Input", false, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_VECTOR_PROVIDERS);
     public static final NodeBuilder NODE_VECTOR_PROVIDER_NORMALIZE = addNode(HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS.variantNode("Normalize", "Normalize.VectorProvider", "Normalize VectorProvider"))
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addContent(Renode.floatContent("Magnitude", "Magnitude").withDefaultValue(1.0).withWidth(100))
