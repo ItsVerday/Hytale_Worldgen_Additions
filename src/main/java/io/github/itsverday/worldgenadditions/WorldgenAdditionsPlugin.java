@@ -2,6 +2,7 @@ package io.github.itsverday.worldgenadditions;
 
 import com.hypixel.hytale.builtin.hytalegenerator.assets.curves.CurveAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.density.DensityAsset;
+import com.hypixel.hytale.builtin.hytalegenerator.assets.vectorproviders.ConstantVectorProviderAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.vectorproviders.VectorProviderAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.worldstructures.WorldStructureAsset;
 import com.hypixel.hytale.builtin.hytalegenerator.props.QueueProp;
@@ -15,10 +16,7 @@ import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.Smooth
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.StepsCurveAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.density.*;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.curve.ThresholdCurveAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.ClampMagnitudeVectorProviderAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.NormalizeVectorProviderAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.ScalerVectorProviderAsset;
-import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.SumVectorProviderAsset;
+import io.github.itsverday.worldgenadditions.hytalegenerator.assets.vectorproviders.*;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.PipelineWorldStructureAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.transforms.*;
@@ -83,7 +81,8 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("Sum", SumVectorProviderAsset.class, SumVectorProviderAsset.CODEC)
                 .register("Normalize", NormalizeVectorProviderAsset.class, NormalizeVectorProviderAsset.CODEC)
                 .register("ClampMagnitude", ClampMagnitudeVectorProviderAsset.class, ClampMagnitudeVectorProviderAsset.CODEC)
-                .register("Scaler", ScalerVectorProviderAsset.class, ScalerVectorProviderAsset.CODEC);
+                .register("Scaler", ScalerVectorProviderAsset.class, ScalerVectorProviderAsset.CODEC)
+                .register("DensityScaler", DensityScalerVectorProviderAsset.class, DensityScalerVectorProviderAsset.CODEC);
 
         // Register Renode nodes
         if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.5.0"))) {
