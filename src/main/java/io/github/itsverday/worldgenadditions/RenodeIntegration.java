@@ -316,6 +316,11 @@ public class RenodeIntegration {
             .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
             .addVariantOutput("Inputs", "Inputs", true, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
             .addCategory(HytaleGeneratorNodes.CATEGORY_VECTOR_PROVIDERS);
+    public static final NodeBuilder NODE_VECTOR_PROVIDER_SCALER = addNode(HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS.variantNode("Scaler", "Scaler.VectorProvider", "Scaler VectorProvider"))
+            .addContent(HytaleGeneratorNodes.CONTENT_EXPORT_AS)
+            .addContent(Renode.floatContent("Scale", "Scale").withDefaultValue(1.0).withWidth(100))
+            .addVariantOutput("Input", "Input", false, HytaleGeneratorNodes.VARIANT_VECTOR_PROVIDERS)
+            .addCategory(HytaleGeneratorNodes.CATEGORY_VECTOR_PROVIDERS);
     //endregion
 
     private static NodeBuilder addNode(NodeBuilder node) {
