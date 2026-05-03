@@ -1,3 +1,5 @@
+import dev.scaffoldit.hytale.wire.HytaleManifest
+
 rootProject.name = "Verdays_Worldgen_Additions"
 
 plugins {
@@ -14,30 +16,13 @@ hytale {
 
     repositories {
         mavenLocal()
-        exclusiveContent {
-            forRepository {
-                ivy {
-                    name = "Modtale"
-                    url = uri("https://api.modtale.net/api/v1")
-                    patternLayout {
-                        artifact("projects/[module]/versions/[revision]/download")
-                    }
-                    metadataSources {
-                        artifact()
-                    }
-                }
-            }
-            filter {
-                includeGroup("modtale")
-            }
+        maven {
+            url = uri("https://cursemaven.com")
         }
     }
 
     dependencies {
-        // compileOnly("modtale:renode:0.5.0@jar")
-        implementation("modtale:renode:0.5.0@jar")
-        // compileOnly("io.github.itsverday:Renode:0.5.0")
-        // implementation("io.github.itsverday:Renode:0.5.0")
+        implementation("curse.maven:renode-1531866:8028565")
     }
 
     manifest {
@@ -45,5 +30,10 @@ hytale {
         Name = "Worldgen_Additions"
         Main = "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
         ServerVersion = "2026.03.26-89796e57b"
+        Version = extra["project.version"] as String
+        Description = "Adds custom Worldgen v2 Nodes"
+        Authors = listOf(HytaleManifest.Author("Verday", null, null))
+        OptionalDependencies = mapOf(Pair("Verday:Renode", "0.5.0"))
+        Website = "https://github.com/ItsVerday/Hytale_Worldgen_Additions/"
     }
 }
