@@ -2,15 +2,15 @@
     "Group": "Verday",
     "Name": "Worldgen_Additions",
     "Version": "0.1.0",
-    "Description": "Custom Worldgen v2 nodes",
+    "Description": "Adds custom Worldgen v2 Nodes",
     "Authors": [
         {
             "Name": "Verday"
         }
     ],
+    "Website": "https://github.com/ItsVerday/Hytale_Worldgen_Additions/",
     "DisabledByDefault": false,
     "IncludesAssetPack": false,
-    "Dependencies": {},
     "OptionalDependencies": {
         "Verday:Renode": "0.5.0"
     },
