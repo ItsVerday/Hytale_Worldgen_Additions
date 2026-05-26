@@ -1,8 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
-import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class SmoothingPipelineCartaTransform extends PipelineCartaTransform {
             for (int dz = -radiusInt; dz <= radiusInt; dz++) {
                 if (dx * dx + dz * dz > radius * radius) continue;
 
-                rChildPosition.assign(context.position);
+                rChildPosition.set(context.position);
                 rChildPosition.add(dx, dz);
                 rChildContext.assign(context);
                 rChildContext.position = rChildPosition;

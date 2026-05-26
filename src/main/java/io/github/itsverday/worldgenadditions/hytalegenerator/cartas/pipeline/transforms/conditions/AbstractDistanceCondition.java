@@ -1,10 +1,10 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.conditions;
 
-import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.util.cache.ModuloXZInt2BooleanCache;
 import io.github.itsverday.worldgenadditions.util.cache.ModuloXZInt2IntCache;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConditionalPipelineCartaTransform;
+import org.joml.Vector2d;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +32,7 @@ public abstract class AbstractDistanceCondition extends ConditionalPipelineCarta
     public abstract double getDistanceToQuery(PipelineCartaTransform.Context context);
 
     private boolean processChildWithOffset(@Nonnull PipelineCartaTransform.Context context, int dx, int dz) {
-        rChildPosition.assign(context.position);
+        rChildPosition.set(context.position);
         rChildPosition.add(dx, dz);
         int x = (int) rChildPosition.x;
         int y = (int) rChildPosition.y;

@@ -6,9 +6,9 @@ import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.VectorProvider
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.vectorproviders.ScalerVectorProvider;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 public class ScalerVectorProviderAsset extends VectorProviderAsset {
     public static final BuilderCodec<ScalerVectorProviderAsset> CODEC = BuilderCodec.builder(

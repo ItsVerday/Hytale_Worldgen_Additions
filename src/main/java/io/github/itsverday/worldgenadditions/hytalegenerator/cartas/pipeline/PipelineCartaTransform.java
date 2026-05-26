@@ -1,9 +1,9 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline;
 
 import com.hypixel.hytale.builtin.hytalegenerator.workerindexer.WorkerIndexer;
-import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.CachePipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.ConstantPipelineCartaTransform;
+import org.joml.Vector2d;
 
 import javax.annotation.Nonnull;
 import java.util.List;

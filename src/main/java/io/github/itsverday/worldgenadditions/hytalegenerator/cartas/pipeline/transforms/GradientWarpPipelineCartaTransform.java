@@ -1,10 +1,10 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector2d;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -38,18 +38,18 @@ public class GradientWarpPipelineCartaTransform extends PipelineCartaTransform {
 
     @Override
     public int process(@NonNullDecl Context context) {
-        rDensityChildPosition.assign(context.position.x, 0, context.position.y);
+        rDensityChildPosition.set(context.position.x, 0, context.position.y);
         rDensityChildContext.position = rDensityChildPosition;
 
         double valueAtOrigin = warpField.process(rDensityChildContext);
-        rDensityChildContext.position.assign(context.position.x + sampleDistance, rDensityChildPosition.y, context.position.y);
+        rDensityChildContext.position.set(context.position.x + sampleDistance, rDensityChildPosition.y, context.position.y);
         double deltaX = warpField.process(rDensityChildContext) - valueAtOrigin;
-        rDensityChildContext.position.assign(context.position.x, rDensityChildPosition.y, context.position.y + sampleDistance);
+        rDensityChildContext.position.set(context.position.x, rDensityChildPosition.y, context.position.y + sampleDistance);
         double deltaZ = warpField.process(rDensityChildContext) - valueAtOrigin;
         double offsetX = deltaX * warpFactor / sampleDistance;
         double offsetZ = deltaZ * warpFactor / sampleDistance;
 
-        rChildPosition.assign(context.position);
+        rChildPosition.set(context.position);
         rChildPosition.add(offsetX, offsetZ);
         rChildContext.assign(context);
         rChildContext.position = rChildPosition;

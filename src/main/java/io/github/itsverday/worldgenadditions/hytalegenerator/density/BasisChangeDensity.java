@@ -1,8 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -33,20 +33,20 @@ public class BasisChangeDensity extends Density {
 
     @Override
     public double process(@NonNullDecl Context context) {
-        rPosition.assign(context.position);
-        rPosition.subtract(origin);
-        rTransformedPosition.assign(0, 0, 0);
+        rPosition.set(context.position);
+        rPosition.sub(origin);
+        rTransformedPosition.set(0, 0, 0);
 
-        rAxis.assign(xAxis);
-        rAxis.scale(rPosition.x);
+        rAxis.set(xAxis);
+        rAxis.mul(rPosition.x);
         rTransformedPosition.add(rAxis);
 
-        rAxis.assign(yAxis);
-        rAxis.scale(rPosition.y);
+        rAxis.set(yAxis);
+        rAxis.mul(rPosition.y);
         rTransformedPosition.add(rAxis);
 
-        rAxis.assign(zAxis);
-        rAxis.scale(rPosition.z);
+        rAxis.set(zAxis);
+        rAxis.mul(rPosition.z);
         rTransformedPosition.add(rAxis);
 
         rTransformedPosition.add(origin);

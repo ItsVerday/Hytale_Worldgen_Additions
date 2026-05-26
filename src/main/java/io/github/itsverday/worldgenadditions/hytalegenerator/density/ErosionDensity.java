@@ -3,8 +3,8 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.rng.RngField;
 import com.hypixel.hytale.math.util.FastRandom;
-import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -81,7 +81,7 @@ public class ErosionDensity extends Density {
         double positionX = context.position.x;
         double positionZ = context.position.z;
 
-        rPosition.assign(context.position);
+        rPosition.set(context.position);
         rChildContext.assign(context);
         rChildContext.position = rPosition;
 
@@ -93,12 +93,12 @@ public class ErosionDensity extends Density {
         double newX = positionX + inputSampleDistance;
         double newZ = positionZ + inputSampleDistance;
 
-        rChildContext.position.assign(newX, context.position.y, positionZ);
+        rChildContext.position.set(newX, context.position.y, positionZ);
         double deltaX = input.process(rChildContext) - valueAtOrigin;
         double dx = deltaX / inputSampleDistance;
         dx *= scale;
 
-        rChildContext.position.assign(positionX, context.position.y, newZ);
+        rChildContext.position.set(positionX, context.position.y, newZ);
         double deltaZ = input.process(rChildContext) - valueAtOrigin;
         double dz = deltaZ / inputSampleDistance;
         dz *= scale;

@@ -6,9 +6,9 @@ import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.VectorProvider
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.vectorproviders.SumVectorProvider;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import java.util.ArrayList;
 

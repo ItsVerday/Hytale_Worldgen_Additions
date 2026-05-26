@@ -1,10 +1,10 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector2d;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -38,14 +38,14 @@ public class VectorWarpPipelineCartaTransform extends PipelineCartaTransform {
 
     @Override
     public int process(@NonNullDecl Context context) {
-        rDensityChildPosition.assign(context.position.x, 0, context.position.y);
+        rDensityChildPosition.set(context.position.x, 0, context.position.y);
         rDensityChildContext.position = rDensityChildPosition;
 
         double warp = warpField.process(rDensityChildContext);
         warp *= warpFactor;
-        rChildPosition.assign(warpVector);
-        rChildPosition.setLength(1.0);
-        rChildPosition.scale(warp);
+        rChildPosition.set(warpVector);
+        rChildPosition.normalize(1.0);
+        rChildPosition.mul(warp);
         rChildPosition.add(context.position);
 
         rChildContext.assign(context);

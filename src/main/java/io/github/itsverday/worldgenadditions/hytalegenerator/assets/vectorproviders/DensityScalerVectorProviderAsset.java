@@ -8,9 +8,9 @@ import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.ConstantVector
 import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.VectorProvider;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.vectorproviders.DensityScalerVectorProvider;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 public class DensityScalerVectorProviderAsset extends VectorProviderAsset {
     public static final BuilderCodec<DensityScalerVectorProviderAsset> CODEC = BuilderCodec.builder(

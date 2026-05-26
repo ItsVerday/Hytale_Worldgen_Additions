@@ -6,22 +6,23 @@ import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.ConstantValueDen
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.math.vector.Vector3d;
+import com.hypixel.hytale.math.vector.Vector3dUtil;
 import io.github.itsverday.worldgenadditions.hytalegenerator.density.BasisChangeDensity;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 //
 public class BasisChangeDensityAsset extends DensityAsset {
     public static final BuilderCodec<BasisChangeDensityAsset> CODEC = BuilderCodec.builder(
             BasisChangeDensityAsset.class, BasisChangeDensityAsset::new, DensityAsset.ABSTRACT_CODEC
     )
-            .append(new KeyedCodec<>("Origin", Vector3d.CODEC, false), (t, k) -> t.origin = k, t -> t.origin)
+            .append(new KeyedCodec<>("Origin", Vector3dUtil.CODEC, false), (t, k) -> t.origin = k, t -> t.origin)
             .add()
-            .append(new KeyedCodec<>("XAxis", Vector3d.CODEC, false), (t, k) -> t.xAxis = k, t -> t.xAxis)
+            .append(new KeyedCodec<>("XAxis", Vector3dUtil.CODEC, false), (t, k) -> t.xAxis = k, t -> t.xAxis)
             .add()
-            .append(new KeyedCodec<>("YAxis", Vector3d.CODEC, false), (t, k) -> t.yAxis = k, t -> t.yAxis)
+            .append(new KeyedCodec<>("YAxis", Vector3dUtil.CODEC, false), (t, k) -> t.yAxis = k, t -> t.yAxis)
             .add()
-            .append(new KeyedCodec<>("ZAxis", Vector3d.CODEC, false), (t, k) -> t.zAxis = k, t -> t.zAxis)
+            .append(new KeyedCodec<>("ZAxis", Vector3dUtil.CODEC, false), (t, k) -> t.zAxis = k, t -> t.zAxis)
             .add()
             .append(new KeyedCodec<>("Normalized", Codec.BOOLEAN, true), (t, k) -> t.normalized = k, t -> t.normalized)
             .add()
