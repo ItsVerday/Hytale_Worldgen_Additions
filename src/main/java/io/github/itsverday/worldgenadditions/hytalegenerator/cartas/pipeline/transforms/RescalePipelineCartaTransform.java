@@ -1,8 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
-import com.hypixel.hytale.math.vector.Vector2d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -25,8 +25,8 @@ public class RescalePipelineCartaTransform extends PipelineCartaTransform {
 
     @Override
     public int process(@NonNullDecl Context context) {
-        rChildPosition.assign(context.position);
-        rChildPosition.scale(scalingFactor);
+        rChildPosition.set(context.position);
+        rChildPosition.mul(scalingFactor);
         rChildContext.assign(context);
         rChildContext.position = rChildPosition;
         return child.process(rChildContext);

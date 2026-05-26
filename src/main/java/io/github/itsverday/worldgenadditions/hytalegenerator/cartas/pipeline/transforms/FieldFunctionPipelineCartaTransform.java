@@ -1,9 +1,9 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class FieldFunctionPipelineCartaTransform extends PipelineCartaTransform 
 
     @Override
     public int process(@NonNullDecl Context context) {
-        rChildPosition.assign(context.position.x, 0, context.position.y);
+        rChildPosition.set(context.position.x, 0, context.position.y);
         rChildContext.position = rChildPosition;
         double densityValue = density.process(rChildContext);
 

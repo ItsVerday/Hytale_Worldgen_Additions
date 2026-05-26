@@ -83,7 +83,7 @@ public class WorldgenAdditionsPlugin extends JavaPlugin {
                 .register("DensityScaler", DensityScalerVectorProviderAsset.class, DensityScalerVectorProviderAsset.CODEC);
 
         // Register Renode nodes
-        if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.5.0"))) {
+        if (PluginManager.get().hasPlugin(PluginIdentifier.fromString("Verday:Renode"), SemverRange.fromString("0.6.0"))) {
             RenodeIntegration.registerAllNodes();
         }
     }

@@ -1,9 +1,9 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.util.cache.ModuloXZDouble2DoubleCache;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +30,7 @@ public class SpatialCache2DDensity extends Density {
         double z = context.position.z;
         if (cache.containsKey(x, z)) return cache.get(x, z);
 
-        rPosition.assign(context.position);
+        rPosition.set(context.position);
         rPosition.y = yOverride;
         rChildContext.assign(context);
         rChildContext.position = rPosition;

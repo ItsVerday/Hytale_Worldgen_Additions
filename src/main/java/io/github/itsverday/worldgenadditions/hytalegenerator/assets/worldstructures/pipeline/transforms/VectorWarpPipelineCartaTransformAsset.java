@@ -7,11 +7,12 @@ import com.hypixel.hytale.builtin.hytalegenerator.density.nodes.ConstantValueDen
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.math.vector.Vector2d;
+import com.hypixel.hytale.math.vector.Vector2dUtil;
 import io.github.itsverday.worldgenadditions.hytalegenerator.assets.worldstructures.pipeline.PipelineCartaTransformAsset;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.transforms.VectorWarpPipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
 
 public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransformAsset {
     public static final BuilderCodec<VectorWarpPipelineCartaTransformAsset> CODEC = BuilderCodec.builder(VectorWarpPipelineCartaTransformAsset.class, VectorWarpPipelineCartaTransformAsset::new, PipelineCartaTransformAsset.ABSTRACT_CODEC)
@@ -19,7 +20,7 @@ public class VectorWarpPipelineCartaTransformAsset extends PipelineCartaTransfor
             .add()
             .append(new KeyedCodec<>("WarpFactor", Codec.DOUBLE, true), (t, k) -> t.warpFactor = k, t -> t.warpFactor)
             .add()
-            .append(new KeyedCodec<>("WarpVector", Vector2d.CODEC, false), (t, k) -> t.warpVector = k, t -> t.warpVector)
+            .append(new KeyedCodec<>("WarpVector", Vector2dUtil.CODEC, false), (t, k) -> t.warpVector = k, t -> t.warpVector)
             .add()
             .build();
 

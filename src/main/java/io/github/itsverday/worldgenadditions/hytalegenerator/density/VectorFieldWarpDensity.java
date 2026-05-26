@@ -2,8 +2,8 @@ package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
 import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.VectorProvider;
-import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +30,7 @@ public class VectorFieldWarpDensity extends Density {
     public double process(@NonNullDecl Context context) {
         rChildVectorContext.assign(context);
         warpField.process(rChildVectorContext, rPosition);
-        rPosition.scale(scale);
+        rPosition.mul(scale);
         rPosition.add(context.position);
         rChildContext.assign(context);
         rChildContext.position = rPosition;

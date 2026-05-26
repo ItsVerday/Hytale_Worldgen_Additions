@@ -1,8 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.density;
 
 import com.hypixel.hytale.builtin.hytalegenerator.density.Density;
-import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +32,7 @@ public class BoundaryDensity extends Density {
     public double process(@NonNullDecl Context context) {
         final double sampleDistance = 1.0;
 
-        rPosition.assign(context.position);
+        rPosition.set(context.position);
         rChildContext.assign(context);
         rChildContext.position = rPosition;
 
@@ -46,15 +46,15 @@ public class BoundaryDensity extends Density {
         double newY = context.position.y + sampleDistance;
         double newZ = context.position.z + sampleDistance;
 
-        rChildContext.position.assign(newX, context.position.y, context.position.z);
+        rChildContext.position.set(newX, context.position.y, context.position.z);
         double deltaX = input.process(rChildContext) - valueAtOrigin;
         double dx = deltaX / sampleDistance;
 
-        rChildContext.position.assign(context.position.x, newY, context.position.z);
+        rChildContext.position.set(context.position.x, newY, context.position.z);
         double deltaY = input.process(rChildContext) - valueAtOrigin;
         double dy = deltaY / sampleDistance;
 
-        rChildContext.position.assign(context.position.x, context.position.y, newZ);
+        rChildContext.position.set(context.position.x, context.position.y, newZ);
         double deltaZ = input.process(rChildContext) - valueAtOrigin;
         double dz = deltaZ / sampleDistance;
 

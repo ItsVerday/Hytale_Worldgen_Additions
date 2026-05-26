@@ -6,10 +6,10 @@ import com.hypixel.hytale.builtin.hytalegenerator.math.Normalizer;
 import com.hypixel.hytale.builtin.hytalegenerator.pipe.Pipe;
 import com.hypixel.hytale.builtin.hytalegenerator.positionproviders.PositionProvider;
 import com.hypixel.hytale.math.util.HashUtil;
-import com.hypixel.hytale.math.vector.Vector2d;
-import com.hypixel.hytale.math.vector.Vector3d;
 import io.github.itsverday.worldgenadditions.hytalegenerator.cartas.pipeline.PipelineCartaTransform;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -77,12 +77,12 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
     @Override
     public int process(@NonNullDecl Context context) {
         // Implementation modified from PositionsDensity
-        rMin.assign(context.position.x - maxDistance - distanceWarpMax, -1.0, context.position.y - maxDistance - distanceWarpMax);
-        rMax.assign(context.position.x + maxDistance + distanceWarpMax, 1.0, context.position.y + maxDistance + distanceWarpMax);
+        rMin.set(context.position.x - maxDistance - distanceWarpMax, -1.0, context.position.y - maxDistance - distanceWarpMax);
+        rMax.set(context.position.x + maxDistance + distanceWarpMax, 1.0, context.position.y + maxDistance + distanceWarpMax);
         rDistance[0] = Double.MAX_VALUE;
         rHasClosestPoint[0] = false;
-        rClosestPoint.assign(0.0, 0.0);
-        rLocalPoint.assign(0.0, 0.0, 0.0);
+        rClosestPoint.set(0.0, 0.0);
+        rLocalPoint.set(0.0, 0.0, 0.0);
         Pipe.One<Vector3d> positionsPipe = (providedPoint, control) -> {
             rLocalPoint.x = providedPoint.x - context.position.x;
             rLocalPoint.y = 0;
@@ -91,22 +91,22 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
 
             if (distanceWarpField != null) {
                 newDistance = Math.sqrt(newDistance);
-                rDensityContext.position.assign(providedPoint.x + context.position.x, 0, providedPoint.z + context.position.y);
-                rDensityContext.densityAnchor.assign(rLocalPoint);
+                rDensityContext.position.set(providedPoint.x + context.position.x, 0, providedPoint.z + context.position.y);
+                rDensityContext.densityAnchor.set(rLocalPoint);
                 newDistance += Normalizer.normalize(-1, 1, distanceWarpMin, distanceWarpMax, distanceWarpField.process(rDensityContext));
                 newDistance = newDistance * newDistance;
             }
 
             if (newDistance < maxDistance * maxDistance && newDistance < rDistance[0]) {
                 rDistance[0] = newDistance;
-                rClosestPoint.assign(providedPoint.x, providedPoint.z);
+                rClosestPoint.set(providedPoint.x, providedPoint.z);
                 rHasClosestPoint[0] = true;
             }
         };
 
         PositionProvider.Context positionsContext = new PositionProvider.Context();
-        positionsContext.bounds.min.assign(rMin);
-        positionsContext.bounds.max.assign(rMax);
+        positionsContext.bounds.min.set(rMin);
+        positionsContext.bounds.max.set(rMax);
         positionsContext.pipe = positionsPipe;
         positions.generate(positionsContext);
 
@@ -124,9 +124,9 @@ public class PositionsCellNoisePipelineCartaTransform extends PipelineCartaTrans
 
             if (cellValueHere != null) {
                 if (cellValueHere.originValue) {
-                    rChildPosition.assign(rClosestPoint);
+                    rChildPosition.set(rClosestPoint);
                 } else {
-                    rChildPosition.assign(context.position);
+                    rChildPosition.set(context.position);
                 }
 
                 rChildContext.assign(context);

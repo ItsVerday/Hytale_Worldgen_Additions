@@ -1,8 +1,8 @@
 package io.github.itsverday.worldgenadditions.hytalegenerator.vectorproviders;
 
 import com.hypixel.hytale.builtin.hytalegenerator.vectorproviders.VectorProvider;
-import com.hypixel.hytale.math.vector.Vector3d;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.joml.Vector3d;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +19,6 @@ public class ScalerVectorProvider extends VectorProvider {
     @Override
     public void process(@NonNullDecl Context context, @NonNullDecl Vector3d vector_out) {
         child.process(context, vector_out);
-        vector_out.scale(scale);
+        vector_out.mul(scale);
     }
 }

@@ -11,8 +11,8 @@ plugins {
 // Create a folder named "common", then configure details with `common { }`
 
 hytale {
-    usePatchline("release")
-    useVersion("latest")
+    usePatchline("pre-release")
+    useVersion("0.5.0-pre.9.1")
 
     repositories {
         mavenLocal()
@@ -22,18 +22,19 @@ hytale {
     }
 
     dependencies {
-        implementation("curse.maven:renode-1531866:8028565")
+        implementation("io.github.itsverday:Renode:0.6.0")
+        // implementation("curse.maven:renode-1531866:8028565")
     }
 
     manifest {
         Group = "Verday"
         Name = "Worldgen_Additions"
         Main = "io.github.itsverday.worldgenadditions.WorldgenAdditionsPlugin"
-        ServerVersion = "2026.03.26-89796e57b"
+        ServerVersion = "0.5.0-pre.9.1"
         Version = extra["project.version"] as String
         Description = "Adds custom Worldgen v2 Nodes"
         Authors = listOf(HytaleManifest.Author("Verday", null, null))
-        OptionalDependencies = mapOf(Pair("Verday:Renode", "0.5.0"))
+        OptionalDependencies = mapOf(Pair("Verday:Renode", "0.6.0"))
         Website = "https://github.com/ItsVerday/Hytale_Worldgen_Additions/"
     }
 }
